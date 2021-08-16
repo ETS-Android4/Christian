@@ -34,4 +34,11 @@ public class SimpleCallback implements XPopupCallback {
     public boolean onBackPressed(BasePopupView popupView) {
         return false;
     }
+
+    @Override
+    public void onKeyBoardStateChanged(BasePopupView popupView, int height){}
+
+    @Override
+    public void onDrag(BasePopupView popupView, int value, float percent, boolean upOrLeft) {
+    }
 }

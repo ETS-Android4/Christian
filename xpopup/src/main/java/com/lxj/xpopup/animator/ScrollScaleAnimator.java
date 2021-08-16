@@ -19,8 +19,8 @@ public class ScrollScaleAnimator extends PopupAnimator{
     private float startScale = 0f;
 
     public boolean isOnlyScaleX = false;
-    public ScrollScaleAnimator(View target, PopupAnimation popupAnimation) {
-        super(target, popupAnimation);
+    public ScrollScaleAnimator(View target, int animationDuration, PopupAnimation popupAnimation) {
+        super(target, animationDuration, popupAnimation);
     }
 
     @Override
@@ -99,25 +99,33 @@ public class ScrollScaleAnimator extends PopupAnimator{
 
     @Override
     public void animateShow() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        targetView.post(new Runnable() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = animation.getAnimatedFraction();
-                targetView.setAlpha(fraction);
-                targetView.scrollTo(intEvaluator.evaluate(fraction, startScrollX, 0),
-                        intEvaluator.evaluate(fraction, startScrollY, 0));
-                targetView.setScaleX(fraction);
-                if(!isOnlyScaleX)targetView.setScaleY(fraction);
+            public void run() {
+                ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float fraction = animation.getAnimatedFraction();
+                        targetView.setAlpha(fraction);
+                        targetView.scrollTo(intEvaluator.evaluate(fraction, startScrollX, 0),
+                                intEvaluator.evaluate(fraction, startScrollY, 0));
+                        targetView.setScaleX(fraction);
+                        if(!isOnlyScaleX)targetView.setScaleY(fraction);
+                    }
+                });
+                animator.setDuration(animationDuration).setInterpolator(new FastOutSlowInInterpolator());
+                animator.start();
             }
         });
-        animator.setDuration(XPopup.getAnimationDuration()).setInterpolator(new FastOutSlowInInterpolator());
-        animator.start();
+
     }
 
     @Override
     public void animateDismiss() {
+        if(animating)return;
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+        observerAnimator(animator);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -129,7 +137,7 @@ public class ScrollScaleAnimator extends PopupAnimator{
                 if(!isOnlyScaleX)targetView.setScaleY(1-fraction);
             }
         });
-        animator.setDuration(XPopup.getAnimationDuration())
+        animator.setDuration(animationDuration)
                 .setInterpolator(new FastOutSlowInInterpolator());
         animator.start();
     }

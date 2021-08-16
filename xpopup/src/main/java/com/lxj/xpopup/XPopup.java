@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.RequiresApi;
-
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.core.AttachPopupView;
 import com.lxj.xpopup.core.BasePopupView;
@@ -29,34 +28,63 @@ import com.lxj.xpopup.impl.InputConfirmPopupView;
 import com.lxj.xpopup.impl.LoadingPopupView;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.lxj.xpopup.interfaces.OnImageViewerLongPressListener;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupCallback;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.lxj.xpopup.util.XPermission;
-
 import java.util.List;
 
 
 public class XPopup {
-    private XPopup() {
-    }
+    private XPopup() { }
 
     /**
      * 全局弹窗的设置
      **/
     private static int primaryColor = Color.parseColor("#121212");
     private static int animationDuration = 350;
-    public static int statusBarShadowColor = Color.parseColor("#55000000");
-    private static int shadowBgColor = Color.parseColor("#9F000000");
+    private static int statusBarBgColor = Color.parseColor("#55000000");
+    private static int navigationBarColor = 0;
+    private static int shadowBgColor = Color.parseColor("#7F000000");
 
+    /**
+     * 设置全局的背景阴影颜色
+     * @param color
+     */
     public static void setShadowBgColor(int color) {
         shadowBgColor = color;
     }
-
     public static int getShadowBgColor() {
         return shadowBgColor;
+    }
+
+    /**
+     * 设置全局的状态栏背景颜色
+     *
+     * @param color
+     */
+    public static void setStatusBarBgColor(int color) {
+        statusBarBgColor = color;
+    }
+
+    public static int getStatusBarBgColor() {
+        return statusBarBgColor;
+    }
+
+    /**
+     * 设置全局的导航栏栏背景颜色
+     *
+     * @param color
+     */
+    public static void setNavigationBarColor(int color) {
+        navigationBarColor = color;
+    }
+
+    public static int getNavigationBarColor() {
+        return navigationBarColor;
     }
 
     /**
@@ -72,6 +100,10 @@ public class XPopup {
         return primaryColor;
     }
 
+    /**
+     * 设置全局动画时长
+     * @param duration
+     */
     public static void setAnimationDuration(int duration) {
         if (duration >= 0) {
             animationDuration = duration;
@@ -80,6 +112,33 @@ public class XPopup {
 
     public static int getAnimationDuration() {
         return animationDuration;
+    }
+
+    /**
+     * 在长按弹出弹窗后，能保证下层View不能滑动
+     * @param v
+     */
+    public static PointF longClickPoint = null;
+    public static void fixLongClick(View v){
+        v.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    longClickPoint = new PointF(event.getRawX(), event.getRawY());
+                }
+                if("xpopup".equals(v.getTag()) && event.getAction()==MotionEvent.ACTION_MOVE){
+                    //长按发送，阻断父View拦截
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    //长按结束，恢复阻断
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    v.setTag(null);
+                }
+                return false;
+            }
+        });
+        v.setTag("xpopup");
     }
 
     public static class Builder {
@@ -172,8 +231,9 @@ public class XPopup {
             this.popupInfo.watchView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (popupInfo.touchPoint == null || event.getAction() == MotionEvent.ACTION_DOWN)
+                    if (event.getAction() == MotionEvent.ACTION_DOWN){
                         popupInfo.touchPoint = new PointF(event.getRawX(), event.getRawY());
+                    }
                     return false;
                 }
             });
@@ -203,6 +263,28 @@ public class XPopup {
         }
 
         /**
+         * 设置高度，如果重写了弹窗的getPopupHeight，则以重写的为准
+         * 并且受最大高度限制
+         * @param height
+         * @return
+         */
+        public Builder popupHeight(int height) {
+            this.popupInfo.popupHeight = height;
+            return this;
+        }
+
+        /**
+         * 设置宽度，如果重写了弹窗的getPopupWidth，则以重写的为准
+         * 并且受最大宽度限制
+         * @param width
+         * @return
+         */
+        public Builder popupWidth(int width) {
+            this.popupInfo.popupWidth = width;
+            return this;
+        }
+
+        /**
          * 设置最大宽度，如果重写了弹窗的getMaxWidth，则以重写的为准
          *
          * @param maxWidth
@@ -223,6 +305,7 @@ public class XPopup {
             this.popupInfo.maxHeight = maxHeight;
             return this;
         }
+
 
         /**
          * 是否自动打开输入法，当弹窗包含输入框时很有用，默认为false
@@ -259,8 +342,7 @@ public class XPopup {
         }
 
         /**
-         * 设置是否给StatusBar添加阴影，目前对Drawer弹窗生效。如果你的Drawer的背景是白色，建议设置为true，因为状态栏文字的颜色也往往
-         * 是白色，会导致状态栏文字看不清；如果Drawer的背景色不是白色，则忽略即可
+         * 设置是否给StatusBar添加阴影，目前对Drawer弹窗和全屏弹窗生效生效。
          *
          * @param hasStatusBarShadow
          * @return
@@ -271,7 +353,8 @@ public class XPopup {
         }
 
         /**
-         * 设置是否显示状态栏，默认是显示的
+         * 设置是否显示状态栏，默认是显示的。如果你的APP主动隐藏状态栏，你可能需要设置为false，不然看起来
+         * 会有点不和谐
          *
          * @param hasStatusBar
          * @return
@@ -282,13 +365,48 @@ public class XPopup {
         }
 
         /**
-         * 设置是否显示导航栏，默认是显示的
+         * 设置是否显示导航栏，默认是显示的。如果你的APP主动隐藏了导航栏，你需要设置为false，不然看起来
+         * 会有点不和谐；默认情况下不需要调用
          *
          * @param hasNavigationBar
          * @return
          */
         public Builder hasNavigationBar(boolean hasNavigationBar) {
             this.popupInfo.hasNavigationBar = hasNavigationBar;
+            return this;
+        }
+
+        /**
+         * 设置导航栏的颜色，如果你的APP修改了导航栏的颜色，你可能需要调用这个方法设置为相同的颜色；
+         * 否则弹窗的导航栏颜色会和App的导航颜色不一致；默认情况下不需要调用
+         *
+         * @param navigationBarColor
+         * @return
+         */
+        public Builder navigationBarColor(int navigationBarColor) {
+            this.popupInfo.navigationBarColor = navigationBarColor;
+            return this;
+        }
+
+        /**
+         * 设置导航栏是否是亮色，默认false
+         *
+         * @param isLightNavigationBar
+         * @return
+         */
+        public Builder isLightNavigationBar(boolean isLightNavigationBar) {
+            this.popupInfo.isLightNavigationBar = isLightNavigationBar;
+            return this;
+        }
+
+        /**
+         * 设置状态栏栏的颜色，目前只对全屏弹窗和Drawer弹窗有效，其他弹窗
+         * XPopup强制将状态栏设置为透明了
+         * @param statusBarBgColor
+         * @return
+         */
+        public Builder statusBarBgColor(int statusBarBgColor) {
+            this.popupInfo.statusBarBgColor = statusBarBgColor;
             return this;
         }
 
@@ -326,7 +444,7 @@ public class XPopup {
         }
 
         /**
-         * 是否水平居中，默认情况下Attach弹窗依靠着目标的左边或者右边，如果isCenterHorizontal为true，则与目标水平居中对齐
+         * 是否与目标水平居中，比如：默认情况下Attach弹窗依靠着目标的左边或者右边，如果isCenterHorizontal为true，则与目标水平居中对齐
          *
          * @param isCenterHorizontal
          * @return
@@ -359,7 +477,7 @@ public class XPopup {
         }
 
         /**
-         * 是否让使用暗色主题，默认是false。
+         * 是否使用暗色主题，默认是false。对所有内置弹窗生效。
          *
          * @param isDarkTheme
          * @return
@@ -370,7 +488,8 @@ public class XPopup {
         }
 
         /**
-         * 是否点击弹窗背景时将点击事件透传到Activity下，默认是不透传。由于容易引发其他问题，目前只对PartShadow弹窗有效。
+         * 是否点击弹窗背景时将点击事件透传到Activity下，默认是false。目前对Center弹窗，Attach弹窗，
+         * Position弹窗，PartShadow弹窗生效；对Drawer弹窗，FullScreen弹窗，Bottom弹窗不生效（未开放功能）
          *
          * @param isClickThrough
          * @return
@@ -382,7 +501,7 @@ public class XPopup {
 
         /**
          * 是否允许应用在后台的时候也能弹出弹窗，默认是false。注意如果开启这个开关，需要申请悬浮窗权限才能生效。
-         *
+         * 直接使用 XPopup.requestOverlayPermission()即可申请
          * @param enableShowWhenAppBackground
          * @return
          */
@@ -404,13 +523,87 @@ public class XPopup {
 
         /**
          * 是否在弹窗消失后就立即释放资源，杜绝内存泄漏，仅仅适用于弹窗只用一次的场景，默认为false。
-         * 如果你的弹窗对象需要用多次，千万不要开启这个设置
+         * 如果你的弹窗对象需是复用的，千万不要开启这个设置
          *
          * @param isDestroyOnDismiss
          * @return
          */
         public Builder isDestroyOnDismiss(boolean isDestroyOnDismiss) {
             this.popupInfo.isDestroyOnDismiss = isDestroyOnDismiss;
+            return this;
+        }
+
+        /**
+         * 设置圆角，对所有内置弹窗有效
+         *
+         * @param borderRadius
+         * @return
+         */
+        public Builder borderRadius(float borderRadius) {
+            this.popupInfo.borderRadius = borderRadius;
+            return this;
+        }
+
+        /**
+         * 是否已屏幕中心进行定位，默认是false，为false时根据Material范式进行定位，主要影响Attach系列弹窗
+         * Material范式下是：
+         *      弹窗优先显示在目标下方，下方距离不够才显示在上方
+         * 已屏幕中心进行定位：
+         *      目标在屏幕上半方弹窗显示在目标下面，目标在屏幕下半方则弹窗显示在目标上面
+         *
+         * @param positionByWindowCenter
+         * @return
+         */
+        public Builder positionByWindowCenter(boolean positionByWindowCenter) {
+            this.popupInfo.positionByWindowCenter = positionByWindowCenter;
+            return this;
+        }
+
+        /**
+         * XPopup的弹窗默认是Dialog实现，该方法设置为true则切换为View实现，两者区别如下：
+         * 1. Dialog实现，独立Window渲染，性能是View实现的2倍以上，但部分与输入法交互效果无法做到，
+         *    比如根据输入进行联想搜索的场景，因为输入法也是一个Dialog，Android中无法实现2个Dialog同时获取焦点，
+         *    而设置为View模式即可轻松实现；
+         *    但是Dialog实现有个缺陷是弹窗内部无法使用Fragment，这是Android的限制；
+         * 2. View实现本质是把弹窗挂载到Activity的decorView上面，由于还是View，所以很多与输入法的交互都能实现；
+         *    View实现内部完全可以使用Fragment；
+         *    缺点是和Activity相同渲染线程，性能比Dialog低
+         *
+         * @param viewMode 是否是View实现，默认是false
+         * @return
+         */
+        public Builder isViewMode(boolean viewMode) {
+            this.popupInfo.isViewMode = viewMode;
+            return this;
+        }
+
+        /**
+         * 半透明阴影的颜色
+         * @param shadowBgColor
+         * @return
+         */
+        public Builder shadowBgColor(int shadowBgColor) {
+            this.popupInfo.shadowBgColor = shadowBgColor;
+            return this;
+        }
+
+        /**
+         * 动画时长
+         * @param animationDuration
+         * @return
+         */
+        public Builder animationDuration(int animationDuration) {
+            this.popupInfo.animationDuration = animationDuration;
+            return this;
+        }
+
+        /**
+         * 是否保持屏幕常亮，默认false
+         * @param keepScreenOn
+         * @return
+         */
+        public Builder keepScreenOn(boolean keepScreenOn) {
+            this.popupInfo.keepScreenOn = keepScreenOn;
             return this;
         }
 
@@ -607,20 +800,27 @@ public class XPopup {
          * @param selectListener   选中条目的监听器
          * @param bindLayoutId     自定义布局的id  要求layoutId中必须有一个id为recyclerView的RecyclerView
          * @param bindItemLayoutId 自定义列表的item布局  条目的布局id，要求布局中必须有id为iv_image的ImageView，和id为tv_text的TextView
+         * @param contentGravity   列表的居中位置。默认是居中
          * @return
          */
         public AttachListPopupView asAttachList(String[] data, int[] iconIds, OnSelectListener selectListener, int bindLayoutId,
-                                                int bindItemLayoutId) {
+                                                int bindItemLayoutId, int contentGravity) {
             popupType(PopupType.AttachView);
             AttachListPopupView popupView = new AttachListPopupView(this.context, bindLayoutId, bindItemLayoutId)
                     .setStringData(data, iconIds)
+                    .setContentGravity(contentGravity)
                     .setOnSelectListener(selectListener);
             popupView.popupInfo = this.popupInfo;
             return popupView;
         }
 
+        public AttachListPopupView asAttachList(String[] data, int[] iconIds, OnSelectListener selectListener, int bindLayoutId,
+                                                int bindItemLayoutId) {
+            return asAttachList(data, iconIds, selectListener, bindLayoutId, bindItemLayoutId, Gravity.CENTER);
+        }
+
         public AttachListPopupView asAttachList(String[] data, int[] iconIds, OnSelectListener selectListener) {
-            return asAttachList(data, iconIds, selectListener, 0, 0);
+            return asAttachList(data, iconIds, selectListener, 0, 0, Gravity.CENTER);
         }
 
         /**
@@ -648,10 +848,12 @@ public class XPopup {
          * @param placeholderStroke 占位View的边框色，默认为-1
          * @param placeholderRadius 占位View的圆角大小，默认为-1
          * @param isShowSaveBtn     是否显示保存按钮，默认显示
+         * @param bgColor           背景颜色
+         * @param longPressListener 当图片长按的时候执行
          * @return
          */
         public ImageViewerPopupView asImageViewer(ImageView srcView, Object url, boolean isInfinite, int placeholderColor, int placeholderStroke, int placeholderRadius,
-                                                  boolean isShowSaveBtn, XPopupImageLoader imageLoader) {
+                                                  boolean isShowSaveBtn, int bgColor, XPopupImageLoader imageLoader, OnImageViewerLongPressListener longPressListener) {
             popupType(PopupType.ImageViewer);
             ImageViewerPopupView popupView = new ImageViewerPopupView(this.context)
                     .setSingleSrcView(srcView, url)
@@ -660,7 +862,9 @@ public class XPopup {
                     .setPlaceholderStrokeColor(placeholderStroke)
                     .setPlaceholderRadius(placeholderRadius)
                     .isShowSaveButton(isShowSaveBtn)
-                    .setXPopupImageLoader(imageLoader);
+                    .setBgColor(bgColor)
+                    .setXPopupImageLoader(imageLoader)
+                    .setLongPressListener(longPressListener);
             popupView.popupInfo = this.popupInfo;
             return popupView;
         }
@@ -676,7 +880,8 @@ public class XPopup {
          */
         public ImageViewerPopupView asImageViewer(ImageView srcView, int currentPosition, List<Object> urls,
                                                   OnSrcViewUpdateListener srcViewUpdateListener, XPopupImageLoader imageLoader) {
-            return asImageViewer(srcView, currentPosition, urls, false, false, -1, -1, -1, true, srcViewUpdateListener, imageLoader);
+            return asImageViewer(srcView, currentPosition, urls, false, true, -1, -1, -1, true,
+                    Color.rgb(32, 36, 46),srcViewUpdateListener, imageLoader, null);
         }
 
         /**
@@ -692,12 +897,14 @@ public class XPopup {
          * @param placeholderRadius     占位View的圆角大小，默认为-1
          * @param isShowSaveBtn         是否显示保存按钮，默认显示
          * @param srcViewUpdateListener 当滑动ViewPager切换图片后，需要更新srcView，此时会执行该回调，你需要调用updateSrcView方法。
+         * @param longPressListener     当图片长按的时候执行
          * @return
          */
         public ImageViewerPopupView asImageViewer(ImageView srcView, int currentPosition, List<Object> urls,
                                                   boolean isInfinite, boolean isShowPlaceHolder,
                                                   int placeholderColor, int placeholderStroke, int placeholderRadius, boolean isShowSaveBtn,
-                                                  OnSrcViewUpdateListener srcViewUpdateListener, XPopupImageLoader imageLoader) {
+                                                  int bgColor,OnSrcViewUpdateListener srcViewUpdateListener, XPopupImageLoader imageLoader,
+                                                  OnImageViewerLongPressListener longPressListener) {
             popupType(PopupType.ImageViewer);
             ImageViewerPopupView popupView = new ImageViewerPopupView(this.context)
                     .setSrcView(srcView, currentPosition)
@@ -708,8 +915,10 @@ public class XPopup {
                     .setPlaceholderStrokeColor(placeholderStroke)
                     .setPlaceholderRadius(placeholderRadius)
                     .isShowSaveButton(isShowSaveBtn)
+                    .setBgColor(bgColor)
                     .setSrcViewUpdateListener(srcViewUpdateListener)
-                    .setXPopupImageLoader(imageLoader);
+                    .setXPopupImageLoader(imageLoader)
+                    .setLongPressListener(longPressListener);
             popupView.popupInfo = this.popupInfo;
             return popupView;
         }

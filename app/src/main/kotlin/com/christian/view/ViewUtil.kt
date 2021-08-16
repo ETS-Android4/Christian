@@ -14,6 +14,7 @@ import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.google.android.material.snackbar.Snackbar
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.OnSelectListener
+import com.lxj.xpopup.util.XPopupUtils.dp2px
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.BlurViewExtendsConstraintLayout
 import eightbitlab.com.blurview.BlurViewExtendsNavigationView
@@ -289,7 +290,7 @@ fun showPopupMenu(v: View, activity: Activity, array: Array<String>) {
         //                        .isDarkTheme(true)
         //                        .popupAnimation(PopupAnimation.NoAnimation) //NoAnimation表示禁用动画
         //                        .isCenterHorizontal(true) //是否与目标水平居中对齐
-        .offsetY(activity.dip(activity.dip(-14)))
+        .offsetY(activity.dip(dp2px(activity, -14.9f)))
         .offsetX(activity.dip(0))
         //                        .popupPosition(PopupPosition.Top) //手动指定弹窗的位置
         .atView(v) // 依附于所点击的View，内部会自动判断在上方或者下方显示
@@ -302,6 +303,7 @@ fun showPopupMenu(v: View, activity: Activity, array: Array<String>) {
             })
     eightbitlab.com.blurview.makeViewBlur(
             asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),
+//            asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),
             activity.window.decorView as ViewGroup, activity.window
     )
 //                                .bindLayout(R.layout.my_custom_attach_popup)

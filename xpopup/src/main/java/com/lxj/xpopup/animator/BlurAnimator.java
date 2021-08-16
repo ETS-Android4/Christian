@@ -10,14 +10,16 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.util.XPopupUtils;
 
 /**
- * Description: 背景Shadow动画器，负责执行半透明的渐入渐出动画
+ * Description: 背景模糊动画器
  * Create by dance, at 2018/12/9
  */
 public class BlurAnimator extends PopupAnimator {
 
     private FloatEvaluator evaluate = new FloatEvaluator();
-    public BlurAnimator(View target) {
-        super(target);
+    public int shadowColor;
+    public BlurAnimator(View target,  int shadowColor) {
+        super(target, 0);
+        this.shadowColor = shadowColor;
     }
     public Bitmap decorBitmap;
     public boolean hasShadowBg = false;
@@ -27,12 +29,13 @@ public class BlurAnimator extends PopupAnimator {
     public void initAnimator() {
         Bitmap blurBmp = XPopupUtils.renderScriptBlur(targetView.getContext(), decorBitmap,  25, true);
         BitmapDrawable drawable = new BitmapDrawable(targetView.getResources(), blurBmp);
-        if(hasShadowBg) drawable.setColorFilter(XPopup.getShadowBgColor(), PorterDuff.Mode.SRC_OVER);
+        if(hasShadowBg) drawable.setColorFilter(shadowColor, PorterDuff.Mode.SRC_OVER);
         targetView.setBackground(drawable);
     }
 
     @Override
     public void animateShow() {
+        //有性能问题
 //        ValueAnimator animator = ValueAnimator.ofFloat(0,1);
 //        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //            @Override

@@ -20,9 +20,9 @@ public class LoadingView extends View {
     // 不是固定不变的，当width为30dp时，它为2dp，当宽度变大，这个也会相应的变大
     private float stokeWidth = 2f;
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
-    private int startColor = Color.parseColor("#DDDDDD");
-    private int endColor = Color.parseColor("#333333");
-    int lineCount = 12; // 共12条线
+    private int startColor = Color.parseColor("#EEEEEE");
+    private int endColor = Color.parseColor("#111111");
+    int lineCount = 10; // 线的数量
     float avgAngle = 360f / lineCount;
     int time = 0; // 重复次数
     float centerX, centerY; // 中心x，y
@@ -52,11 +52,11 @@ public class LoadingView extends View {
         centerX = getMeasuredWidth() / 2;
         centerY = getMeasuredHeight() / 2;
 
-        stokeWidth *= getMeasuredWidth() * 1f / XPopupUtils.dp2px(getContext(), 30);
+        stokeWidth = XPopupUtils.dp2px(getContext(), 2);
+//        stokeWidth *= getMeasuredWidth() * 1f / XPopupUtils.dp2px(getContext(), 40);
         paint.setStrokeWidth(stokeWidth);
         startX = centerX + radiusOffset;
         endX = startX + radius / 3f;
-        removeCallbacks(increaseTask);
     }
 
     @Override
@@ -78,7 +78,11 @@ public class LoadingView extends View {
             canvas.drawCircle(endX, centerY, stokeWidth / 2, paint);
             canvas.rotate(avgAngle, centerX, centerY);
         }
-        postDelayed(increaseTask, 60);
+    }
+
+    public void start(){
+        removeCallbacks(increaseTask);
+        postDelayed(increaseTask, 80);
     }
 
     private Runnable increaseTask = new Runnable() {
@@ -86,8 +90,15 @@ public class LoadingView extends View {
         public void run() {
             time++;
             postInvalidate(0,0,getMeasuredWidth(), getMeasuredHeight());
+            postDelayed(increaseTask, 80);
         }
     };
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        start();
+    }
 
     @Override
     protected void onDetachedFromWindow() {

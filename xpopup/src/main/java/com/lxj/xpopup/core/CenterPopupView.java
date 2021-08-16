@@ -2,7 +2,6 @@ package com.lxj.xpopup.core;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,7 @@ public class CenterPopupView extends BasePopupView {
     }
 
     @Override
-    protected int getPopupLayoutId() {
+    protected int getInnerLayoutId() {
         return R.layout._xpopup_center_popup_view;
     }
 
@@ -47,7 +46,31 @@ public class CenterPopupView extends BasePopupView {
         if(centerPopupContainer.getChildCount()==0)addInnerContent();
         getPopupContentView().setTranslationX(popupInfo.offsetX);
         getPopupContentView().setTranslationY(popupInfo.offsetY);
-        XPopupUtils.applyPopupSize((ViewGroup) getPopupContentView(), getMaxWidth(), getMaxHeight());
+        XPopupUtils.applyPopupSize((ViewGroup) getPopupContentView(), getMaxWidth(), getMaxHeight(),
+                getPopupWidth(), getPopupHeight(),null);
+    }
+    protected void applyTheme(){
+        if(bindLayoutId==0) {
+            if(popupInfo.isDarkTheme){
+                applyDarkTheme();
+            }else {
+                applyLightTheme();
+            }
+        }
+    }
+
+    @Override
+    protected void applyDarkTheme() {
+        super.applyDarkTheme();
+        centerPopupContainer.setBackground(XPopupUtils.createDrawable(getResources().getColor(R.color._xpopup_dark_color),
+                popupInfo.borderRadius));
+    }
+
+    @Override
+    protected void applyLightTheme() {
+        super.applyLightTheme();
+        centerPopupContainer.setBackground(XPopupUtils.createDrawable(getResources().getColor(R.color._xpopup_light_color),
+                popupInfo.borderRadius));
     }
 
     @Override
@@ -72,6 +95,6 @@ public class CenterPopupView extends BasePopupView {
 
     @Override
     protected PopupAnimator getPopupAnimator() {
-        return new ScaleAlphaAnimator(getPopupContentView(), ScaleAlphaFromCenter);
+        return new ScaleAlphaAnimator(getPopupContentView(), getAnimationDuration(), ScaleAlphaFromCenter);
     }
 }
