@@ -281,7 +281,7 @@ class AddCompanyDialogFragment(private val act: Activity) : DialogFragment() {
 }*/
 
 
-fun showPopupMenu(v: View, activity: Activity, array: Array<String>) {
+fun showPopupMenu(v: View, activity: Activity, array: Array<String>, offsetY: Int = activity.dip(-44), offsetX: Int = activity.dip(0)) {
 
     XPopup.setPrimaryColor(activity.resources.getColor(R.color.colorAccent))
     val asAttachList = XPopup.Builder(activity)
@@ -290,8 +290,8 @@ fun showPopupMenu(v: View, activity: Activity, array: Array<String>) {
         //                        .isDarkTheme(true)
         //                        .popupAnimation(PopupAnimation.NoAnimation) //NoAnimation表示禁用动画
         //                        .isCenterHorizontal(true) //是否与目标水平居中对齐
-        .offsetY(activity.dip(dp2px(activity, -14.9f)))
-        .offsetX(activity.dip(0))
+        .offsetY(offsetY)
+        .offsetX(offsetX)
         //                        .popupPosition(PopupPosition.Top) //手动指定弹窗的位置
         .atView(v) // 依附于所点击的View，内部会自动判断在上方或者下方显示
         .asAttachList(array,

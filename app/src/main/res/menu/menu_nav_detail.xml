@@ -22,17 +22,17 @@
         android:title="@string/menu_more"
         app:showAsAction="always"
         app:tooltipText="@string/menu_more">
-        <menu>
-            <item
+<!--        <menu>-->
+            <!--<item
                 android:id="@+id/menu_share"
                 android:orderInCategory="1"
                 android:title="@string/share"
-                app:showAsAction="ifRoom" />
-            <item
+                app:showAsAction="ifRoom" />-->
+            <!--<item
                 android:id="@+id/menu_favorite"
                 android:orderInCategory="1"
                 android:title="@string/favorite"
-                app:showAsAction="never" />
+                app:showAsAction="never" />-->
           <!--  <item
                 android:id="@+id/menu_translate"
                 android:icon="@drawable/ic_g_translate_black_24dp"
@@ -45,6 +45,6 @@
                 android:orderInCategory="1"
                 android:title="@string/read"
                 app:showAsAction="never" />-->
-        </menu>
+<!--        </menu>-->
     </item>
 </menu>

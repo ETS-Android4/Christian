@@ -1,5 +1,6 @@
 package com.christian.nav.gospel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,16 +22,19 @@ import com.christian.nav.me.AbsAboutActivity
 import com.christian.util.ChristianUtil
 import com.christian.util.filterImageUrlThroughDetailPageContent
 import com.christian.util.restoreScrolledPositionOfDetailPage
+import com.christian.view.showPopupMenu
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
+import com.lxj.xpopup.util.XPopupUtils
 import com.vincent.blurdialog.BlurDialog
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.about_page_main_activity.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
+import org.jetbrains.anko.dip
 import ren.qinc.markdowneditors.view.EditorActivity
 import java.util.*
 
@@ -137,22 +141,34 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_share -> {
+//            R.id.menu_share -> {
 //                Snackbar.make(getString(R.string.toast_share)).show()
-                true
-            }
-            R.id.menu_favorite -> {
+//                true
+//            }
+//            R.id.menu_favorite -> {
 //                snackbar(getString(R.string.toast_favorite)).show()
-                true
-            }
+//                true
+//            }
 //            R.id.menu_translate -> {
-////                snackbar(getString(R.string.toast_translate)).show()
+//                snackbar(getString(R.string.toast_translate)).show()
 //                true
 //            }
 //            R.id.menu_read -> {
 //                snackbar(getString(R.string.toast_read)).show()
 //                true
 //            }
+            R.id.menu_options_nav_detail -> {
+                showPopupMenu(
+                    findViewById(R.id.menu_options_nav_detail), this@NavDetailActivity, arrayOf(
+                        getString(R.string.share),
+                        getString(R.string.favorite),
+                        getString(R.string.translate),
+                        getString(R.string.read),
+                    ),
+                    XPopupUtils.dp2px(this, -52f),
+                )
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
