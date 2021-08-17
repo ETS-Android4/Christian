@@ -281,7 +281,7 @@ class AddCompanyDialogFragment(private val act: Activity) : DialogFragment() {
 }*/
 
 
-fun showPopupMenu(v: View, activity: Activity, array: Array<String>, offsetY: Int = activity.dip(-44), offsetX: Int = activity.dip(0)) {
+fun showPopupMenu(v: View, activity: Activity, array: Array<String>, offsetY: Int = activity.dip(-40), offsetX: Int = activity.dip(4)) {
 
     XPopup.setPrimaryColor(activity.resources.getColor(R.color.colorAccent))
     val asAttachList = XPopup.Builder(activity)

@@ -165,7 +165,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
                         getString(R.string.translate),
                         getString(R.string.read),
                     ),
-                    XPopupUtils.dp2px(this, -52f),
+                    XPopupUtils.dp2px(this, -48f),
                 )
                 true
             }
