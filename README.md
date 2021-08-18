@@ -1,5 +1,21 @@
 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
 
+GitHub for VS Code
+Success!
+Authorization was successful. You will be redirected back to Visual Studio Code
+
+Didn't work?
+If you aren't redirected, you can add the token manually.
+
+Your authorization token:
+vscode://vscode.github-authentication/did-authenticate?windowid=1&code=6ff10347e54a5644cd7e&state=811f41c1-68e1-45a9-b36c-a9b47344f3c6
+✅ Copied
+Copy the token.
+Switch back to VS code.
+Click Signing in to github.com... in the status bar.
+Paste the token and hit enter.
+This service is needed to connect Visual Studio Code to GitHub and does not store any sensitive information.
+
 ![logo](https://github.com/lanhuaguizha/Christian/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 ![logo](https://github.com/lanhuaguizha/Christian/blob/master/mini-program-qr-code.png)
