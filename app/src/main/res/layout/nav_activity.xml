@@ -87,7 +87,7 @@
         android:layout_height="128dp">
 
         <com.christian.view.AnimationFloatingActionButton
-            android:id="@+id/fab_nav"
+            android:id="@+id/activity_nav_fab"
             android:layout_marginTop="56dp"
             android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"

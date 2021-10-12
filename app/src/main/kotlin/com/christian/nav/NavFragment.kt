@@ -16,6 +16,8 @@ import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.fragment_nav_rv.*
+import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_fragment.*
 import kotlinx.android.synthetic.main.nav_fragment.view.*
@@ -161,63 +163,63 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     private fun initRv() {
         when (navId) {
             VIEW_HOME -> {
-                v.rv_nav.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
                 loadGospelsFromTabId(navId)
                 gospelAdapter.startListening()
-                v.rv_nav.adapter = gospelAdapter
+                v.fragment_nav_rv.adapter = gospelAdapter
             }
             VIEW_GOSPEL -> {
             }
             VIEW_DISCIPLE -> {
-                v.rv_nav.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
             }
             VIEW_ME -> {
-                v.rv_nav.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
 
                 meAdapter = firestoreRecyclerAdapter()
                 meAdapter.startListening()
-                v.rv_nav.adapter = meAdapter
+                v.fragment_nav_rv.adapter = meAdapter
             }
             in 4..69 -> { // Gospel Page's Fragment's navId
-                v.rv_nav.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
                 loadGospelsFromTabId(navId)
             }
         }
 
-        v.rv_nav.isVerticalScrollBarEnabled = false
-        v.rv_nav.addOnScrollListener(object : HidingScrollListener(v.rv_nav) {
+        v.fragment_nav_rv.isVerticalScrollBarEnabled = false
+        v.fragment_nav_rv.addOnScrollListener(object : HidingScrollListener(v.fragment_nav_rv) {
 
             override fun onHide() {
-                hideFab()
+//                hideFab()
                 isPageTop = false
                 isPageBottom = false
                 controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.rv_nav.isVerticalScrollBarEnabled = true
+                v.fragment_nav_rv.isVerticalScrollBarEnabled = true
             }
 
             override fun onShow() {
-                navActivity.showFab(pageSelectedPosition)
+//                navActivity.showFab(pageSelectedPosition)
                 isPageTop = false
                 isPageBottom = false
                 controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.rv_nav.isVerticalScrollBarEnabled = true
+                v.fragment_nav_rv.isVerticalScrollBarEnabled = true
             }
 
             override fun onTop() {
                 top()
-                v.rv_nav.isVerticalScrollBarEnabled = false
+                v.fragment_nav_rv.isVerticalScrollBarEnabled = false
             }
 
             override fun onBottom() {
                 isPageBottom = true
                 controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.rv_nav.isVerticalScrollBarEnabled = false
+                v.fragment_nav_rv.isVerticalScrollBarEnabled = false
             }
         })
 
         val controller =
                 AnimationUtils.loadLayoutAnimation(navActivity, R.anim.layout_animation_from_right)
-        v.rv_nav.layoutAnimation = controller
+        v.fragment_nav_rv.layoutAnimation = controller
     }
 
     open fun top() {
@@ -330,12 +332,12 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
                 if (itemCount == 0) {
                 } else {
-                    rv_nav.scheduleLayoutAnimation()
+                    fragment_nav_rv.scheduleLayoutAnimation()
                 }
             }
         }
         gospelAdapter.startListening()
-        v.rv_nav.adapter = gospelAdapter
+        v.fragment_nav_rv.adapter = gospelAdapter
     }
 
     private fun firestoreRecyclerAdapter(): FirestoreRecyclerAdapter<Setting, NavItemView> {
@@ -365,7 +367,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
                 if (itemCount == 0) {
                 } else {
-                    rv_nav.scheduleLayoutAnimation()
+                    fragment_nav_rv.scheduleLayoutAnimation()
                 }
             }
         }
@@ -376,7 +378,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     }
 
     override fun showFab() {
-        navActivity.showFAB()
+//        navActivity.showFAB()
 //        if (navId == 1 && cv_nav_frag.visibility == View.GONE) {
 //            cv_nav_frag.visibility = View.VISIBLE
 //            val fadeIn = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in)
@@ -385,7 +387,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     }
 
     override fun hideFab() {
-        navActivity.hideFab()
+//        navActivity.hideFab()
 //        if (navId == 1 && cv_nav_frag.visibility == View.VISIBLE) {
 //            val fadeOut = AnimationUtils.loadAnimation(context, R.anim.abc_fade_out)
 //            cv_nav_frag.startAnimation(fadeOut)
@@ -427,7 +429,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
     fun scrollChildRVToTop() {
         if (navActivity.navFragmentPagerAdapter.currentFragment::navChildFragmentPagerAdapter.isInitialized) {
-            navActivity.navFragmentPagerAdapter.currentFragment.navChildFragmentPagerAdapter.currentFragment.rv_nav.smoothScrollToPosition(0) // 为了滚到顶
+            navActivity.navFragmentPagerAdapter.currentFragment.navChildFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
         }
     }
 }

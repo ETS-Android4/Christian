@@ -424,13 +424,13 @@ fun appBarLayoutOnOffsetChangedListener(navActivity: NavActivity, appBarLayout: 
 }
 
 fun controlOverScroll(navActivity: NavActivity, appBarLayout: AppBarLayout, verticalOffset: Int) {
-    if ((verticalOffset == -navActivity.tb_nav.height || verticalOffset == -appBarLayout.height) && navActivity.fab_nav.visibility == View.VISIBLE) {
-        navActivity.hideFab()
-    }
+//    if ((verticalOffset == -navActivity.tb_nav.height || verticalOffset == -appBarLayout.height) && navActivity.fab_nav.visibility == View.VISIBLE) {
+//        navActivity.hideFab()
+//    }
     navActivity.info { "verticalOffset$verticalOffset" }
-    if (verticalOffset == 0 && navActivity.fab_nav.visibility == View.GONE) {
-        navActivity.showFab(navActivity.pageSelectedPosition)
-    }
+//    if (verticalOffset == 0 && navActivity.fab_nav.visibility == View.GONE) {
+//        navActivity.showFab(navActivity.pageSelectedPosition)
+//    }
 //    val navFragment = navActivity.navFragment
 //    if (verticalOffset == 0 && navFragment.isPageBottom) {
 //        navActivity.srl_nav.setEnableOverScroll(false)

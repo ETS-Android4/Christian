@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-android'
 //apply plugin: 'com.novoda.bintray-release'
 
@@ -44,7 +44,7 @@ dependencies {
     //    高斯模糊
     api 'com.eightbitlab:blurview:1.6.3'
     api 'com.eightbitlab:supportrenderscriptblur:1.0.2'
-    implementation "androidx.core:core-ktx:+"
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

@@ -13,6 +13,10 @@ android {
     }
     compileSdkVersion 29
     buildToolsVersion '28.0.3'
+
+//    buildFeatures {
+//        viewBinding true
+//    }
     defaultConfig {
         renderscriptTargetApi 28
         renderscriptSupportModeEnabled true
@@ -200,7 +204,7 @@ dependencies {
     // request permissions
     implementation 'ru.superjob:kotlin-permissions:1.0.3'
     //https://github.com/superjobru/kotlin-permissions
-    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.core:core-ktx:1.6.0'
 
     testImplementation 'junit:junit:4.12'
 
@@ -254,6 +258,7 @@ dependencies {
 
     // SwipeBack
     api project(':parallaxbacklayout')
+    implementation project(':common')
 
     // BlurDialog https://github.com/fishwjy/BlurDialog
     implementation 'com.vincent.blurdialog:BlurDialog:1.0.2'
@@ -262,7 +267,7 @@ dependencies {
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.0'
 
     // Bounce back
-    implementation 'me.everything:overscroll-decor-android:1.0.4' // https://github.com/EverythingMe/overscroll-decor
+    implementation 'io.github.everythingme:overscroll-decor-android:1.1.1' // https://github.com/EverythingMe/overscroll-decor
     // facebook rebound
     implementation 'com.facebook.rebound:rebound:0.3.6'
 

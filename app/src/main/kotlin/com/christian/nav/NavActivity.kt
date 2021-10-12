@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.christian.R
 import com.christian.SettingsActivity
+import com.christian.common.showExitButton
 import com.christian.nav.disciple.DiscipleFragment
 import com.christian.swipe.SwipeBackActivity
 import com.christian.view.UITools
@@ -27,6 +28,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.kotlinpermissions.KotlinPermissions
+import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_activity.view.*
 import kotlinx.android.synthetic.main.nav_fragment.*
@@ -34,6 +36,7 @@ import kotlinx.android.synthetic.main.nav_item_me_for_setting_static.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.iv_nav_item_small
 import me.everything.android.ui.overscroll.HorizontalOverScrollBounceEffectDecorator
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.dip
@@ -83,7 +86,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         return when (item.itemId) {
             R.id.menu_setting -> {
                 val i = Intent(this, SettingsActivity::class.java)
-                startActivity(i)
+                i.putExtra(showExitButton, auth.currentUser != null)
+                startActivityForResult(i, RC_SIGN_IN)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -147,14 +151,15 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            if (state == 2) {
+            info { "onPageScrollStateChanged: $state" }
+           /* if (state == 2) {
 //                fab_nav.hide()
             } else if (state == 0) {
 //                    fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
 //                    if (showOrHideLogicExecute) {
 //                        showFAB()
 //                    }
-            }
+            }*/
         }
     }
 
@@ -348,9 +353,9 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         bv_nav.layoutParams = params
     }
 
-    open fun showFAB() {
+    /*open fun showFAB() {
         fab_nav.show()
-    }
+    }*/
 
     open fun initBnv() {
 //        disableShiftMode(bnv_nav)
@@ -368,10 +373,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     override fun showFab(pos: Int) {
-        if (!fab_nav.isGone) {
-            Log.i("fab", "hide")
-            fab_nav.visibility = View.GONE
-        }
+
 
         when (pos) {
             0 -> {
@@ -380,13 +382,16 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
-                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
+                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
+                beforeShowFab()
+                activity_nav_fab.show()
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-                if (verticalOffset != -tb_nav.height && fab_nav.isVisible)
-                    fab_nav.hide()
-                TooltipCompat.setTooltipText(fab_nav, "Edit")
+//                if (verticalOffset != -tb_nav.height && !fab_nav.isVisible)
+//                    fab_nav.show()
+                TooltipCompat.setTooltipText(activity_nav_fab, "Edit")
 
-                fab_nav.setOnClickListener {
+                activity_nav_fab.setOnClickListener {
                     startActivity(Intent(this@NavActivity, EditorActivity::class.java))
                 }
             }
@@ -396,13 +401,14 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
-                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_filter_list_black_24dp, theme))
+                hideFab()
+//                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_filter_list_black_24dp, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-                if (verticalOffset > -tb_nav.height)
-                    fab_nav.hide()
-                TooltipCompat.setTooltipText(fab_nav, "Filter")
+                /*if (verticalOffset > -tb_nav.height)
+                    fab_nav.hide()*/
+                TooltipCompat.setTooltipText(activity_nav_fab, "Filter")
 
-                fab_nav.setOnClickListener {
+                activity_nav_fab.setOnClickListener {
                     startActivity(Intent(this@NavActivity, ren.qinc.markdowneditors.view.MainActivity::class.java))
                 }
             }
@@ -412,13 +418,18 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
-                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_downward_black_24dp, theme))
+                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
+                beforeShowFab()
+                activity_nav_fab.show()
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_send_24, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-                if (verticalOffset > -tb_nav.height)
-                    fab_nav.hide()
-                TooltipCompat.setTooltipText(fab_nav, "Down")
 
-                fab_nav.setOnClickListener {
+                activity_nav_fab.setOnClickListener {
+                    if (::navFragmentPagerAdapter.isInitialized) {
+                        var discipleFragment =
+                            navFragmentPagerAdapter.currentFragment as DiscipleFragment
+                        discipleFragment.sendMessage()
+                    }
                 }
             }
             3 -> {
@@ -428,38 +439,23 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = true
                 invalidateSignInUI()
 
-                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_exit_to_app_black_24dp, theme))
+                hideFab()
+//                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_exit_to_app_black_24dp, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccentRed,theme))
-                if (auth.currentUser != null) {
-                    if (verticalOffset != -tb_nav.height)
-                        fab_nav.show()
-                    TooltipCompat.setTooltipText(fab_nav, "Exit")
-                } else {
-                    fab_nav.hide()
-                }
 
-                fab_nav.setOnClickListener {
-                    AuthUI.getInstance()
-                            .signOut(this)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    snackbar("Sign out successful").show()
-                                    invalidateSignInUI()
-                                }
-                            }
-//            val user = auth.currentUser
-//            user?.delete()?.addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    snackbar("User account deleted").show()
-//                }
-//            }
-                }
             }
         }
     }
 
+    private fun beforeShowFab() {
+        if (!activity_nav_fab.isGone) {
+            Log.i("fab", "hide")
+            activity_nav_fab.visibility = View.GONE
+        }
+    }
+
     override fun hideFab() {
-        fab_nav.hide()
+        activity_nav_fab.hide()
     }
 
     private fun slExpand() {
@@ -525,8 +521,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             info { "response: ${response?.idpToken}" }
-
-            if (resultCode == Activity.RESULT_OK) {
+            invalidateSignInUI()
+            /*if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 invalidateSignInUI()
             } else {
@@ -536,7 +532,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 // ...
                 val snackbar = snackbar(getString(R.string.sign_in_failed))
                 snackbar.show()
-            }
+            }*/
         }
     }
 
@@ -547,7 +543,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
             tb_nav.title = ""
             sign_in.visibility = View.GONE
             sign_out.visibility = View.GONE
-            fab_nav.show()
+//            fab_nav.show()
             portrait.visibility = View.VISIBLE
             name.visibility = View.VISIBLE
             intro.visibility = View.VISIBLE
@@ -563,7 +559,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
             tb_nav.title = getString(R.string.title_me)
             sign_in.visibility = View.VISIBLE
             sign_out.visibility = View.GONE
-            fab_nav.hide()
+//            fab_nav.hide()
             portrait.visibility = View.GONE
             name.visibility = View.GONE
             intro.visibility = View.GONE
@@ -646,7 +642,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     open fun scrollRvToTop(navActivity: NavActivity) {
         try {
             if (::navFragmentPagerAdapter.isInitialized) {
-                navActivity.navFragmentPagerAdapter.currentFragment.rv_nav.smoothScrollToPosition(0) // 为了滚到顶
+                navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
 
                 navActivity.navFragmentPagerAdapter.currentFragment.scrollChildRVToTop()
             }

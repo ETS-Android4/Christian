@@ -73,6 +73,16 @@
                     android:focusable="true"
                     android:foreground="?selectableItemBackgroundBorderless" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/exit_settings_activity"
+                    android:layout_marginTop="@dimen/search_bottom_margin"
+                    android:layout_marginStart="@dimen/search_bottom_margin"
+                    android:layout_marginEnd="@dimen/search_bottom_margin"
+                    style="@style/Christian.Button.colorAccentRed"
+                    android:text="@string/exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <View
                     android:layout_marginTop="100dp"
                     android:layout_width="match_parent"

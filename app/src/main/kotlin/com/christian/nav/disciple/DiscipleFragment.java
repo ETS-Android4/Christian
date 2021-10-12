@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
@@ -34,7 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -115,7 +113,7 @@ public class DiscipleFragment extends NavFragment implements
     private String mPhotoUrl;
     private SharedPreferences mSharedPreferences;
 
-    private Button mSendButton;
+//    private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
@@ -134,7 +132,7 @@ public class DiscipleFragment extends NavFragment implements
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.disciple_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_disciple, container, false);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mUsername = ANONYMOUS;
@@ -161,7 +159,7 @@ public class DiscipleFragment extends NavFragment implements
                 .build();
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
+        mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_nav_rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mLinearLayoutManager.setStackFromEnd(true);
 
@@ -308,9 +306,9 @@ public class DiscipleFragment extends NavFragment implements
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
-                    mSendButton.setEnabled(true);
+//                    navActivity.findViewById(R.id.fab_nav).setEnabled(true);
                 } else {
-                    mSendButton.setEnabled(false);
+//                    navActivity.findViewById(R.id.fab_nav).setEnabled(false);
                 }
             }
 
@@ -328,16 +326,20 @@ public class DiscipleFragment extends NavFragment implements
             startActivityForResult(intent, REQUEST_IMAGE);
         });
 
-        mSendButton = (Button) view.findViewById(R.id.sendButton);
-        mSendButton.setOnClickListener(view12 -> {
-            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
-                    mPhotoUrl, null);
-            mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(friendlyMessage);
-            mMessageEditText.setText("");
-            mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
-        });
+//        mSendButton = (Button) view.findViewById(R.id.sendButton);
+        /*navActivity.findViewById(R.id.fab_nav).setOnClickListener(view12 -> {
+            sendMessage();
+        });*/
 
         return view;
+    }
+
+    public void sendMessage() {
+        FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
+                mPhotoUrl, null);
+        mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(friendlyMessage);
+        mMessageEditText.setText("");
+        mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
     }
 
     private Action getMessageViewAction(FriendlyMessage friendlyMessage) {

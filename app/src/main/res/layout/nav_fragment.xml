@@ -18,14 +18,7 @@
         app:srlEnableLoadMore="true"
         app:srlDragRate="0.75">
 
-        <com.christian.multitype.CustomRecyclerView
-            android:id="@+id/rv_nav"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layoutAnimation="@anim/layout_animation_from_right"
-            android:overScrollMode="never"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <include layout="@layout/fragment_nav_rv" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <ProgressBar

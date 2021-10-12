@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.christian.HistoryAndMyArticlesActivity
 import com.christian.R
+import com.christian.common.getDisplayHeight
+import com.christian.common.getDisplayWidth
 import com.christian.data.Disciple
 import com.christian.data.MeBean
 import com.christian.data.Setting
@@ -29,7 +31,7 @@ import org.jetbrains.anko.AnkoLogger
  * NavItemView/NavItemHolder is view logic of nav items.
  */
 
-open class NavItemView(override val containerView: View, navActivity: NavActivity) : RecyclerView.ViewHolder(containerView), LayoutContainer, AnkoLogger {
+open class NavItemView(final override val containerView: View, navActivity: NavActivity) : RecyclerView.ViewHolder(containerView), LayoutContainer, AnkoLogger {
 
 
     init {
@@ -56,6 +58,9 @@ open class NavItemView(override val containerView: View, navActivity: NavActivit
 //                }
 //            }
 //        }
+        val displayWidth = getDisplayWidth(containerView.context)
+        val displayHeight = getDisplayHeight(containerView.context)
+
         if (itemView.findViewById<AppCompatImageButton>(R.id.ib_nav_item) != null) itemView.findViewById<AppCompatImageButton>(R.id.ib_nav_item).setOnClickListener { v: View ->
 //            val list: ArrayList<CharSequence> = ArrayList()
 //            list.add(Html.fromHtml(containerView.context.getString(R.string.share)))
@@ -69,7 +74,7 @@ open class NavItemView(override val containerView: View, navActivity: NavActivit
                     containerView.context.getString(R.string.favorite),
                     containerView.context.getString(R.string.translate),
                     containerView.context.getString(R.string.read),
-            )
+            ),
             )
         }
 

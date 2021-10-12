@@ -13,6 +13,8 @@ import com.christian.view.GospelDetailItemDecoration
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
+import kotlinx.android.synthetic.main.fragment_nav_rv.*
+import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_fragment.view.*
 
@@ -45,10 +47,10 @@ class NavDetailFragment : NavFragment() {
             override fun onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (itemCount == 0) {
-                    v.rv_nav.visibility = View.GONE
+                    v.fragment_nav_rv.visibility = View.GONE
 //                    viewEmpty.visibility = View.VISIBLE
                 } else {
-                    v.rv_nav.visibility = View.VISIBLE
+                    v.fragment_nav_rv.visibility = View.VISIBLE
                     v.pb_nav.visibility = View.GONE
                 }
             }
@@ -62,8 +64,8 @@ class NavDetailFragment : NavFragment() {
         // stopListening
         gospelDetailAdapter.setQuery(gospelRef)
 
-        v.rv_nav.adapter = gospelDetailAdapter
-        v.rv_nav.addItemDecoration(GospelDetailItemDecoration(resources.getDimension(R.dimen.activity_horizontal_margin).toInt()))
+        v.fragment_nav_rv.adapter = gospelDetailAdapter
+        v.fragment_nav_rv.addItemDecoration(GospelDetailItemDecoration(resources.getDimension(R.dimen.activity_horizontal_margin).toInt()))
 
         return v
     }
@@ -81,6 +83,6 @@ class NavDetailFragment : NavFragment() {
 
     override fun top() {
         super.top()
-        hideFab()
+//        hideFab()
     }
 }
