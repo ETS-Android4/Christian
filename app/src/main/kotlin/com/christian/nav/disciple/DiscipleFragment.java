@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.christian.R;
+import com.christian.nav.HidingScrollListener;
 import com.christian.nav.NavFragment;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -122,7 +123,7 @@ public class DiscipleFragment extends NavFragment implements
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private EditText mMessageEditText;
+    public EditText mMessageEditText;
     private ImageView mAddMessageImageView;
     //    private AdView mAdView;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -265,6 +266,28 @@ public class DiscipleFragment extends NavFragment implements
 
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
+        mMessageRecyclerView.setWillNotDraw(false);
+        mMessageRecyclerView.addOnScrollListener(new HidingScrollListener(mMessageRecyclerView) {
+            @Override
+            public void onHide() {
+                mMessageRecyclerView.setVerticalScrollBarEnabled(true);
+            }
+
+            @Override
+            public void onShow() {
+                mMessageRecyclerView.setVerticalScrollBarEnabled(true);
+            }
+
+            @Override
+            public void onTop() {
+                mMessageRecyclerView.setVerticalScrollBarEnabled(false);
+            }
+
+            @Override
+            public void onBottom() {
+                mMessageRecyclerView.setVerticalScrollBarEnabled(false);
+            }
+        });
 
         // Initialize and request AdMob ad.
 //        mAdView = (AdView) view.findViewById(R.id.adView);

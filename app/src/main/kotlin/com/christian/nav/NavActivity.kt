@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.christian.R
 import com.christian.SettingsActivity
+import com.christian.common.requestFocusWithKeyboard
 import com.christian.common.showExitButton
 import com.christian.nav.disciple.DiscipleFragment
 import com.christian.swipe.SwipeBackActivity
@@ -428,7 +429,13 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                     if (::navFragmentPagerAdapter.isInitialized) {
                         var discipleFragment =
                             navFragmentPagerAdapter.currentFragment as DiscipleFragment
-                        discipleFragment.sendMessage()
+                        if (discipleFragment.mMessageEditText.text.isEmpty()) {
+                            abl_nav.setExpanded(false, true)
+                            snackbar(getString(R.string.content_empty)).show()
+                            discipleFragment.mMessageEditText.requestFocusWithKeyboard()
+                        } else {
+                            discipleFragment.sendMessage()
+                        }
                     }
                 }
             }
@@ -624,7 +631,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     fun snackbar(s: String): Snackbar {
-        val snackbar = Snackbar.make(cl_nav_2, s, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(cl_nav_2, s, Snackbar.LENGTH_SHORT)
         val snackbarView = snackbar.view
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             snackbarView.elevation = dip(3).toFloat()

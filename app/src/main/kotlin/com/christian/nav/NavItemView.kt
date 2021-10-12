@@ -227,7 +227,7 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
         tv_nav_item_small.text = setting.name
         tv2_nav_item_small.text = setting.desc
         val url = setting.url
-//        Glide.with(containerView.context).load(if (ChristianUtil.getNightModeSP(containerView.context)) generateUrlIdNightMode(url) else generateUrlId(url)).into(iv_nav_item_small)
+        Glide.with(containerView.context).load(if (ChristianUtil.getNightModeSP(containerView.context)) generateUrlIdNightMode(url) else generateUrlId(url)).into(iv_nav_item_small)
     }
 
     private fun getTitle(setting: Setting, pos: Int): String {
