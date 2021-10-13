@@ -474,10 +474,13 @@ public class XPopupUtils {
                     Allocation.MipmapControl.MIPMAP_NONE,
                     Allocation.USAGE_SCRIPT);
             Allocation output = Allocation.createTyped(rs, input.getType());
-            ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-            blurScript.setInput(input);
-            blurScript.setRadius(radius);
-            blurScript.forEach(output);
+            ScriptIntrinsicBlur blurScript = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+                blurScript.setInput(input);
+                blurScript.setRadius(radius);
+                blurScript.forEach(output);
+            }
             output.copyTo(ret);
         } finally {
             if (rs != null) {
