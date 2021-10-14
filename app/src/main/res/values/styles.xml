@@ -101,7 +101,8 @@
 
     <style name="Christian.Button.White" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/white</item>
-        <item name="android:textColor">@color/text_color_secondary</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Christian.Button.colorPrimary" parent="Widget.AppCompat.Button.Colored">

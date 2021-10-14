@@ -159,6 +159,7 @@
     <string name="sign_out">登出</string>
     <string name="title_activity_login">Sign In</string>
     <string name="title_activity_register">Register</string>
+    <string name="title_activity_login_out">Sign Out</string>
 
     <!-- Strings related to login -->
     <string name="prompt_phone_number">Phone Number</string>
@@ -367,4 +368,9 @@
     <string name="title_activity_history">History</string>
     <string name="title_activity_my_articles">MyArticles</string>
     <string name="exit">Exit</string>
+    <string name="read_articles">Read articles</string>
+    <string name="favorite_articles">Favorite articles</string>
+    <string name="history">History</string>
+    <string name="publishing">Publishing</string>
+    <string name="publishing_articles">Publishing articles</string>
 </resources>

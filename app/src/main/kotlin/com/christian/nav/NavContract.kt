@@ -1,6 +1,5 @@
 package com.christian.nav
 
-import androidx.fragment.app.Fragment
 import com.christian.BaseContract
 import com.christian.data.MeBean
 import org.jetbrains.anko.AnkoLogger
@@ -22,7 +21,7 @@ class NavContract {
          * Summary of init view, initCl(), initAbl(), initTb(), initSb(), initSrl(), initRv(), initFs()
          * initFab(), initBv(), initBnv(), initPb()
          */
-        fun initView(navFragmentList: ArrayList<Fragment>)
+        fun initView()
 
         /**
          * Hide before each display to meet the material design specification.

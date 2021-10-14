@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.christian.view.FloatingCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_nav_me_publishing"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/card_corner_radius"
@@ -8,6 +9,7 @@
     android:clickable="true"
     android:layout_marginStart="@dimen/search_bottom_margin"
     android:layout_marginEnd="@dimen/search_bottom_margin"
+    android:layout_marginBottom="@dimen/search_bottom_margin"
     android:layout_marginTop="@dimen/search_bottom_margin"
     android:foreground="?selectableItemBackgroundBorderless"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -32,6 +34,7 @@
                 android:id="@+id/iv_nav_item_small"
                 android:layout_width="@dimen/search_box_icon_size"
                 android:layout_height="@dimen/search_box_icon_size"
+                app:srcCompat="@drawable/ic_baseline_publish_24"
                 android:scaleType="center"
                 android:cropToPadding="false"
                 android:adjustViewBounds="true"
@@ -51,11 +54,11 @@
             android:ellipsize="end"
             android:gravity="bottom"
             android:singleLine="true"
+            android:text="@string/publishing"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/switch_nav_item_small"
             app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Yongqiang Tao" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv2_nav_item_small"
@@ -65,12 +68,12 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:text="@string/publishing_articles"
             android:textColor="@android:color/tertiary_text_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_nav_item_small"
-            app:layout_constraintTop_toTopOf="@+id/guideline"
-            tools:text="个性签名：基督徒软件开发者，致力于打造全球最优体验的传福音软件" />
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

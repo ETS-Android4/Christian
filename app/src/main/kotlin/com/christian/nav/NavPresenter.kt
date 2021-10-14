@@ -16,14 +16,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import com.christian.R
 import com.christian.SettingsActivity
 import com.christian.data.MeBean
-import com.christian.nav.disciple.DiscipleFragment
-import com.christian.nav.gospel.GospelReviewFragment
 import com.christian.nav.gospel.NavDetailActivity
-import com.christian.nav.gospel.NavDetailFragment
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper
 import com.google.android.material.appbar.AppBarLayout
@@ -50,7 +46,7 @@ import java.lang.reflect.Modifier
  */
 class NavPresenter(private var navId: Int, override var view: NavContract.INavActivity) : NavContract.IPresenter {
 
-    var navFragmentList = ArrayList<Fragment>()
+//    var navFragmentList = ArrayList<Fragment>()
 
     private var navActivity: NavActivity
 
@@ -63,8 +59,8 @@ class NavPresenter(private var navId: Int, override var view: NavContract.INavAc
         when (navFragment == null && whichActivity != null) {
             // called from a activity
             true -> {
-                navFragmentList.clear()
-                when (whichActivity) {
+//                navFragmentList.clear()
+                /*when (whichActivity) {
                     NAV_ACTIVITY -> {
                         val homeFragment = NavFragment()
                         homeFragment.navId = 0
@@ -78,7 +74,7 @@ class NavPresenter(private var navId: Int, override var view: NavContract.INavAc
 //                        discipleFragment.navId = 2
                         navFragmentList.add(discipleFragment)
 
-                        val meFragment = NavFragment()
+                        val meFragment = MeFragment()
                         meFragment.navId = 3
                         navFragmentList.add(meFragment)
                     }
@@ -91,8 +87,8 @@ class NavPresenter(private var navId: Int, override var view: NavContract.INavAc
                         gospelReviewFragment.navId = 5
                         navFragmentList.add(gospelReviewFragment)
                     }
-                }
-                view.initView(navFragmentList)
+                }*/
+                view.initView()
             }
             // called from a fragment
             false -> {

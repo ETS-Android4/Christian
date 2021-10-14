@@ -4,17 +4,14 @@ import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.content.res.Configuration
 import android.os.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.christian.R
@@ -22,8 +19,8 @@ import com.christian.SettingsActivity
 import com.christian.common.requestFocusWithKeyboard
 import com.christian.common.showExitButton
 import com.christian.nav.disciple.DiscipleFragment
+import com.christian.nav.me.MeFragment
 import com.christian.swipe.SwipeBackActivity
-import com.christian.view.UITools
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
@@ -37,7 +34,6 @@ import kotlinx.android.synthetic.main.nav_item_me_for_setting_static.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.iv_nav_item_small
 import me.everything.android.ui.overscroll.HorizontalOverScrollBounceEffectDecorator
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter
 import org.jetbrains.anko.debug
 import org.jetbrains.anko.dip
@@ -175,11 +171,11 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 , Activity.MODE_PRIVATE)
     }
 
-    override fun initView(navFragmentList: ArrayList<Fragment>) {
+    override fun initView() {
         initAbl()
         initTb()
         initPortrait()
-        initVp(navFragmentList)
+        initVp()
         initFab()
         initBv()
         initBnv()
@@ -328,7 +324,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         }
     }
 
-    open fun initVp(navFragmentList: ArrayList<Fragment>) {
+    open fun initVp() {
         navFragmentPagerAdapter = NavFragmentPagerAdapter(supportFragmentManager)
         vp_nav.offscreenPageLimit = 3
         vp_nav.adapter = navFragmentPagerAdapter
@@ -360,6 +356,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     open fun initBnv() {
 //        disableShiftMode(bnv_nav)
+        /** 切换夜间模式重启的时候，需要通过设置currentItem来设置标题等一系列参数（但是无效，只能采用下一行的方式） */
+//        vp_nav.currentItem = 0
         viewPagerOnPageChangeListener.onPageSelected(initFragmentIndex)
         bnv_nav.bnv_nav.setOnNavigationItemSelectedListener {
             val itemPosition = (presenter as NavPresenter).generateNavId(it.itemId)
@@ -580,12 +578,15 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     open class NavFragmentPagerAdapter(fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
-        lateinit var currentFragment: NavFragment
+        lateinit var currentFragment: Fragment
 
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
             when (position) {
                 2 -> {
                     return DiscipleFragment()
+                }
+                3 -> {
+                    return MeFragment()
                 }
             }
             val navFragment = NavFragment()
@@ -598,7 +599,14 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         }
 
         override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
-            currentFragment = `object` as NavFragment
+            when (position) {
+                0, 1, 2 -> {
+                    currentFragment = `object` as NavFragment
+                }
+                3 -> {
+                    currentFragment = `object` as MeFragment
+                }
+            }
             super.setPrimaryItem(container, position, `object`)
         }
     }
@@ -648,10 +656,21 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     open fun scrollRvToTop(navActivity: NavActivity) {
         try {
-            if (::navFragmentPagerAdapter.isInitialized) {
-                navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+            if (::navFragmentPagerAdapter.isInitialized)
+            when (vp_nav.currentItem) {
+                0, 1, 2 -> {
+                    navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
 
-                navActivity.navFragmentPagerAdapter.currentFragment.scrollChildRVToTop()
+                    (navActivity.navFragmentPagerAdapter.currentFragment as NavFragment).scrollChildRVToTop()
+                }
+                3 -> {
+                    navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+
+                    (navActivity.navFragmentPagerAdapter.currentFragment as MeFragment).scrollChildRVToTop()
+                }
+            }
+             {
+
             }
             navActivity.abl_nav.setExpanded(true, true)
         } catch (e: Exception) {

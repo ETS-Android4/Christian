@@ -79,7 +79,8 @@
                     android:layout_marginStart="@dimen/search_bottom_margin"
                     android:layout_marginEnd="@dimen/search_bottom_margin"
                     style="@style/Christian.Button.colorAccentRed"
-                    android:text="@string/exit"
+                    android:text="@string/title_activity_login_out"
+                    android:textAllCaps="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

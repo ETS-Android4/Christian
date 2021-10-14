@@ -1,6 +1,7 @@
-package com.christian.nav
+package com.christian.nav.me
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +10,26 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.viewpager.widget.ViewPager
+import com.christian.HistoryAndMyArticlesActivity
 import com.christian.R
 import com.christian.data.MeBean
 import com.christian.data.Setting
+import com.christian.nav.*
 import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
+import kotlinx.android.synthetic.main.item_nav_me_favorite.*
+import kotlinx.android.synthetic.main.item_nav_me_history.*
+import kotlinx.android.synthetic.main.item_nav_me_publishing.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_fragment.*
 import kotlinx.android.synthetic.main.nav_fragment.view.*
 import org.jetbrains.anko.debug
 
-open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragment {
+open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragment {
 
     lateinit var navChildFragmentPagerAdapter: NavChildFragmentPagerAdapter
 
@@ -63,7 +69,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     private var isVisibled = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        v = inflater.inflate(R.layout.nav_fragment, container, false)
+        v = inflater.inflate(R.layout.fragment_me, container, false)
         isInitView = true
         isCanLoadData()
 
@@ -120,7 +126,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 //        Glide.with(navActivity).load(R.drawable.me).into(navActivity.iv_nav_item_small)
     }
 
-    private lateinit var navFragment: NavFragment
+    private lateinit var navFragment: MeFragment
 
     private var pageSelectedPosition: Int = -1
 
@@ -161,65 +167,21 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     }
 
     private fun initRv() {
-        when (navId) {
-            VIEW_HOME -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
-                loadGospelsFromTabId(navId)
-                gospelAdapter.startListening()
-                v.fragment_nav_rv.adapter = gospelAdapter
-            }
-            VIEW_GOSPEL -> {
-            }
-            VIEW_DISCIPLE -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
-            }
-            VIEW_ME -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
-
-                meAdapter = firestoreRecyclerAdapter()
-                meAdapter.startListening()
-                v.fragment_nav_rv.adapter = meAdapter
-            }
-            in 4..69 -> { // Gospel Page's Fragment's navId
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
-                loadGospelsFromTabId(navId)
-            }
+        item_nav_me_favorite.setOnClickListener {
+            val i = Intent(context, HistoryAndMyArticlesActivity::class.java)
+            i.putExtra(toolbarTitle, getString(R.string.favorite))
+            context?.startActivity(i)
         }
-
-        v.fragment_nav_rv.isVerticalScrollBarEnabled = false
-        v.fragment_nav_rv.addOnScrollListener(object : HidingScrollListener(v.fragment_nav_rv) {
-
-            override fun onHide() {
-//                hideFab()
-                isPageTop = false
-                isPageBottom = false
-                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.fragment_nav_rv.isVerticalScrollBarEnabled = true
-            }
-
-            override fun onShow() {
-//                navActivity.showFab(pageSelectedPosition)
-                isPageTop = false
-                isPageBottom = false
-                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.fragment_nav_rv.isVerticalScrollBarEnabled = true
-            }
-
-            override fun onTop() {
-                top()
-                v.fragment_nav_rv.isVerticalScrollBarEnabled = false
-            }
-
-            override fun onBottom() {
-                isPageBottom = true
-                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
-                v.fragment_nav_rv.isVerticalScrollBarEnabled = false
-            }
-        })
-
-        val controller =
-                AnimationUtils.loadLayoutAnimation(navActivity, R.anim.layout_animation_from_right)
-        v.fragment_nav_rv.layoutAnimation = controller
+        item_nav_me_history.setOnClickListener {
+            val i = Intent(context, HistoryAndMyArticlesActivity::class.java)
+            i.putExtra(toolbarTitle, getString(R.string.history))
+            context?.startActivity(i)
+        }
+        item_nav_me_publishing.setOnClickListener {
+            val i = Intent(context, HistoryAndMyArticlesActivity::class.java)
+            i.putExtra(toolbarTitle, getString(R.string.publishing))
+            context?.startActivity(i)
+        }
     }
 
     open fun top() {
@@ -405,10 +367,10 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
     class NavChildFragmentPagerAdapter(fm: androidx.fragment.app.FragmentManager, private val tabTitleList: ArrayList<String>) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
 
-        lateinit var currentFragment: NavFragment
+        lateinit var currentFragment: MeFragment
 
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
-            val navFragment = NavFragment()
+            val navFragment = MeFragment()
             navFragment.navId = position + 4
             return navFragment
         }
@@ -422,14 +384,14 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
         }
 
         override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
-            currentFragment = `object` as NavFragment
+            currentFragment = `object` as MeFragment
             super.setPrimaryItem(container, position, `object`)
         }
     }
 
     fun scrollChildRVToTop() {
-        if ((navActivity.navFragmentPagerAdapter.currentFragment as NavFragment)::navChildFragmentPagerAdapter.isInitialized) {
-            (navActivity.navFragmentPagerAdapter.currentFragment as NavFragment).navChildFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+        if ((navActivity.navFragmentPagerAdapter.currentFragment as MeFragment)::navChildFragmentPagerAdapter.isInitialized) {
+            (navActivity.navFragmentPagerAdapter.currentFragment as MeFragment).navChildFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
         }
     }
 }
