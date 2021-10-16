@@ -89,12 +89,6 @@
 
             </ren.qinc.markdowneditors.widget.SimpleSwipeRefreshLayout>
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shadow"/>
-
             <!--android:background="?android:windowContentOverlay"-->
         </FrameLayout>
     </LinearLayout>

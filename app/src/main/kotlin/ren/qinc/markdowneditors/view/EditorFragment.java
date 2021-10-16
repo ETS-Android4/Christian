@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,8 +33,12 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.christian.R;
 import com.christian.util.ChristianUtil;
+import com.christian.view.ViewUtilKt;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
@@ -49,6 +54,7 @@ import ren.qinc.markdowneditors.event.RxEventBus;
 import ren.qinc.markdowneditors.presenter.EditorFragmentPresenter;
 import ren.qinc.markdowneditors.presenter.IEditorFragmentView;
 import ren.qinc.markdowneditors.utils.SystemUtils;
+import ren.qinc.markdowneditors.utils.ViewUtils;
 
 
 /**
@@ -64,13 +70,13 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     public String documentGospelPath;
 
     @Bind(R.id.spinner)
-    public MaterialSpinner mSpinner;
+    public TextView mSpinner;
     @Bind(R.id.title)
     public EditText mName;
     @Bind(R.id.author)
     public EditText mAuthor;
-    @Bind(R.id.church)
-    public EditText mChurch;
+    /*@Bind(R.id.church)
+    public EditText mChurch;*/
     @Bind(R.id.content)
     public EditText mContent;
 
@@ -144,8 +150,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 //        if (file.isFile())
 //            mPresenter.loadFile();
 
-
-        mSpinner.setItems(
+        String[] stringList = new String[] {
+                getString(R.string._Custom),
                 getString(R.string._Gen),
                 getString(R.string._Exo),
                 getString(R.string._Lev),
@@ -213,7 +219,10 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 getString(R.string._3Jn),
                 getString(R.string._Jud),
                 getString(R.string._Rev)
-        );
+        };
+        mSpinner.setOnClickListener(v -> {
+            ViewUtilKt.showPopupMenu(v, requireActivity(), stringList, ChristianUtil.dpToPx(0), ChristianUtil.dpToPx(0));
+        });
 //        mSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) -> Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show());
 
         if (documentGospelPath != null) { // Edit exist documents

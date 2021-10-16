@@ -117,6 +117,7 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'io.reactivex:rxjava:1.1.0'
 
+    /** 视图绑定库，可以省去手写findViewById方法 */
     implementation 'com.jakewharton:butterknife:7.0.1'
 
     //崩溃异常提示
@@ -136,7 +137,7 @@ dependencies {
     implementation 'ren.qinc.edit:lib:0.0.4'
 
     // SpinnerListView
-    implementation 'com.jaredrummler:material-spinner:1.3.1'
+//    implementation 'com.jaredrummler:material-spinner:1.3.1'
 
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -257,7 +258,7 @@ dependencies {
     implementation "io.noties.markwon:linkify:${markwon_version}"
 
     // SwipeBack
-    api project(':parallaxbacklayout')
+    api project(':parallaxbacklayout')// https://github.com/anzewei/ParallaxBackLayout/tree/master/parallaxbacklayout/src/main/java/com/github/anzewei/parallaxbacklayout
     implementation project(':common')
 
     // BlurDialog https://github.com/fishwjy/BlurDialog

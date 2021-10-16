@@ -19,16 +19,20 @@
         app:srlEnablePureScrollMode="true">
 
 <!--                <include layout="@layout/fragment_nav_rv" />-->
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/item_nav_me_favorite" />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/item_nav_me_favorite" />
 
-            <include layout="@layout/item_nav_me_history" />
+                <include layout="@layout/item_nav_me_history" />
 
-            <include layout="@layout/item_nav_me_publishing" />
-        </LinearLayout>
+                <include layout="@layout/item_nav_me_publishing" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <ProgressBar

@@ -22,17 +22,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shadow"
     tools:context="ren.qinc.markdowneditors.view.EditorActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <include layout="@layout/view_common_toolbar_scroll"/>
 
         <FrameLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.christian.view.CustomViewPager
@@ -41,11 +36,6 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shadow"/>
 
             <ren.qinc.markdowneditors.lib.ExpandableLinearLayout
                 android:id="@+id/action_other_operate"
@@ -65,5 +55,4 @@
 
             </ren.qinc.markdowneditors.lib.ExpandableLinearLayout>
         </FrameLayout>
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

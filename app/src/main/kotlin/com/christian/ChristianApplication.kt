@@ -2,7 +2,6 @@ package com.christian
 
 import android.app.Application
 import androidx.multidex.MultiDex
-import com.christian.util.CrashHandler
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper
 
 class ChristianApplication : Application() {
@@ -25,8 +24,8 @@ class ChristianApplication : Application() {
         // leak canary
         MultiDex.install(this)
         // Normal app init code...
-        val crashHandler = CrashHandler.getInstance()
-        crashHandler.get()?.init(this)
+        /*val crashHandler = CrashHandler.getInstance()
+        crashHandler.get()?.init(this)*/
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance())
         // Dark Mode
 //        SkinCompatManager.withoutActivity(this)                         // 基础控件换肤初始化

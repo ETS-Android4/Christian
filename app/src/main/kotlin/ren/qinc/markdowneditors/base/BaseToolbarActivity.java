@@ -28,6 +28,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.christian.R;
+import com.christian.util.ChristianUtil;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.reflect.Method;
@@ -55,13 +56,13 @@ public abstract class BaseToolbarActivity extends BaseActivity {
             throw new IllegalStateException(this.getClass().getSimpleName() + ":要使用BaseToolbarActivity，必须在布局里面增加id为‘id_toolbar’的Toolbar");
         }
         initActionBar(mToolbar);
-        initAppBarLayout(mAppBar);
+//        initAppBarLayout(mAppBar);
     }
 
     protected void initAppBarLayout(AppBarLayout appBar) {
         if (appBar == null) return;
-        if (Build.VERSION.SDK_INT >= 21) {
-            this.mAppBar.setElevation(getElevation());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.mAppBar.setElevation(ChristianUtil.dpToPx(4));
         }
     }
 

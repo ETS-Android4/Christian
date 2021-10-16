@@ -169,11 +169,11 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
         } else {
             data.put(editorFragment.getString(R.string.author), editorFragment.getString(R.string.no_author));
         }
-        if (!editorFragment.mChurch.getText().toString().trim().isEmpty()) {
+        /*if (!editorFragment.mChurch.getText().toString().trim().isEmpty()) {
             data.put(editorFragment.getString(R.string.church_lower_case), editorFragment.mChurch.getText().toString().trim());
         } else {
             data.put(editorFragment.getString(R.string.church_lower_case), editorFragment.getString(R.string.no_church));
-        }
+        }*/
         data.put(editorFragment.getString(R.string.content_lower_case), editorFragment.mContent.getText().toString().trim());
         data.put(editorFragment.getString(R.string.time), ChristianUtil.getDateAndCurrentTime());
         EditorActivity activity = (EditorActivity) ((EditorFragment) getMvpView()).getActivity();
@@ -252,7 +252,7 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
                             editorFragment.mSpinner.setText((CharSequence) document.get(editorFragment.getString(R.string.desc)));
                             editorFragment.mName.setText((CharSequence) document.get(editorFragment.getString(R.string.name)));
                             editorFragment.mAuthor.setText((CharSequence) document.get(editorFragment.getString(R.string.author)));
-                            editorFragment.mChurch.setText((CharSequence) document.get(editorFragment.getString(R.string.church_lower_case)));
+//                            editorFragment.mChurch.setText((CharSequence) document.get(editorFragment.getString(R.string.church_lower_case)));
                             editorFragment.mContent.setText((CharSequence) document.get(editorFragment.getString(R.string.content_lower_case)));
                         } else {
                             Log.d(TAG, "No such document");
