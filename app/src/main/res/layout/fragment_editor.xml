@@ -34,35 +34,35 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:gravity="center"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:id="@+id/spinner"
-                    android:text="@string/topic"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:drawableRightCompat="@drawable/ic_baseline_arrow_drop_down_24" />
-                <!--<com.jaredrummler.materialspinner.MaterialSpinner
-                    android:id="@+id/spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp" />-->
+                android:layout_height="wrap_content">
 
                 <EditText
-                    android:hint="@string/custom_topic"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:id="@+id/et_editor_topic"
+                    android:hint="@string/topic"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:scrollHorizontally="false"
                     android:singleLine="true"
                     android:textColor="#111"
                     android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_gravity="center"
+                    android:id="@+id/ib_editor_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:includeFontPadding="false"
+                    android:padding="8dp"
+                    android:tint="@android:color/secondary_text_dark"
+                    app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"/>
             </LinearLayout>
 
             <!--            <View-->
@@ -138,22 +138,19 @@
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#00000000"
+                android:background="@color/colorPrimary"
                 android:hint="@string/content"
                 android:inputType="textMultiLine|textLongMessage"
-                android:minHeight="200dp"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="120dp"
                 android:scrollbars="vertical"
                 android:scrollHorizontally="false"
                 android:singleLine="false"
                 android:textColor="#333"
                 android:textSize="22sp" />
 
-            <View
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

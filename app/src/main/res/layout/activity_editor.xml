@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@qinc.me>
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,44 +14,40 @@
   ~ limitations under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    style="@style/root"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ren.qinc.markdowneditors.view.EditorActivity">
 
-        <include layout="@layout/view_common_toolbar_scroll"/>
+    <include layout="@layout/view_common_toolbar_scroll" />
 
-        <FrameLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    <com.christian.view.BounceBackViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/default_background_nav"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <ren.qinc.markdowneditors.lib.ExpandableLinearLayout
+        android:id="@+id/action_other_operate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        app:el_duration="400"
+        app:el_expanded="false">
+
+        <ren.qinc.markdowneditors.widget.TabIconView
+            android:id="@+id/tabIconView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.christian.view.CustomViewPager
-                android:id="@+id/pager"
-                android:overScrollMode="never"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <ren.qinc.markdowneditors.lib.ExpandableLinearLayout
-                android:id="@+id/action_other_operate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                app:el_duration="400"
-                app:el_expanded="false">
-
-                <ren.qinc.markdowneditors.widget.TabIconView
-                    android:id="@+id/tabIconView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_expandable="true"/>
-
-            </ren.qinc.markdowneditors.lib.ExpandableLinearLayout>
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            app:layout_expandable="true" />
+    </ren.qinc.markdowneditors.lib.ExpandableLinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

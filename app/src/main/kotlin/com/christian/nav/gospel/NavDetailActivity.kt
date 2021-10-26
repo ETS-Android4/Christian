@@ -1,6 +1,5 @@
 package com.christian.nav.gospel
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,17 +15,18 @@ import com.bumptech.glide.Glide
 import com.christian.R
 import com.christian.data.MeBean
 import com.christian.multitype.Card
-import com.christian.multitype.Category
 import com.christian.nav.NavActivity
 import com.christian.nav.me.AbsAboutActivity
 import com.christian.util.ChristianUtil
 import com.christian.util.filterImageUrlThroughDetailPageContent
 import com.christian.util.restoreScrolledPositionOfDetailPage
 import com.christian.view.showPopupMenu
+import com.christian.view.toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
+import com.lxj.xpopup.interfaces.OnSelectListener
 import com.lxj.xpopup.util.XPopupUtils
 import com.vincent.blurdialog.BlurDialog
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.about_page_main_activity.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
-import org.jetbrains.anko.dip
 import ren.qinc.markdowneditors.view.EditorActivity
 import java.util.*
 
@@ -166,6 +165,10 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
                         getString(R.string.read),
                     ),
                     XPopupUtils.dp2px(this, -48f),
+                    onSelectListener = object : OnSelectListener {
+                        override fun onSelect(position: Int, text: String) {
+                        }
+                    }
                 )
                 true
             }

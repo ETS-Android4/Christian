@@ -2,7 +2,6 @@ package com.christian.nav
 
 import android.app.Activity
 import android.content.Intent
-import android.text.Html
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -22,6 +21,7 @@ import com.christian.nav.me.AboutActivity
 import com.christian.util.ChristianUtil
 import com.christian.util.filterImageUrlThroughDetailPageContent
 import com.christian.view.showPopupMenu
+import com.lxj.xpopup.interfaces.OnSelectListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item_gospel.*
 import kotlinx.android.synthetic.main.nav_item_me.*
@@ -75,13 +75,17 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
                     containerView.context.getString(R.string.translate),
                     containerView.context.getString(R.string.read),
             ),
+                onSelectListener = object : OnSelectListener {
+                    override fun onSelect(position: Int, text: String) {
+                    }
+                }
             )
         }
 
 //        activity = navActivity
     }
 
-    private fun showPopupMenu(v: View) {
+    /*private fun showPopupMenu(v: View) {
 
         val popupMenu = PopupMenu(v.context, v)
         popupMenu.gravity = Gravity.END or Gravity.BOTTOM
@@ -90,7 +94,7 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
         popupMenu.setOnMenuItemClickListener { false }
         popupMenu.show()
 
-    }
+    }*/
 
     fun initView() {
 

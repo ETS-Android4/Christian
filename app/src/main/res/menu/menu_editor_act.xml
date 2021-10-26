@@ -19,6 +19,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".view.EditorActivity">
     <item
+        android:visible="false"
         android:id="@+id/action_other_operate"
         android:orderInCategory="82"
         android:title="@string/action_other_operate"

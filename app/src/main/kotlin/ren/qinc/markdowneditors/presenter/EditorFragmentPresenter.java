@@ -158,8 +158,8 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
         editorFragment.firebaseFirestore.collection(String.valueOf(R.string.gospels));
         // Add a new document with a generated id.
         Map<String, Object> data = new HashMap<>();
-        if (!editorFragment.mSpinner.getText().toString().trim().isEmpty()) {
-            data.put(editorFragment.getString(R.string.desc), editorFragment.mSpinner.getText());
+        if (!editorFragment.et_editor_topic.getText().toString().trim().isEmpty()) {
+            data.put(editorFragment.getString(R.string.desc), editorFragment.et_editor_topic.getText());
         } else {
             data.put(editorFragment.getString(R.string.desc), editorFragment.getString(R.string.uncategorized));
         }
@@ -249,7 +249,7 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
                     if (document != null) {
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            editorFragment.mSpinner.setText((CharSequence) document.get(editorFragment.getString(R.string.desc)));
+                            editorFragment.et_editor_topic.setText((CharSequence) document.get(editorFragment.getString(R.string.desc)));
                             editorFragment.mName.setText((CharSequence) document.get(editorFragment.getString(R.string.name)));
                             editorFragment.mAuthor.setText((CharSequence) document.get(editorFragment.getString(R.string.author)));
 //                            editorFragment.mChurch.setText((CharSequence) document.get(editorFragment.getString(R.string.church_lower_case)));

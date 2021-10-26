@@ -14,11 +14,9 @@ import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.google.android.material.snackbar.Snackbar
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.OnSelectListener
-import com.lxj.xpopup.util.XPopupUtils.dp2px
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.BlurViewExtendsConstraintLayout
 import eightbitlab.com.blurview.BlurViewExtendsNavigationView
-import eightbitlab.com.blurview.BlurViewExtendsVerticalRecyclerView
 import org.jetbrains.anko.dip
 private var loadNextPage: Boolean = true
 var mPosition = 0
@@ -281,7 +279,14 @@ class AddCompanyDialogFragment(private val act: Activity) : DialogFragment() {
 }*/
 
 
-fun showPopupMenu(v: View, activity: Activity, array: Array<String>, offsetY: Int = activity.dip(-40), offsetX: Int = activity.dip(4)) {
+fun showPopupMenu(
+    v: View,
+    activity: Activity,
+    array: Array<String>,
+    offsetY: Int = activity.dip(-40),
+    offsetX: Int = activity.dip(4),
+    onSelectListener: OnSelectListener
+) {
 
     XPopup.setPrimaryColor(activity.resources.getColor(R.color.colorAccent))
     val asAttachList = XPopup.Builder(activity)
@@ -296,11 +301,7 @@ fun showPopupMenu(v: View, activity: Activity, array: Array<String>, offsetY: In
         .atView(v) // 依附于所点击的View，内部会自动判断在上方或者下方显示
         .asAttachList(array,
             intArrayOf(),
-            object : OnSelectListener {
-                override fun onSelect(position: Int, text: String) {
-                    toast(activity, "click $text")
-                }
-            })
+            onSelectListener)
     eightbitlab.com.blurview.makeViewBlur(
             asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),
 //            asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),

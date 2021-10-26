@@ -29,12 +29,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.FragmentActivity;
 
 import com.christian.R;
 import com.christian.util.ChristianUtil;
 import com.christian.view.ViewUtilKt;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,8 +71,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     public FirebaseFirestore firebaseFirestore;
     public String documentGospelPath;
 
-    @Bind(R.id.spinner)
-    public TextView mSpinner;
+    @Bind(R.id.ib_editor_item)
+    public AppCompatImageButton mSpinner;
     @Bind(R.id.title)
     public EditText mName;
     @Bind(R.id.author)
@@ -79,6 +81,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     public EditText mChurch;*/
     @Bind(R.id.content)
     public EditText mContent;
+    @Bind(R.id.et_editor_topic)
+    public EditText et_editor_topic;
 
     private EditorFragmentPresenter mPresenter;
 
@@ -88,6 +92,11 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
 
     public EditorFragment() {
+        /* java.lang.NullPointerException: Attempt to invoke virtual method 'boolean ren.qinc.markdowneditors.presenter.EditorFragmentPresenter.isSave()' on a null object reference
+         at ren.qinc.markdowneditors.view.EditorFragment.onBackPressed(EditorFragment.java:446)
+         at ren.qinc.markdowneditors.view.EditorActivity.onOptionsItemSelected(EditorActivity.java:305)
+         */
+        mPresenter = new EditorFragmentPresenter();
     }
 
     public static EditorFragment getInstance(String dg) {
@@ -120,7 +129,6 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
 //        File file = new File(fileTemp);
         //创建新文章
-        mPresenter = new EditorFragmentPresenter();
         mPresenter.attachView(this);
 
         //代码格式化或者插入操作
@@ -151,7 +159,6 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 //            mPresenter.loadFile();
 
         String[] stringList = new String[] {
-                getString(R.string._Custom),
                 getString(R.string._Gen),
                 getString(R.string._Exo),
                 getString(R.string._Lev),
@@ -221,7 +228,9 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 getString(R.string._Rev)
         };
         mSpinner.setOnClickListener(v -> {
-            ViewUtilKt.showPopupMenu(v, requireActivity(), stringList, ChristianUtil.dpToPx(0), ChristianUtil.dpToPx(0));
+            ViewUtilKt.showPopupMenu(v, requireActivity(), stringList, ChristianUtil.dpToPx(0), ChristianUtil.dpToPx(0), (position, text) -> {
+                et_editor_topic.setText(text);
+            });
         });
 //        mSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) -> Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show());
 

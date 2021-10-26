@@ -116,6 +116,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
         initViewPager();
         initTab();
+        mExpandLayout.toggle();
     }
 
     private void initViewPager() {

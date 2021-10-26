@@ -143,8 +143,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
             pageSelectedPosition = position
 
-            showFab(position)
-
+            pageSelected(position)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
@@ -157,6 +156,92 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 //                        showFAB()
 //                    }
             }*/
+        }
+    }
+
+    private fun pageSelected(position: Int) {
+
+        when (position) {
+            0 -> {
+                tb_nav.title = getString(R.string.title_home)
+
+                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
+                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
+
+                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
+                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn()) {
+                    val navFragment = navFragmentPagerAdapter.currentFragment as NavFragment
+                    when(navFragment.isPageTop) {
+                        false -> hideFab()
+                        true -> showFab()
+                    }
+                }
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
+//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
+//                if (verticalOffset != -tb_nav.height && !fab_nav.isVisible)
+//                    fab_nav.show()
+                TooltipCompat.setTooltipText(activity_nav_fab, "Edit")
+
+                activity_nav_fab.setOnClickListener {
+                    startActivity(Intent(this@NavActivity, EditorActivity::class.java))
+                }
+            }
+            1 -> {
+                tb_nav.title = getString(R.string.title_book)
+
+                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
+                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
+
+                hideFab()
+//                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_filter_list_black_24dp, theme))
+//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
+                /*if (verticalOffset > -tb_nav.height)
+                    fab_nav.hide()*/
+                TooltipCompat.setTooltipText(activity_nav_fab, "Filter")
+
+                activity_nav_fab.setOnClickListener {
+                    startActivity(Intent(this@NavActivity, ren.qinc.markdowneditors.view.MainActivity::class.java))
+                }
+            }
+            2 -> {
+                tb_nav.title = getString(R.string.title_chat)
+
+                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
+                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
+
+                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
+                showFab()
+
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_send_24, theme))
+//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
+
+                activity_nav_fab.setOnClickListener {
+                    if (::navFragmentPagerAdapter.isInitialized) {
+                        val discipleFragment =
+                            navFragmentPagerAdapter.currentFragment as DiscipleFragment
+                        if (discipleFragment.mMessageEditText.text.isEmpty()) {
+                            abl_nav.setExpanded(false, true)
+                            snackbar(getString(R.string.content_empty)).show()
+                            discipleFragment.mMessageEditText.requestFocusWithKeyboard()
+                        } else {
+                            discipleFragment.sendMessage()
+                        }
+                    }
+                }
+            }
+            3 -> {
+                tb_nav.title = getString(R.string.me)
+
+                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = false
+                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = true
+                invalidateSignInUI()
+
+                hideFab()
+
+//                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_exit_to_app_black_24dp, theme))
+//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccentRed,theme))
+
+            }
         }
     }
 
@@ -371,85 +456,9 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         }
     }
 
-    override fun showFab(pos: Int) {
-
-
-        when (pos) {
-            0 -> {
-                tb_nav.title = getString(R.string.title_home)
-
-                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
-                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
-
-                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
-                beforeShowFab()
-                activity_nav_fab.show()
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
-//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-//                if (verticalOffset != -tb_nav.height && !fab_nav.isVisible)
-//                    fab_nav.show()
-                TooltipCompat.setTooltipText(activity_nav_fab, "Edit")
-
-                activity_nav_fab.setOnClickListener {
-                    startActivity(Intent(this@NavActivity, EditorActivity::class.java))
-                }
-            }
-            1 -> {
-                tb_nav.title = getString(R.string.title_book)
-
-                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
-                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
-
-                hideFab()
-//                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_filter_list_black_24dp, theme))
-//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-                /*if (verticalOffset > -tb_nav.height)
-                    fab_nav.hide()*/
-                TooltipCompat.setTooltipText(activity_nav_fab, "Filter")
-
-                activity_nav_fab.setOnClickListener {
-                    startActivity(Intent(this@NavActivity, ren.qinc.markdowneditors.view.MainActivity::class.java))
-                }
-            }
-            2 -> {
-                tb_nav.title = getString(R.string.title_chat)
-
-                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
-                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
-
-                //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
-                beforeShowFab()
-                activity_nav_fab.show()
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_send_24, theme))
-//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-
-                activity_nav_fab.setOnClickListener {
-                    if (::navFragmentPagerAdapter.isInitialized) {
-                        var discipleFragment =
-                            navFragmentPagerAdapter.currentFragment as DiscipleFragment
-                        if (discipleFragment.mMessageEditText.text.isEmpty()) {
-                            abl_nav.setExpanded(false, true)
-                            snackbar(getString(R.string.content_empty)).show()
-                            discipleFragment.mMessageEditText.requestFocusWithKeyboard()
-                        } else {
-                            discipleFragment.sendMessage()
-                        }
-                    }
-                }
-            }
-            3 -> {
-                tb_nav.title = getString(R.string.me)
-
-                if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = false
-                if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = true
-                invalidateSignInUI()
-
-                hideFab()
-//                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_exit_to_app_black_24dp, theme))
-//                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccentRed,theme))
-
-            }
-        }
+    override fun showFab() {
+        beforeShowFab()
+        activity_nav_fab.show()
     }
 
     private fun beforeShowFab() {
@@ -579,6 +588,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     open class NavFragmentPagerAdapter(fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
         lateinit var currentFragment: Fragment
+        fun isCurrentFragmentIn() = ::currentFragment.isInitialized
 
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
             when (position) {
