@@ -35,8 +35,12 @@ import ren.qinc.markdowneditors.widget.MarkdownPreviewView;
 public class EditorMarkdownFragment extends BaseFragment {
     @Bind(R.id.markdownView)
     protected MarkdownPreviewView mMarkdownPreviewView;
+    @Bind(R.id.tv_editor_topic)
+    TextView tv_editor_topic;
     @Bind(R.id.title)
     protected TextView mName;
+    @Bind(R.id.tv_editor_author)
+    TextView tv_editor_author;
     private String mContent;
 
 
@@ -63,6 +67,8 @@ public class EditorMarkdownFragment extends BaseFragment {
             //页面还没有加载完成
             mContent = event.o[1].toString();
             mName.setText(event.o[0].toString());
+            tv_editor_topic.setText(event.o[2].toString());
+            tv_editor_author.setText(event.o[3].toString());
             if (isPageFinish)
                 mMarkdownPreviewView.parseMarkdown(mContent, true);
         }

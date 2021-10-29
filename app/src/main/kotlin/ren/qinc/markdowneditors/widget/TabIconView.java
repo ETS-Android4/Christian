@@ -75,7 +75,7 @@ public class TabIconView extends HorizontalScrollView {
         view.setOnClickListener(onClickListener);
         mLayout.addView(view, mLayout.getChildCount());
         //滑到最右边
-        this.postDelayed(() -> this.smoothScrollBy(1000, 0), 5);
+//        this.postDelayed(() -> this.smoothScrollBy(1000, 0), 5);
     }
 
 

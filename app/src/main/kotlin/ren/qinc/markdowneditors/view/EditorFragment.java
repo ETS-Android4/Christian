@@ -446,7 +446,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     public void onEventMainThread(RxEvent event) {
         if (event.isType(RxEvent.TYPE_REFRESH_NOTIFY)) {
             //刷新markdown渲染
-            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_DATA, mName.getText().toString(), mContent.getText().toString()));
+            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_DATA, mName.getText().toString(), mContent.getText().toString(), et_editor_topic.getText().toString(), mAuthor.getText().toString()));
         }
     }
 

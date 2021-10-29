@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
 
 import com.christian.util.ChristianUtil;
+import com.christian.util.CrashHandler;
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.leakcanary.LeakCanary;
@@ -58,6 +59,7 @@ public abstract class BaseApplication extends Application {
         context = getApplicationContext();
         resource = context.getResources();
         MultiDex.install(this);
+        CrashHandler.getInstance().get().init(this);
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
 
         if (hasMemoryLeak()) {

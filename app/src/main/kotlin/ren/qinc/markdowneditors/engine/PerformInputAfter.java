@@ -32,6 +32,7 @@ public class PerformInputAfter {
 
     private final Editable editable;
     private boolean flag = false;
+    int numCount = 1; //胡乱写的计数逻辑
 
     public static void start(@NonNull EditText editText) {
         new PerformInputAfter(editText);
@@ -97,7 +98,7 @@ public class PerformInputAfter {
         flag = true;
         if ("\n".equals(charSequence.toString())) {
             //用户输入回车
-//            performAddEnter(editable, source, start);
+            performAddEnter(editable, source, start);
 
 
         }
@@ -133,10 +134,13 @@ public class PerformInputAfter {
 
         if (mString.startsWith("* ") && mString.length() > 2) {//* 开头
             editable.insert(start + 1, startSpace + "* ");
-        } else if (mString.startsWith("1. ") && mString.length() > 3) {//1. 开头
-            editable.insert(start + 1, startSpace + "1. ");
+            numCount = 1;
+        } else if (mString.startsWith(numCount + ". ") && mString.length() > 3) {//1. 开头
+            numCount++;
+            editable.insert(start + 1, startSpace + numCount +". ");
         } else if (mString.length() > 1) {
-            editable.insert(start, startSpace);
+            editable.insert(start + 1, startSpace);
+            numCount = 1;
         }
 
     }

@@ -1124,8 +1124,14 @@ public class ViewDragHelper {
                     final int pointerId = ev.getPointerId( i);
                     final float x = ev.getX( i);
                     final float y = ev.getY(i);
-                    final float dx = x - mInitialMotionX[pointerId];
-                    final float dy = y - mInitialMotionY[pointerId];
+                    float dx = 0;
+                    float dy = 0;
+                    try {
+                        dx = x - mInitialMotionX[pointerId];
+                        dy = y - mInitialMotionY[pointerId];
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     reportNewEdgeDrags(dx, dy, pointerId);
                     if (mDragState == STATE_DRAGGING) {

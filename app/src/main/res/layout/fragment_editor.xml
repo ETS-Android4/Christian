@@ -42,6 +42,8 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
                     android:layout_weight="1"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:id="@+id/et_editor_topic"
@@ -50,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:scrollHorizontally="false"
                     android:singleLine="true"
-                    android:textColor="#111"
+                    android:textColor="@android:color/secondary_text_dark"
                     android:textSize="18sp" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -72,6 +74,9 @@
             <!--                android:background="@color/colorDivider" />-->
 
             <EditText
+                style="@android:style/TextAppearance.Large"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:id="@+id/title"
@@ -82,7 +87,6 @@
                 android:inputType="text"
                 android:scrollHorizontally="false"
                 android:singleLine="true"
-                android:textColor="#111"
                 android:textSize="22sp" />
 
             <!--            <View-->
@@ -91,6 +95,9 @@
             <!--                android:background="@color/colorDivider" />-->
 
             <EditText
+                android:textColor="@android:color/secondary_text_dark"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:id="@+id/author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +108,6 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:scrollHorizontally="false"
                 android:singleLine="true"
-                android:textColor="#111"
                 android:textSize="14sp" />
 
             <!--            <View-->
@@ -134,11 +140,12 @@
                 android:background="@color/colorDivider" />-->
 
             <EditText
-                android:gravity="top"
+                style="@android:style/TextAppearance.Large"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:hint="@string/content"
                 android:inputType="textMultiLine|textLongMessage"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -148,7 +155,6 @@
                 android:scrollbars="vertical"
                 android:scrollHorizontally="false"
                 android:singleLine="false"
-                android:textColor="#333"
                 android:textSize="22sp" />
 
         </LinearLayout>
