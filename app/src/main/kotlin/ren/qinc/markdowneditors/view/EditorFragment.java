@@ -25,7 +25,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,11 +35,6 @@ import com.christian.R;
 import com.christian.util.ChristianUtil;
 import com.christian.view.ViewUtilKt;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.lxj.xpopup.interfaces.OnSelectListener;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
@@ -56,7 +50,6 @@ import ren.qinc.markdowneditors.event.RxEventBus;
 import ren.qinc.markdowneditors.presenter.EditorFragmentPresenter;
 import ren.qinc.markdowneditors.presenter.IEditorFragmentView;
 import ren.qinc.markdowneditors.utils.SystemUtils;
-import ren.qinc.markdowneditors.utils.ViewUtils;
 
 
 /**
@@ -216,7 +209,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 getString(R.string._1Ti),
                 getString(R.string._2Ti),
                 getString(R.string._Tit),
-                getString(R.string._Mon),
+                getString(R.string._Phm),
                 getString(R.string._Heb),
                 getString(R.string._Jas),
                 getString(R.string._1Pe),
@@ -330,19 +323,20 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_share) {//分享
-            shareMenu();
-            return true;
-        } else if (itemId == R.id.action_undo) {//撤销
-            mPerformEdit.undo();
-            return true;
-        } else if (itemId == R.id.action_redo) {//重做
-            mPerformEdit.redo();
-            return true;
-        } else if (itemId == R.id.action_save) {//保存
-            mPresenter.save(mName.getText().toString().trim(), mContent.getText().toString().trim());
-            return true;
+        switch (item.getItemId()) {
+
+            case R.id.action_share://分享
+                shareMenu();
+                return true;
+            case R.id.action_undo://撤销
+                mPerformEdit.undo();
+                return true;
+            case R.id.action_redo://重做
+                mPerformEdit.redo();
+                return true;
+            case R.id.action_save://保存
+                mPresenter.save(mName.getText().toString().trim(), mContent.getText().toString().trim());
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

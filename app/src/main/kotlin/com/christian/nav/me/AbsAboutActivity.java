@@ -61,7 +61,7 @@ public abstract class AbsAboutActivity extends SwipeBackActivity implements Even
     private List<Object> items;
     private MultiTypeAdapter adapter;
     private TextView slogan, version;
-    private FloatingActionMenu menuYellow;
+//    private FloatingActionMenu menuYellow;
 
     public RecyclerView getRecyclerView() {
         return recyclerView;
@@ -143,7 +143,7 @@ public abstract class AbsAboutActivity extends SwipeBackActivity implements Even
         version = findViewById(com.christian.R.id.version);
         collapsingToolbar = findViewById(com.christian.R.id.collapsing_toolbar);
         headerContentLayout = findViewById(com.christian.R.id.header_content_layout);
-        menuYellow = findViewById(R.id.menu_yellow);
+//        menuYellow = findViewById(R.id.menu_yellow);
 
         onTitleViewCreated(collapsingToolbar);
         onCreateHeader(icon, slogan, version);

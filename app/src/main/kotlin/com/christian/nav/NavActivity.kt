@@ -180,8 +180,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
 //                if (verticalOffset != -tb_nav.height && !fab_nav.isVisible)
 //                    fab_nav.show()
-                TooltipCompat.setTooltipText(activity_nav_fab, "Edit")
-
+                TooltipCompat.setTooltipText(activity_nav_fab, getString(R.string.action_edit))
                 activity_nav_fab.setOnClickListener {
                     startActivity(Intent(this@NavActivity, EditorActivity::class.java))
                 }
@@ -214,7 +213,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
                 activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_send_24, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
-
+                TooltipCompat.setTooltipText(activity_nav_fab, getString(R.string.send))
                 activity_nav_fab.setOnClickListener {
                     if (::navFragmentPagerAdapter.isInitialized) {
                         val discipleFragment =
@@ -236,11 +235,12 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = true
                 invalidateSignInUI()
 
-                hideFab()
+                showFab()
 
-//                fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_exit_to_app_black_24dp, theme))
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_help_24, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccentRed,theme))
-
+                TooltipCompat.setTooltipText(activity_nav_fab, getString(R.string.help))
+                activity_nav_fab.setOnClickListener {}
             }
         }
     }
@@ -365,7 +365,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 getString(R.string._1Ti),
                 getString(R.string._2Ti),
                 getString(R.string._Tit),
-                getString(R.string._Mon),
+                getString(R.string._Phm),
                 getString(R.string._Heb),
                 getString(R.string._Jas),
                 getString(R.string._1Pe),

@@ -21,21 +21,21 @@
 
     <item
         android:id="@+id/action_undo"
-        android:orderInCategory="80"
+        android:orderInCategory="0"
         android:title="@string/action_undo"
         android:icon="@drawable/ic_action_undo"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_redo"
-        android:orderInCategory="81"
+        android:orderInCategory="1"
         android:title="@string/action_redo"
         android:icon="@drawable/ic_action_redo"
         app:showAsAction="always"/>
-    <item
+   <!-- <item
         android:id="@+id/action_preview"
         android:icon="@drawable/ic_action_preview_menu"
-        android:orderInCategory="86"
+        android:orderInCategory="6"
         android:title="@string/action_preview"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 
 </menu>

@@ -98,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.github.clans.fab.FloatingActionMenu
+    <!--<com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_yellow"
         android:visibility="gone"
         android:layout_marginBottom="16dp"
@@ -138,6 +138,6 @@
             app:fab_label="Delete"
             style="@style/MenuButtonsStyleRed" />
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

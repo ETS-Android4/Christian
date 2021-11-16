@@ -309,12 +309,14 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.file_name) {
-            Object tag = v.getTag(R.id.tag);
-            if (tag != null && tag instanceof Integer) {//点击顶部导航
-                int index = ((Integer) tag).intValue();
-                mPresenter.backFolder(index);
-            }
+        switch (v.getId()) {
+            case R.id.file_name:
+                Object tag = v.getTag(R.id.tag);
+                if (tag != null && tag instanceof Integer) {//点击顶部导航
+                    int index = ((Integer) tag).intValue();
+                    mPresenter.backFolder(index);
+                }
+                break;
         }
 
     }
@@ -373,11 +375,13 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_create_folder) {
-            createFolder();
-        } else if (itemId == R.id.action_create_file) {
-            createNote();
+        switch (item.getItemId()) {
+            case R.id.action_create_folder:
+                createFolder();
+                break;
+            case R.id.action_create_file:
+                createNote();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -482,13 +486,15 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 boolean flag = false;
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_paste) {
-                    mPresenter.paste();
-                    flag = true;
-                } else if (itemId == R.id.action_create_folder) {
-                    createFolder();
-                    flag = true;
+                switch (item.getItemId()) {
+                    case R.id.action_paste:
+                        mPresenter.paste();
+                        flag = true;
+                        break;
+                    case R.id.action_create_folder:
+                        createFolder();
+                        flag = true;
+                        break;
                 }
                 return flag;
             }
@@ -516,15 +522,19 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 boolean ret = false;
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_edit) {
-                    rename();
-                } else if (itemId == R.id.action_delete) {
-                    deleteFiles();
-                } else if (itemId == R.id.action_copy) {
-                    coptFiles();
-                } else if (itemId == R.id.action_cut) {
-                    cutFiles();
+                switch (item.getItemId()) {
+                    case R.id.action_edit:
+                        rename();
+                        break;
+                    case R.id.action_delete:
+                        deleteFiles();
+                        break;
+                    case R.id.action_copy:
+                        coptFiles();
+                        break;
+                    case R.id.action_cut:
+                        cutFiles();
+                        break;
                 }
                 return ret;
             }

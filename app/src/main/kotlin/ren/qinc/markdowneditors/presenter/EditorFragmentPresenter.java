@@ -17,7 +17,6 @@
 package ren.qinc.markdowneditors.presenter;
 
 
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -159,7 +158,7 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
         // Add a new document with a generated id.
         Map<String, Object> data = new HashMap<>();
         if (!editorFragment.et_editor_topic.getText().toString().trim().isEmpty()) {
-            data.put(editorFragment.getString(R.string.desc), editorFragment.et_editor_topic.getText());
+            data.put(editorFragment.getString(R.string.desc), editorFragment.et_editor_topic.getText().toString().trim());
         } else {
             data.put(editorFragment.getString(R.string.desc), editorFragment.getString(R.string.uncategorized));
         }
@@ -241,7 +240,7 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
 
     public void getDocument(EditorFragment editorFragment) {
         DocumentReference documentReference = editorFragment.firebaseFirestore.collection(editorFragment.getString(R.string.gospels)).document(editorFragment.documentGospelPath);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        documentReference.get().addOnCompleteListener(editorFragment.requireActivity(), new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

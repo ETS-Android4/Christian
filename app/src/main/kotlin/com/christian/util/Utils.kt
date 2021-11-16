@@ -5,6 +5,7 @@ import android.R.attr
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.method.LinkMovementMethod
 import android.view.MotionEvent
@@ -12,11 +13,14 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.customview.widget.ViewDragHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.request.target.Target
 import com.christian.R
 import com.christian.nav.NavActivity
 import com.christian.nav.nullString
@@ -28,18 +32,35 @@ import com.github.anzewei.parallaxbacklayout.ParallaxHelper
 import com.google.android.material.appbar.AppBarLayout
 import com.kotlinpermissions.KotlinPermissions
 import com.vincent.blurdialog.BlurDialog
-import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.Markwon
-import io.noties.markwon.MarkwonConfiguration
+import io.noties.markwon.*
 import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.AsyncDrawable
+import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
 import io.noties.markwon.image.ImageSizeResolverDef
 import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
+import org.commonmark.node.Image
 import org.jetbrains.anko.dip
 import ren.qinc.markdowneditors.AppContext
 import ren.qinc.markdowneditors.view.EditorActivity
 import java.util.regex.Pattern
+import io.noties.markwon.image.AsyncDrawableSpan
+
+import io.noties.markwon.MarkwonSpansFactory
+
+import io.noties.markwon.AbstractMarkwonPlugin
+
+import io.noties.markwon.image.ImagesPlugin
+
+import io.noties.markwon.Markwon
+import io.noties.markwon.RenderProps
+
+
+
+
+
+
 
 fun fixAppBarLayoutElevation(headerLayout: AppBarLayout) {
     headerLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -94,13 +115,42 @@ fun setToolbarAsUp(activity: SwipeBackActivity, toolbar: androidx.appcompat.widg
     activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 }
 
+private fun imageSize(props: RenderProps): ImageSize {
+    val imageSize = ImageProps.IMAGE_SIZE[props]
+    return imageSize ?: ImageSize(
+        ImageSize.Dimension(100f, "%"),
+        null
+    )
+}
+
 fun setMarkdownToTextView(context: Context, textView: TextView, gospelContent: String) {
     textView.movementMethod = LinkMovementMethod.getInstance()
     val markdownView = Markwon.builder(context) // automatically create Glide instance
-            .usePlugin(GlideImagesPlugin.create(Glide.with(context)))
+        .usePlugin(GlideImagesPlugin.create(context))
+        .usePlugin(GlideImagesPlugin.create(Glide.with(context)))
+        .usePlugin(object : AbstractMarkwonPlugin() {
+            override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
+                builder.setFactory(
+                    Image::class.java
+                ) { configuration: MarkwonConfiguration, props: RenderProps ->
+                    AsyncDrawableSpan(
+                        configuration.theme(),
+                        AsyncDrawable(
+                            ImageProps.DESTINATION.require(props),
+                            configuration.asyncDrawableLoader(),
+                            configuration.imageSizeResolver(),
+                            imageSize(props)
+                        ),
+                        AsyncDrawableSpan.ALIGN_CENTER,
+                        ImageProps.REPLACEMENT_TEXT_IS_LINK[props, false]
+                    )
+                }
+            }
+        })
+
             .usePlugin(LinkifyPlugin.create())
             .usePlugin(HtmlPlugin.create()) //                // if you need more control
-            .usePlugin(object : AbstractMarkwonPlugin() {
+            /*.usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
                     builder.imageSizeResolver(object : ImageSizeResolverDef() {
                         override fun resolveImageSize(imageSize: ImageSize?, imageBounds: Rect, canvasWidth: Int, textSize: Float): Rect {
@@ -115,7 +165,7 @@ fun setMarkdownToTextView(context: Context, textView: TextView, gospelContent: S
                         }
                     })
                 }
-            })
+            })*/
             .build()
     markdownView.setMarkdown(textView, gospelContent)
 }

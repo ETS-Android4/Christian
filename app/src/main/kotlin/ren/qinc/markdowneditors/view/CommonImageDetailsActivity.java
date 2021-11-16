@@ -213,10 +213,12 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_share) {
-        } else if (itemId == R.id.action_save) {
-            saveImageToGallery();
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                break;
+            case R.id.action_save:
+                saveImageToGallery();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

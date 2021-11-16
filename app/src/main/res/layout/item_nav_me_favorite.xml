@@ -53,7 +53,7 @@
             android:ellipsize="end"
             android:gravity="bottom"
             android:singleLine="true"
-            android:text="@string/favorite"
+            android:text="@string/action_favorite"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/switch_nav_item_small"
             app:layout_constraintStart_toEndOf="@+id/cardView"

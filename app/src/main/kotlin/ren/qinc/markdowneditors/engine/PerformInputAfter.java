@@ -98,7 +98,7 @@ public class PerformInputAfter {
         flag = true;
         if ("\n".equals(charSequence.toString())) {
             //用户输入回车
-            performAddEnter(editable, source, start);
+           performAddEnter(editable, source, start);
 
 
         }

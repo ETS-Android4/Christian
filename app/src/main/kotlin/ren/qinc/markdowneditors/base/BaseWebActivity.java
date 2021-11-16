@@ -344,35 +344,38 @@ public class BaseWebActivity extends BaseToolbarActivity {
     }
 
     private boolean menuClick(int id) {
-        if (id == R.id.action_refresh) {
-            refresh();
-            return true;
-        } else if (id == R.id.action_copy_url) {//                String copyDone = getString(R.string.tip_copy_done);
-            SystemUtils.copyToClipBoard(this, mWebView.getUrl());
-            Snackbar.make(mWebView, "复制完成", Snackbar.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_open_url) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(url);
-            intent.setData(uri);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Snackbar.make(mWebView, "打开失败", Snackbar.LENGTH_SHORT).show();
-            }
-            return true;
-        } else if (id == R.id.action_clear_cache) {
-            mWebView.clearCache(true);
-            mWebView.clearHistory();
-            Snackbar.make(mWebView, "清理缓存成功", Snackbar.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_clear_cookie) {
-            CookieSyncManager.createInstance(this);
-            CookieSyncManager.getInstance().startSync();
-            CookieManager.getInstance().removeSessionCookie();
-            Snackbar.make(mWebView, "清理Cookie成功", Snackbar.LENGTH_SHORT).show();
-            return true;
+        switch (id) {
+            case R.id.action_refresh:
+                refresh();
+                return true;
+            case R.id.action_copy_url:
+                //                String copyDone = getString(R.string.tip_copy_done);
+                SystemUtils.copyToClipBoard(this, mWebView.getUrl());
+                Snackbar.make(mWebView, "复制完成", Snackbar.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_open_url:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse(url);
+                intent.setData(uri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(mWebView, "打开失败", Snackbar.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.action_clear_cache:
+                mWebView.clearCache(true);
+                mWebView.clearHistory();
+                Snackbar.make(mWebView, "清理缓存成功", Snackbar.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_clear_cookie:
+                CookieSyncManager.createInstance(this);
+                CookieSyncManager.getInstance().startSync();
+                CookieManager.getInstance().removeSessionCookie();
+                Snackbar.make(mWebView, "清理Cookie成功", Snackbar.LENGTH_SHORT).show();
+                return true;
+
         }
 
         return false;
@@ -490,7 +493,6 @@ public class BaseWebActivity extends BaseToolbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == mUploadMessage)
                 return;

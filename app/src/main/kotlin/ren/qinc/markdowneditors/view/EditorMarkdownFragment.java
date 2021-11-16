@@ -19,9 +19,11 @@ package ren.qinc.markdowneditors.view;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.christian.R;
+import com.christian.util.UtilsKt;
 
 import butterknife.Bind;
 import ren.qinc.markdowneditors.base.BaseFragment;
@@ -34,7 +36,7 @@ import ren.qinc.markdowneditors.widget.MarkdownPreviewView;
  */
 public class EditorMarkdownFragment extends BaseFragment {
     @Bind(R.id.markdownView)
-    protected MarkdownPreviewView mMarkdownPreviewView;
+    protected EditText mMarkdownPreviewView;
     @Bind(R.id.tv_editor_topic)
     TextView tv_editor_topic;
     @Bind(R.id.title)
@@ -59,7 +61,7 @@ public class EditorMarkdownFragment extends BaseFragment {
         return type == RxEvent.TYPE_REFRESH_DATA;
     }
 
-    boolean isPageFinish = false;
+//    boolean isPageFinish = false;
 
     @Override
     public void onEventMainThread(RxEvent event) {
@@ -69,8 +71,9 @@ public class EditorMarkdownFragment extends BaseFragment {
             mName.setText(event.o[0].toString());
             tv_editor_topic.setText(event.o[2].toString());
             tv_editor_author.setText(event.o[3].toString());
-            if (isPageFinish)
-                mMarkdownPreviewView.parseMarkdown(mContent, true);
+            UtilsKt.setMarkdownToTextView(requireActivity(), mMarkdownPreviewView, mContent);
+//            if (isPageFinish)
+//                mMarkdownPreviewView.parseMarkdown(mContent, true);
         }
     }
 
@@ -81,11 +84,11 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     @Override
     public void onCreateAfter(Bundle savedInstanceState) {
-        mMarkdownPreviewView.setOnLoadingFinishListener(() -> {
-            if (!isPageFinish && mContent != null)//
-                mMarkdownPreviewView.parseMarkdown(mContent, true);
-            isPageFinish = true;
-        });
+//        mMarkdownPreviewView.setOnLoadingFinishListener(() -> {
+//            if (!isPageFinish && mContent != null)//
+//                mMarkdownPreviewView.parseMarkdown(mContent, true);
+//            isPageFinish = true;
+//        });
     }
 
     @Override

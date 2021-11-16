@@ -59,7 +59,7 @@ public abstract class BaseApplication extends Application {
         context = getApplicationContext();
         resource = context.getResources();
         MultiDex.install(this);
-        CrashHandler.getInstance().get().init(this);
+        // CrashHandler.getInstance().get().init(this);
         registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
 
         if (hasMemoryLeak()) {

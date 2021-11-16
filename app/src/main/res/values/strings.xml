@@ -3,46 +3,43 @@
 
 
     <!--webViewActivity相关菜单-->
-    <string name="action_refresh">刷新</string>
-    <string name="action_copy_url">复制链接</string>
-    <string name="action_open_url">打开链接</string>
-    <string name="action_clear_cache">清理缓存和历史</string>
-    <string name="action_clear_cookie">清理cookie</string>
-    <string name="action_share">分享</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_copy_url">Copy url</string>
+    <string name="action_open_url">Open url</string>
+    <string name="action_clear_cache">Clear cache</string>
+    <string name="action_clear_cookie">Clear cookie</string>
+    <string name="action_share">Share</string>
 
-    <string name="menu_web_horizontal">横屏显示</string>
-    <string name="menu_web_vertical">竖屏显示</string>
+    <string name="menu_web_horizontal">Web horizontal</string>
+    <string name="menu_web_vertical">Web vertical</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="Description">Description</string>
-    <string name="MainFileManagerNoPost">没有文章</string>
-    <string name="MainFileManagerCreateHint">您可以点击右下角按钮创建新的文章</string>
-    <string name="action_create_file">创建文章</string>
-    <string name="create_folder">新建文件夹</string>
-    <string name="file">文章</string>
-    <string name="sure">确定</string>
-    <string name="action_cancel">取消</string>
-    <string name="action_search">搜索文章</string>
-    <string name="please_enter">请输入</string>
-    <string name="xxxx" translatable="false">xxxx</string>
+    <string name="description">Description</string>
+    <string name="main_file_manager_no_post">No post</string>
+    <string name="main_file_manager_create_hint">Create post</string>
+    <string name="action_create_file">Create file</string>
+    <string name="create_folder">Create folder</string>
+    <string name="file">File</string>
+    <string name="sure">Sure</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_search">Search</string>
+    <string name="please_enter">Please enter</string>
 
-    <string name="action_paste">粘贴</string>
-    <string name="action_copy">复制</string>
-    <string name="action_cut">剪切</string>
-    <string name="action_delete">删除</string>
-    <string name="action_rename">重命名</string>
+    <string name="action_paste">Paste</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_cut">Cut</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_rename">Rename</string>
 
-    <string name="action_redo">重做</string>
-    <string name="action_undo">撤销</string>
-    <string name="action_save">保存</string>
-    <string name="action_other_operate">其他操作</string>
+    <string name="action_redo">Redo</string>
+    <string name="action_other_operate">Other operate</string>
     <string name="action_helper">语法参考</string>
     <string name="action_preview">预览</string>
     <string name="action_edit">Edit</string>
     <string name="action_setting">设置</string>
-    <string name="about">About us</string>
+    <string name="about">About</string>
     <string name="clear_cache">Clear cache</string>
 
     <string name="copy_right" translatable="false">Copyrights © 2016</string>
@@ -180,6 +177,8 @@
     <string name="prompt_verification_code">Verification Code</string>
     <string name="prompt_password">Password</string>
     <string name="send_verification_code">Send Code</string>
+    <string name="send">Send</string>
+    <string name="help">Help</string>
 
     <string name="large_text">
         \n13除了从天降下仍旧在天的人子，没有人升过天。14摩西在旷野怎样举蛇，人子也必照样被举起来。15叫一切信他的都得永生。（或作叫一切信的人在他里面得永生）16神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生。17因为神差他的儿子降世，不是要定世人的罪，（或作审判世人下同）乃是要叫世人因他得救。18信他的人，不被定罪。不信的人，罪已经定了，因为他不信神独生子的名。19光来到世间，世人因自己的行为是恶的，不爱光倒爱黑暗，定他们的罪就是在此。20凡作恶的便恨光，并不来就光，恐怕他的行为受责备。21但行真理的必来就光，要显明他所行的是靠神而行。\n\n
@@ -225,73 +224,73 @@
     <string name="invite_menu_label">Invite</string>
 
     <!--tab layout gospel-->
-    <string name="_Gen">Gen</string>
-    <string name="_Exo">Exo</string>
-    <string name="_Lev">Lev</string>
-    <string name="_Num">Num</string>
-    <string name="_Deu">Deu</string>
-    <string name="_Jos">Jos</string>
-    <string name="_Jug">Jug</string>
-    <string name="_Rut">Rut</string>
-    <string name="_1Sa">1Sa</string>
-    <string name="_2Sa">2Sa</string>
-    <string name="_1Ki">1Ki</string>
-    <string name="_2Ki">2Ki</string>
-    <string name="_1Ch">1Ch</string>
-    <string name="_2Ch">2Ch</string>
-    <string name="_Ezr">Ezr</string>
-    <string name="_Neh">Neh</string>
-    <string name="_Est">Est</string>
+    <string name="_Gen">Genesis</string>
+    <string name="_Exo">Exodus</string>
+    <string name="_Lev">Leviticus</string>
+    <string name="_Num">Numbers</string>
+    <string name="_Deu">Deuteronomy</string>
+    <string name="_Jos">Joshua</string>
+    <string name="_Jug">Judges</string>
+    <string name="_Rut">Ruth</string>
+    <string name="_1Sa">1 Samuel</string>
+    <string name="_2Sa">2 Samuel</string>
+    <string name="_1Ki">1Kings</string>
+    <string name="_2Ki">2Kings</string>
+    <string name="_1Ch">1 Chronicles</string>
+    <string name="_2Ch">2 Chronicles</string>
+    <string name="_Ezr">Ezra</string>
+    <string name="_Neh">Nehemiah</string>
+    <string name="_Est">Esther</string>
     <string name="_Job">Job</string>
-    <string name="_Psm">Psm</string>
-    <string name="_Pro">Pro</string>
-    <string name="_Ecc">Ecc</string>
-    <string name="_Son">Son</string>
-    <string name="_Isa">Isa</string>
-    <string name="_Jer">Jer</string>
-    <string name="_Lam">Lam</string>
-    <string name="_Eze">Eze</string>
-    <string name="_Dan">Dan</string>
-    <string name="_Hos">Hos</string>
-    <string name="_Joe">Joe</string>
-    <string name="_Amo">Amo</string>
-    <string name="_Oba">Oba</string>
-    <string name="_Jon">Jon</string>
-    <string name="_Mic">Mic</string>
-    <string name="_Nah">Nah</string>
-    <string name="_Hab">Hab</string>
-    <string name="_Zep">Zep</string>
-    <string name="_Hag">Hag</string>
-    <string name="_Zec">Zec</string>
-    <string name="_Mal">Mal</string>
+    <string name="_Psm">Psalms</string>
+    <string name="_Pro">Proverbs</string>
+    <string name="_Ecc">Ecclesiastes</string>
+    <string name="_Son">Song of Songs</string>
+    <string name="_Isa">Isaiah</string>
+    <string name="_Jer">Jeremiah</string>
+    <string name="_Lam">Lamentations</string>
+    <string name="_Eze">Ezekiel</string>
+    <string name="_Dan">Daniel</string>
+    <string name="_Hos">\tHosea</string>
+    <string name="_Joe">Joel</string>
+    <string name="_Amo">Amos</string>
+    <string name="_Oba">Obadiah</string>
+    <string name="_Jon">Jonah</string>
+    <string name="_Mic">Micah</string>
+    <string name="_Nah">Nahum</string>
+    <string name="_Hab">Habakkuk</string>
+    <string name="_Zep">Zephaniah</string>
+    <string name="_Hag">Haggai</string>
+    <string name="_Zec">Zechariah</string>
+    <string name="_Mal">Malachi</string>
 
-    <string name="_Mat">Mat</string>
-    <string name="_Mak">Mak</string>
-    <string name="_Luk">Luk</string>
-    <string name="_Jhn">Jhn</string>
-    <string name="_Act">Act</string>
-    <string name="_Rom">Rom</string>
-    <string name="_1Co">1Co</string>
-    <string name="_2Co">2Co</string>
-    <string name="_Gal">Gal</string>
-    <string name="_Eph">Eph</string>
-    <string name="_Phl">Phl</string>
-    <string name="_Col">Col</string>
-    <string name="_1Ts">1Ts</string>
-    <string name="_2Ts">2Ts</string>
-    <string name="_1Ti">1Ti</string>
-    <string name="_2Ti">2Ti</string>
-    <string name="_Tit">Tit</string>
-    <string name="_Mon">Mon</string>
-    <string name="_Heb">Heb</string>
-    <string name="_Jas">Jas</string>
-    <string name="_1Pe">1Pe</string>
-    <string name="_2Pe">2Pe</string>
-    <string name="_1Jn">1Jn</string>
-    <string name="_2Jn">2Jn</string>
-    <string name="_3Jn">3Jn</string>
-    <string name="_Jud">Jud</string>
-    <string name="_Rev">Rev</string>
+    <string name="_Mat">Matthew</string>
+    <string name="_Mak">Mark</string>
+    <string name="_Luk">Luke</string>
+    <string name="_Jhn">John</string>
+    <string name="_Act">Acts</string>
+    <string name="_Rom">Romans</string>
+    <string name="_1Co">1 Corinthians</string>
+    <string name="_2Co">2 Corinthians</string>
+    <string name="_Gal">Galatians</string>
+    <string name="_Eph">Ephesians</string>
+    <string name="_Phl">Philippians</string>
+    <string name="_Col">Colossians</string>
+    <string name="_1Ts">1 Thessalonians</string>
+    <string name="_2Ts">2 Thessalonians</string>
+    <string name="_1Ti">1 Timothy</string>
+    <string name="_2Ti">2 Timothy</string>
+    <string name="_Tit">Titus</string>
+    <string name="_Phm">Philemon</string>
+    <string name="_Heb">Hebrews</string>
+    <string name="_Jas">James</string>
+    <string name="_1Pe">1 Peter</string>
+    <string name="_2Pe">2 Peter</string>
+    <string name="_1Jn">1 John</string>
+    <string name="_2Jn">2 John</string>
+    <string name="_3Jn">3 John</string>
+    <string name="_Jud">Jude</string>
+    <string name="_Rev">\tRevelation</string>
 
     <!--tab layout gospel detail-->
     <string name="_Hot_Review">Hot Review</string>
@@ -310,7 +309,7 @@
     <string name="description_start_voice_search">Start voice search</string>
     <string name="action_menu_overflow_description" msgid="2295659037509008453">More options</string>
     <string name="action_menu_back_from_search" msgid="1138551123844019647">"stoppen met zoeken"</string>
-    <string name="favorite">Favorite</string>
+    <string name="action_favorite">Favorite</string>
     <string name="translate">Translate</string>
     <string name="read">Read</string>
     <string name="toast_share">Shared</string>
@@ -377,4 +376,6 @@
     <string name="_Custom">Custom</string>
     <string name="topic">Topic</string>
     <string name="title_editor">Editor</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_save">Save</string>
 </resources>

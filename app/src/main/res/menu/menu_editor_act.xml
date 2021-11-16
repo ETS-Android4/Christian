@@ -18,6 +18,15 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".view.EditorActivity">
+
+    <item
+        android:id="@+id/menu_editor_options"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        android:orderInCategory="3"
+        android:title="@string/menu_more"
+        app:showAsAction="always"
+        app:tooltipText="@string/menu_more"></item>
+
     <item
         android:visible="false"
         android:id="@+id/action_other_operate"
@@ -28,7 +37,7 @@
 
     <item
         android:id="@+id/action_save"
-        android:orderInCategory="83"
+        android:orderInCategory="2"
         android:title="@string/action_save"
         android:icon="@drawable/ic_action_save"
         app:showAsAction="always"/>
@@ -41,12 +50,12 @@
         android:title="@string/action_share"
         app:showAsAction="never"/>
 
-    <item
+    <!--<item
         android:id="@+id/action_helper"
         android:icon="@drawable/ic_help_menu"
         android:orderInCategory="85"
         android:title="@string/action_helper"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 
 
     <!--<item-->

@@ -2,11 +2,9 @@ package com.christian.nav
 
 import android.app.Activity
 import android.content.Intent
-import android.view.Gravity
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.christian.HistoryAndMyArticlesActivity
@@ -71,7 +69,7 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
             showPopupMenu(
                     v, containerView.context as Activity, arrayOf(
                     containerView.context.getString(R.string.share),
-                    containerView.context.getString(R.string.favorite),
+                    containerView.context.getString(R.string.action_favorite),
                     containerView.context.getString(R.string.translate),
                     containerView.context.getString(R.string.read),
             ),

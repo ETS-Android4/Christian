@@ -37,42 +37,61 @@ public class PerformEditable implements View.OnClickListener {
     }
 
     public void perform(int id, Object... param) {
-        if (id == R.id.id_shortcut_console) {//代码行
-            performConsole();
-        } else if (id == R.id.id_shortcut_format_header_1) {//
-            H(1);
-        } else if (id == R.id.id_shortcut_format_header_2) {//
-            H(2);
-        } else if (id == R.id.id_shortcut_format_header_3) {//
-            H(3);
-        } else if (id == R.id.id_shortcut_format_header_4) {//
-            H(4);
-        } else if (id == R.id.id_shortcut_format_header_5) {//
-            H(5);
-        } else if (id == R.id.id_shortcut_format_header_6) {//
-            H(6);
-        } else if (id == R.id.id_shortcut_format_italic) {//斜体
-            performItalic();
-        } else if (id == R.id.id_shortcut_format_bold) {//粗体
-            performBold();
-        } else if (id == R.id.id_shortcut_list_bulleted) {//列表
-            performList("* ");
-        } else if (id == R.id.id_shortcut_format_numbers) {//数字列表
-            performList("1. ");
-        } else if (id == R.id.id_shortcut_format_quote) {//引用
-            performQuote();
-        } else if (id == R.id.id_shortcut_format_strikethrough) {//字体删除线
-            performStrikethrough();
-        } else if (id == R.id.id_shortcut_grid) {//插入表格
-            performInsertTable(param);
-        } else if (id == R.id.id_shortcut_insert_link) {//插入链接
-            performInsertLink(param);
-        } else if (id == R.id.id_shortcut_insert_photo) {//插入图片
-            performInsertPhoto(param);
-        } else if (id == R.id.id_shortcut_minus) {//插入分割线
-            performMinus();
-        } else if (id == R.id.id_shortcut_xml) {//xml
-            performXML();
+        switch (id) {
+            case R.id.id_shortcut_console://代码行
+                performConsole();
+                break;
+            case R.id.id_shortcut_format_header_1://
+                H(1);
+                break;
+            case R.id.id_shortcut_format_header_2://
+                H(2);
+                break;
+            case R.id.id_shortcut_format_header_3://
+                H(3);
+                break;
+            case R.id.id_shortcut_format_header_4://
+                H(4);
+                break;
+            case R.id.id_shortcut_format_header_5://
+                H(5);
+                break;
+            case R.id.id_shortcut_format_header_6://
+                H(6);
+                break;
+            case R.id.id_shortcut_format_italic://斜体
+                performItalic();
+                break;
+            case R.id.id_shortcut_format_bold://粗体
+                performBold();
+                break;
+            case R.id.id_shortcut_list_bulleted://列表
+                performList("* ");
+                break;
+            case R.id.id_shortcut_format_numbers://数字列表
+                performList("1. ");
+                break;
+            case R.id.id_shortcut_format_quote://引用
+                performQuote();
+                break;
+            case R.id.id_shortcut_format_strikethrough://字体删除线
+                performStrikethrough();
+                break;
+            case R.id.id_shortcut_grid://插入表格
+                performInsertTable(param);
+                break;
+            case R.id.id_shortcut_insert_link://插入链接
+                performInsertLink(param);
+                break;
+            case R.id.id_shortcut_insert_photo://插入图片
+                performInsertPhoto(param);
+                break;
+            case R.id.id_shortcut_minus://插入分割线
+                performMinus();
+                break;
+            case R.id.id_shortcut_xml://xml
+                performXML();
+                break;
         }
     }
 

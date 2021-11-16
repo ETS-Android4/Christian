@@ -18,10 +18,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+    <!--<item
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_action_preview_menu"
         android:orderInCategory="86"
         android:title="@string/action_edit"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 </menu>

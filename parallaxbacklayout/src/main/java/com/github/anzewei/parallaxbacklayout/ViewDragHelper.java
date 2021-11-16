@@ -1065,6 +1065,7 @@ public class ViewDragHelper {
         mVelocityTracker.addMovement(ev);
 
         switch (action) {
+            case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_DOWN: {
                 mLastX = ev.getX();
                 mLastY = ev.getY();
@@ -1088,7 +1089,7 @@ public class ViewDragHelper {
                 break;
             }
 
-            case MotionEvent.ACTION_POINTER_DOWN: {
+            /*case MotionEvent.ACTION_POINTER_DOWN: {
                 final int pointerId = ev.getPointerId(actionIndex);
                 final float x = ev.getX(actionIndex);
                 final float y = ev.getY(actionIndex);
@@ -1109,7 +1110,7 @@ public class ViewDragHelper {
                     }
                 }
                 break;
-            }
+            }*/
 
             case MotionEvent.ACTION_MOVE: {
                 float curX = ev.getX();
@@ -1131,6 +1132,8 @@ public class ViewDragHelper {
                         dy = y - mInitialMotionY[pointerId];
                     } catch (Exception e) {
                         e.printStackTrace();
+                        dx = 0;
+                        dy = 0;
                     }
 
                     reportNewEdgeDrags(dx, dy, pointerId);
@@ -1356,8 +1359,8 @@ public class ViewDragHelper {
     private boolean checkNewEdgeDrag(float delta, float odelta, int pointerId, int edge) {
         final float absDelta = Math.abs(delta);
         final float absODelta = Math.abs(odelta);
-
-        if ((mInitialEdgeTouched[pointerId] & edge) != edge || (mTrackingEdges & edge) == 0
+// reading from null array crashes app
+        if (mInitialEdgeTouched.length == 0 || (mInitialEdgeTouched[pointerId] & edge) != edge || (mTrackingEdges & edge) == 0
                 || (mEdgeDragsLocked[pointerId] & edge) == edge
                 || (mEdgeDragsInProgress[pointerId] & edge) == edge
                 || (absDelta <= mTouchSlop && absODelta <= mTouchSlop)) {

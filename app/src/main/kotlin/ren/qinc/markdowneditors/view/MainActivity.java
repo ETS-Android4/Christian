@@ -108,21 +108,21 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.menu_helper) {
-            CommonMarkdownActivity.startHelper(this);
-            return true;
-        } else if (itemId == R.id.menu_about) {
-            AboutActivity.startAboutActivity(this);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_helper:
+                CommonMarkdownActivity.startHelper(this);
+                return true;
+            case R.id.menu_about:
+                AboutActivity.startAboutActivity(this);
+                return true;
 //            case R.id.menu_setting:
 //                return true;
-        } else if (itemId == R.id.menu_update) {
-//            initUpdate(true);
-            return true;
-        } else if (itemId == R.id.other) {
-            AppContext.showSnackbar(getWindow().getDecorView(), "敬请期待");
-            return true;
+            case R.id.menu_update:
+//                initUpdate(true);
+                return true;
+            case R.id.other:
+                AppContext.showSnackbar(getWindow().getDecorView(), "敬请期待");
+                return true;
         }
         return super.onOptionsItemSelected(item);// || mCurrentFragment.onOptionsItemSelected(item);
     }

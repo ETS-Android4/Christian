@@ -21,7 +21,6 @@ import com.christian.util.ChristianUtil
 import com.christian.util.filterImageUrlThroughDetailPageContent
 import com.christian.util.restoreScrolledPositionOfDetailPage
 import com.christian.view.showPopupMenu
-import com.christian.view.toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -34,6 +33,7 @@ import kotlinx.android.synthetic.main.about_page_main_activity.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
+import org.jetbrains.anko.toast
 import ren.qinc.markdowneditors.view.EditorActivity
 import java.util.*
 
@@ -83,49 +83,57 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         meRef = firestore.collection(getString(R.string.gospels)).document(gospelTitle)
         startListening()
 
-        fab12.setOnClickListener {
-            val intent = Intent(this@NavDetailActivity, EditorActivity::class.java)
-            intent.putExtra(ChristianUtil.DOCUMENT_GOSPEL_PATH, gospelTitle)
-            startActivity(intent)
+        /*fab12.setOnClickListener {
+            toEditorActivity()
         }
         fab22.setOnClickListener {
-            dialog = BlurDialog.Builder()
-                    .radius(10f) //dp
-                    .isCancelable(true)
-                    .isOutsideCancelable(true)
-                    .message("Do you want delete this document?")
-                    .positiveClick {
-                        dialog.dismiss()
-                        val editor = getSharedPreferences("mImg", Context.MODE_PRIVATE).edit()
-                        editor.putString(gospelTitle, "")
-                        editor.apply()
-
-                        finish()
-                        firestore.collection(getString(R.string.gospels)).document(gospelTitle)
-                                .delete()
-                                .addOnSuccessListener {
-                                    debug { }
-                                }
-                                .addOnFailureListener { e ->
-                                    debug { e }
-                                }
-                    }
-                    .negativeClick {
-                        dialog.dismiss()
-                    }
-                    .dismissListener { /*Toast.makeText(this, "I have no idea about it!", Toast.LENGTH_SHORT).show()*/ }
-                    .type(BlurDialog.TYPE_DELETE)
-                    .build(this)
-            dialog.show()
+            deleteDocument()
         }
 
         if (auth.currentUser?.uid == userId) {
             menu_yellow.visibility = View.VISIBLE
         } else {
             menu_yellow.visibility = View.GONE
-        }
+        }*/
 
 //        fixAppBarLayoutElevation(header_layout)
+    }
+
+    private fun deleteDocument() {
+        dialog = BlurDialog.Builder()
+            .radius(10f) //dp
+            .isCancelable(true)
+            .isOutsideCancelable(true)
+            .message("Do you want delete this document?")
+            .positiveClick {
+                dialog.dismiss()
+                val editor = getSharedPreferences("mImg", MODE_PRIVATE).edit()
+                editor.putString(gospelTitle, "")
+                editor.apply()
+
+                finish()
+                firestore.collection(getString(R.string.gospels)).document(gospelTitle)
+                    .delete()
+                    .addOnSuccessListener {
+                        debug { }
+                    }
+                    .addOnFailureListener { e ->
+                        debug { e }
+                    }
+            }
+            .negativeClick {
+                dialog.dismiss()
+            }
+            .dismissListener { /*Toast.makeText(this, "I have no idea about it!", Toast.LENGTH_SHORT).show()*/ }
+            .type(BlurDialog.TYPE_DELETE)
+            .build(this)
+        dialog.show()
+    }
+
+    private fun toEditorActivity() {
+        val intent = Intent(this@NavDetailActivity, EditorActivity::class.java)
+        intent.putExtra(ChristianUtil.DOCUMENT_GOSPEL_PATH, gospelTitle)
+        startActivity(intent)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -157,19 +165,45 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 //                true
 //            }
             R.id.menu_options_nav_detail -> {
-                showPopupMenu(
-                    findViewById(R.id.menu_options_nav_detail), this@NavDetailActivity, arrayOf(
-                        getString(R.string.share),
-                        getString(R.string.favorite),
-                        getString(R.string.translate),
-                        getString(R.string.read),
-                    ),
-                    XPopupUtils.dp2px(this, -48f),
-                    onSelectListener = object : OnSelectListener {
-                        override fun onSelect(position: Int, text: String) {
+                val onSelectListener = object : OnSelectListener {
+                    override fun onSelect(position: Int, text: String) {
+                        when(position) {
+                            0 -> {
+                                toast(getString(R.string.action_share))
+                            }
+                            1 -> {
+                                toast(getString(R.string.action_favorite))
+                            }
+                            2 -> {
+                                toEditorActivity()
+                            }
+                            3 -> {
+                                deleteDocument()
+                            }
                         }
                     }
-                )
+                }
+                if (auth.currentUser?.uid == userId) {
+                    showPopupMenu(
+                        findViewById(R.id.menu_options_nav_detail), this@NavDetailActivity, arrayOf(
+                            getString(R.string.action_share),
+                            getString(R.string.action_favorite),
+                            getString(R.string.action_edit),
+                            getString(R.string.action_delete),
+                        ),
+                        XPopupUtils.dp2px(this, -48f),
+                        onSelectListener = onSelectListener
+                    )
+                } else {
+                    showPopupMenu(
+                        findViewById(R.id.menu_options_nav_detail), this@NavDetailActivity, arrayOf(
+                            getString(R.string.action_share),
+                            getString(R.string.action_favorite),
+                        ),
+                        XPopupUtils.dp2px(this, -48f),
+                        onSelectListener = onSelectListener
+                    )
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -228,7 +262,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         gospelTitle = meBean.name
         gospelContent = meBean.content
 //        items.add(Category(gospelTitle))
-        items.add(Card("<h3>$gospelTitle</h3><br>$gospelContent<br>${meBean.author}·${meBean.church}·${meBean.time}"))
+        items.add(Card(gospelContent))
 
         gospelAuthor = meBean.author
         gospelChurch = meBean.church
@@ -262,6 +296,6 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         userId = intent.getStringExtra(getString(R.string.userId)) ?: ""
 
 //        collapsingToolbar.subtitle = gospelAuthor
-        collapsingToolbar.title = gospelCategory
+        collapsingToolbar.title = gospelTitle
     }
 }

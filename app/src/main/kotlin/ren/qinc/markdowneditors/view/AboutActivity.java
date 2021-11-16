@@ -88,10 +88,13 @@ public class AboutActivity extends BaseToolbarActivity {
     @OnClick({R.id.contact_me, R.id.ad_contact_me})
     protected void contackMe(View v) {
         String subject = null;
-        if (v.getId() == R.id.ad_contact_me) {
-            subject = "广告联系";
-        } else {
-            subject = "MarkdownEditor用户";
+        switch (v.getId()) {
+            case R.id.ad_contact_me:
+                subject = "广告联系";
+                break;
+            default:
+                subject = "MarkdownEditor用户";
+                break;
         }
 
         Uri uri = Uri.parse(MAIL);

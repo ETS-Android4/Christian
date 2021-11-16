@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.viewpager.widget.ViewPager
@@ -15,7 +14,6 @@ import com.christian.R
 import com.christian.data.MeBean
 import com.christian.data.Setting
 import com.christian.nav.*
-import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
@@ -169,7 +167,7 @@ open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragme
     private fun initRv() {
         item_nav_me_favorite.setOnClickListener {
             val i = Intent(context, HistoryAndMyArticlesActivity::class.java)
-            i.putExtra(toolbarTitle, getString(R.string.favorite))
+            i.putExtra(toolbarTitle, getString(R.string.action_favorite))
             context?.startActivity(i)
         }
         item_nav_me_history.setOnClickListener {

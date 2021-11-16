@@ -42,12 +42,15 @@ import com.christian.R;
 import com.christian.util.ChristianUtil;
 import com.christian.util.UtilsKt;
 import com.christian.view.CustomViewPager;
+import com.christian.view.ViewUtilKt;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.lxj.xpopup.util.XPopupUtils;
 import com.vincent.blurdialog.BlurDialog;
 
 import org.jetbrains.annotations.NotNull;
@@ -314,7 +317,37 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 mActionOtherOperate.setIcon(R.drawable.ic_arrow_down);
             mExpandLayout.toggle();
             return true;
-        } else if (itemId == R.id.action_preview) {//预览
+        } else if (itemId == R.id.menu_editor_options) {
+            if (mViewPager.getCurrentItem() == 0) {
+                ViewUtilKt.showPopupMenu(findViewById(R.id.menu_editor_options), this, new String[]{getString(R.string.action_share), getString(R.string.action_helper), getString(R.string.action_preview)}, XPopupUtils.dp2px(this, -48f), (position, text) -> {
+                    switch (position) {
+                        case 0:
+//                            mViewPager.getCurr
+                            break;
+                        case 1:
+                            CommonMarkdownActivity.startHelper(this);
+                            break;
+                        case 2:
+                            mViewPager.setCurrentItem(1, true);
+                            break;
+                    }
+                });
+            } else if (mViewPager.getCurrentItem() == 1) {
+                ViewUtilKt.showPopupMenu(findViewById(R.id.menu_editor_options), this, new String[]{getString(R.string.action_share), getString(R.string.action_helper), getString(R.string.action_edit)}, XPopupUtils.dp2px(this, -48f), (position, text) -> {
+                    switch (position) {
+                        case 0:
+                            break;
+                        case 1:
+                            CommonMarkdownActivity.startHelper(this);
+                            break;
+                        case 2:
+                            mViewPager.setCurrentItem(0, true);
+                            break;
+                    }
+                });
+            }
+        }
+     /*   else if (itemId == R.id.action_preview) {//预览
             mViewPager.setCurrentItem(1, true);
             return true;
         } else if (itemId == R.id.action_edit) {//编辑
@@ -325,7 +358,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             return true;
 //            case R.id.action_setting://设置
 //                return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -536,4 +569,5 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         UtilsKt.dispatchTouchEvent( this, ev);
         return super.dispatchTouchEvent(ev);
     }
+
 }
