@@ -21,11 +21,18 @@
 
     <item
         android:id="@+id/menu_editor_options"
+        android:icon="@drawable/ic_baseline_send_24"
+        android:orderInCategory="3"
+        android:title="@string/send"
+        app:showAsAction="always"
+        app:tooltipText="@string/send"></item>
+    <!--<item
+        android:id="@+id/menu_editor_options"
         android:icon="@drawable/ic_more_vert_black_24dp"
         android:orderInCategory="3"
         android:title="@string/menu_more"
         app:showAsAction="always"
-        app:tooltipText="@string/menu_more"></item>
+        app:tooltipText="@string/menu_more"></item>-->
 
     <item
         android:visible="false"
@@ -43,12 +50,12 @@
         app:showAsAction="always"/>
 
 
-    <item
+    <!--<item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share_menu"
         android:orderInCategory="84"
         android:title="@string/action_share"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 
     <!--<item
         android:id="@+id/action_helper"

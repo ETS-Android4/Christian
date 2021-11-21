@@ -371,9 +371,13 @@ public class PerformEditable implements View.OnClickListener {
     }
 
     private boolean hasNewLine(String source, int selectionStart) {
-        if (source.isEmpty()) return true;
-        source = source.substring(0, selectionStart);
-        return source.charAt(source.length() - 1) == 10;
+        if (source.isEmpty()) {
+            return true;
+        } else {
+            if (selectionStart == 0) return true;
+            source = source.substring(0, selectionStart);
+            return source.charAt(source.length() - 1) == 10;
+        }
     }
 
     private boolean hasNewTwoLine(String source, int selectionStart) {

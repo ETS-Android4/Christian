@@ -30,7 +30,7 @@ import ren.qinc.markdowneditors.utils.Check;
  */
 public class PerformInputAfter {
 
-    private final Editable editable;
+    private final EditText editText;
     private boolean flag = false;
     int numCount = 1; //胡乱写的计数逻辑
 
@@ -40,7 +40,7 @@ public class PerformInputAfter {
 
     private PerformInputAfter(@NonNull EditText editText) {
         Check.CheckNull(editText, "EditText不能为空");
-        editable = editText.getText();
+        this.editText = editText;
         editText.addTextChangedListener(new Watcher());
     }
 
@@ -98,9 +98,7 @@ public class PerformInputAfter {
         flag = true;
         if ("\n".equals(charSequence.toString())) {
             //用户输入回车
-           performAddEnter(editable, source, start);
-
-
+           performAddEnter(editText.getText(), source, start);
         }
         flag = false;
     }

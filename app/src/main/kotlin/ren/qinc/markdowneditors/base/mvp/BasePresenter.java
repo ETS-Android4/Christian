@@ -47,9 +47,12 @@ public class BasePresenter<T extends IMvpView> implements IPresenter<T> {
 
     @Override
     public void detachView() {
-        this.mCompositeSubscription.unsubscribe();
-        this.mCompositeSubscription = null;
-        this.mMvpView = null;
+        if (mCompositeSubscription != null) {
+            this.mCompositeSubscription.unsubscribe();
+            this.mCompositeSubscription = null;
+        }
+        if (mMvpView != null)
+            this.mMvpView = null;
     }
 
     public boolean isViewAttached() {

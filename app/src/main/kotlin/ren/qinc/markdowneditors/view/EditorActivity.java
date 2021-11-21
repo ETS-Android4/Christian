@@ -143,6 +143,8 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 if (position == 1) {
                     RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_NOTIFY));
                 }
+
+                mExpandLayout.toggle();
             }
 
             @Override
