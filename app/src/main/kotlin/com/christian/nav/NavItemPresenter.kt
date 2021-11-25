@@ -4,6 +4,7 @@ package com.christian.nav
  * Created by christian on 19-5-31.
  */
 
+import android.util.Log
 import com.christian.R
 import org.jetbrains.anko.AnkoLogger
 
@@ -67,12 +68,16 @@ fun generateUrlIdNightMode(url: String?): Int {
 /**
  * item animation
  */
-private var loadNextPage: Boolean = true
+//private var loadNextPage: Boolean = true
 var mPosition = 0
 fun applyViewHolderAnimation(holder: NavItemView) {
-    if (loadNextPage)
-        if (holder.adapterPosition > mPosition) {
-            holder.animateItemView(holder.itemView)
-        }
+//    if (loadNextPage)
+    Log.d("NavItemPresenter", "adapterPosition: ${holder.adapterPosition}")
+    Log.d("NavItemPresenter", "mPosition: $mPosition")
+    if (holder.adapterPosition >= mPosition) {
+        holder.animateItemView(holder.itemView)
+    } else {
+        holder.clearItemAnimation(holder.itemView)
+    }
     mPosition = holder.adapterPosition
 }
