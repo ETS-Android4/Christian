@@ -218,54 +218,92 @@ fun makeViewBlur(view: BlurView, parent: ViewGroup, window: Window, boolean: Boo
             .setHasFixedTransformationMatrix(boolean)
 }
 
+private fun setToolbarVisibility(navActivity: NavActivity, visibility: Boolean) {
+    if (visibility) {
+//                navActivity.abl_nav.addOnOffsetChangedListener(navActivity.appBarLayoutOnOffsetChangedListener)
+        navActivity.tb_nav.visibility = View.VISIBLE
+        navActivity.tb_nav.postDelayed({
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                navActivity.abl_nav.elevation = navActivity.dip(4).toFloat()
+            }
+        }, 0)
+    } else {
+//        navActivity.abl_nav.removeOnOffsetChangedListener(navActivity.appBarLayoutOnOffsetChangedListener)
+        navActivity.tb_nav.visibility = View.GONE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            navActivity.abl_nav.elevation = navActivity.dip(0).toFloat()
+        }
+    }
+}
+private fun setTabLayoutVisibility(navActivity: NavActivity, visibility: Boolean) {
+    if (visibility) {
+        navActivity.tl_nav_wrapper.visibility = View.VISIBLE
+    } else {
+        navActivity.tl_nav_wrapper.visibility = View.GONE
+    }
+}
+
+private fun setPortraitLayoutVisibility(navActivity: NavActivity, visibility: Boolean) {
+    if (visibility) {
+        navActivity.portrait_nav.visibility = View.VISIBLE
+    } else {
+        navActivity.portrait_nav.visibility = View.GONE
+    }
+}
 /**
  * utils to expand a toolbar
  */
-fun setTabLayoutExpanded(context: Context, position: Int) {
+fun initAppBarLayout(context: Context, position: Int) {
     val navActivity = context as NavActivity
     navActivity.info {
         "setTabLayoutExpanded$position"
     }
+    setToolbarVisibility(navActivity, true)
+    setTabLayoutVisibility(navActivity, false)
+    setPortraitLayoutVisibility(navActivity, false)
     when (position) {
+
         VIEW_HOME -> {
-            setToolbarExpanded(navActivity, true)
+            /*setToolbarExpanded(navActivity, true)
             setTabLayoutExpanded(context, false, 0)
             setPortraitExpanded(context, false, 0)
 
             val time = getDelayTime(context)
 
             navActivity.tl_nav.postDelayed({
-            }, time)
+            }, time)*/
         }
         VIEW_GOSPEL -> {
-            setToolbarExpanded(navActivity, true)
+            setTabLayoutVisibility(navActivity, true)
+            /*setToolbarExpanded(navActivity, true)
             setPortraitExpanded(context, false, 0L)
 
             val time = getDelayTime(context)
 
             navActivity.tl_nav.postDelayed({
                 setTabLayoutExpanded(context, true)
-            }, time)
+            }, time)*/
         }
         VIEW_DISCIPLE -> {
-            setToolbarExpanded(navActivity, true)
+            /*setToolbarExpanded(navActivity, true)
             setTabLayoutExpanded(context, false, 0)
             setPortraitExpanded(context, false, 0)
 
             val time = getDelayTime(context)
 
             navActivity.tl_nav.postDelayed({
-            }, time)
+            }, time)*/
         }
         VIEW_ME -> {
-            setTabLayoutExpanded(context, false, 0L)
+            setPortraitLayoutVisibility(navActivity, true)
+            /*setTabLayoutExpanded(context, false, 0L)
             setToolbarExpanded(navActivity, true)
 
             val time = getDelayTime(context)
 
             navActivity.tl_nav.postDelayed({
                 setPortraitExpanded(context, true)
-            }, time)
+            }, time)*/
         }
     }
 }
@@ -514,6 +552,7 @@ private fun expandedAnimationToolbar(navActivity: NavActivity, expanded: Boolean
     })
 }
 
+@SuppressLint("SoonBlockedPrivateApi")
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 fun userManagerMemoryLeakFix(navActivity: NavActivity) {
     val userManager = BaseApplication.context.getSystemService(Context.USER_SERVICE) as UserManager
@@ -531,6 +570,7 @@ fun userManagerMemoryLeakFix(navActivity: NavActivity) {
     navActivity.info { "mContext2, ${mContext.get(userManager)}" }
 }
 
+@SuppressLint("SoonBlockedPrivateApi")
 fun inputMethodManagerMemoryLeakFix() {
     val inputMethodManager = BaseApplication.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     val clazz = InputMethodManager::class.java
@@ -539,6 +579,7 @@ fun inputMethodManagerMemoryLeakFix() {
     mNextServedView.set(inputMethodManager, null)
 }
 
+@SuppressLint("SoonBlockedPrivateApi")
 fun locationManagerMemoryLeakFix(navActivity: NavActivity) {
     val locationManager = BaseApplication.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val mContext = locationManager.javaClass.getDeclaredField("mContext")

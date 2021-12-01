@@ -96,6 +96,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
     override fun initView() {
         debug { "nav fragment is $this and navId is $navId --initView" }
+        mPosition = 0
         when (navId) {
             VIEW_ME -> {
                 initPortrait()

@@ -12,7 +12,7 @@ class HistoryAndMyArticlesActivity : SwipeBackActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_and_my_articles_activity)
-        setToolbarAsUp(this, settings_toolbar, intent.getStringExtra(toolbarTitle))
+        setToolbarAsUp(this, settings_toolbar, intent.getStringExtra(toolbarTitle) ?: getString(R.string.app_name))
         fixToolbarElevation(settings_abl)
     }
 }

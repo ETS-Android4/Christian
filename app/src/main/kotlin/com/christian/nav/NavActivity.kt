@@ -101,11 +101,11 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     companion object {
         class StaticHandler(navActivity: NavActivity) : Handler() {
             private val navActivityWeakReference = WeakReference<NavActivity>(navActivity)
-            override fun handleMessage(msg: Message?) {
-                when (msg?.what) {
+            override fun handleMessage(msg: Message) {
+                when (msg.what) {
                     MESSAGE_SET_TOOLBAR_EXPANDED -> {
                         navActivityWeakReference.get()?.info { "setTabLayoutExpanded--${msg.arg1}" }
-                        navActivityWeakReference.get()?.let { setTabLayoutExpanded(it, msg.arg1) }
+                        navActivityWeakReference.get()?.let { initAppBarLayout(it, msg.arg1) }
                     }
                 }
             }

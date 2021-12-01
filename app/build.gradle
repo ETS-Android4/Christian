@@ -11,7 +11,7 @@ android {
         pickFirst 'lib/mips/librsjni.so' //More than one file was found with OS independent path 'lib/mips/librsjni.so'
         pickFirst 'lib/mips/libRSSupport.so' //More than one file was found with OS independent path 'lib/mips/librsjni.so'
     }
-    compileSdkVersion 29
+    compileSdkVersion 31
     buildToolsVersion '28.0.3'
 
 //    buildFeatures {
