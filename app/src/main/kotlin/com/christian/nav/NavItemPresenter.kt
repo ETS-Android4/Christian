@@ -74,7 +74,7 @@ fun applyViewHolderAnimation(holder: NavItemView) {
 //    if (loadNextPage)
     Log.d("NavItemPresenter", "adapterPosition: ${holder.adapterPosition}")
     Log.d("NavItemPresenter", "mPosition: $mPosition")
-    if (holder.adapterPosition >= mPosition) {
+    if (holder.adapterPosition > mPosition) {
         holder.animateItemView(holder.itemView)
     } else {
         holder.clearItemAnimation(holder.itemView)
