@@ -7,8 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".nav.NavActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <eightbitlab.com.blurview.BlurViewExtendsAppBarLayout
         android:id="@+id/abl_nav"
+        app:blurOverlayColor="@color/colorOverlay"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="4dp"
@@ -16,6 +18,7 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/ctl_nav"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -59,30 +62,20 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tl_nav_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:contentInsetStart="0dp"
-            app:layout_collapseMode="pin"
+        <com.christian.view.CustomTabLayout
+            android:id="@+id/tl_nav"
             android:visibility="gone"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/title_home"
-            tools:showIn="@layout/home_frag">
-
-            <com.christian.view.CustomTabLayout
-                android:id="@+id/tl_nav"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/action_bar_height"
-                android:theme="@style/AppTheme.AppBarOverlay"
-                app:tabIndicatorColor="@color/white"
-                app:tabMode="scrollable" />
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_height"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="@android:color/primary_text_light"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabMode="scrollable" />
+    </eightbitlab.com.blurview.BlurViewExtendsAppBarLayout>
 
     <com.christian.view.BounceBackViewPager
+        android:layout_marginTop="-56dp"
         android:id="@+id/vp_nav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

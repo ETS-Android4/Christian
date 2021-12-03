@@ -237,9 +237,9 @@ private fun setToolbarVisibility(navActivity: NavActivity, visibility: Boolean) 
 }
 private fun setTabLayoutVisibility(navActivity: NavActivity, visibility: Boolean) {
     if (visibility) {
-        navActivity.tl_nav_wrapper.visibility = View.VISIBLE
+        navActivity.tl_nav.visibility = View.VISIBLE
     } else {
-        navActivity.tl_nav_wrapper.visibility = View.GONE
+        navActivity.tl_nav.visibility = View.GONE
     }
 }
 
@@ -259,7 +259,7 @@ fun initAppBarLayout(context: Context, position: Int) {
         "setTabLayoutExpanded$position"
     }
     setToolbarVisibility(navActivity, true)
-    setTabLayoutVisibility(navActivity, false)
+    setTabLayoutVisibility(navActivity, true)
     setPortraitLayoutVisibility(navActivity, false)
     when (position) {
 
@@ -274,7 +274,6 @@ fun initAppBarLayout(context: Context, position: Int) {
             }, time)*/
         }
         VIEW_GOSPEL -> {
-            setTabLayoutVisibility(navActivity, true)
             /*setToolbarExpanded(navActivity, true)
             setPortraitExpanded(context, false, 0L)
 

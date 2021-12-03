@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager
 import com.christian.R
 import com.christian.data.MeBean
 import com.christian.data.Setting
+import com.christian.util.ChristianUtil
 import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -165,15 +166,15 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     private fun initRv() {
         when (navId) {
             VIEW_HOME -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(64)))
                 loadGospelsFromTabId(navId)
                 gospelAdapter.startListening()
                 v.fragment_nav_rv.adapter = gospelAdapter
             }
             VIEW_GOSPEL -> {
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(left = 0, top = ChristianUtil.dpToPx(56), right = 0, bottom = 0))
             }
             VIEW_DISCIPLE -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
             }
             VIEW_ME -> {
                 v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))

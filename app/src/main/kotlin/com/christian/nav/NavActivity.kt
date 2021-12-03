@@ -26,6 +26,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.kotlinpermissions.KotlinPermissions
+import eightbitlab.com.blurview.makeViewBlurExtendsAppBarLayout
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_activity.view.*
@@ -295,6 +296,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     private fun initAbl() {
+        makeViewBlurExtendsAppBarLayout(abl_nav, cl_nav, window, true)
         tb_nav.setOnClickListener(object : DoubleClickListener() {
             override fun onDoubleClick(v: View) {
                 scrollRvToTop(this@NavActivity)
