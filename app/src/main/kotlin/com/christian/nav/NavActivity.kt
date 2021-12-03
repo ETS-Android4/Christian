@@ -296,7 +296,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     private fun initAbl() {
-        makeViewBlurExtendsAppBarLayout(abl_nav, cl_nav, window, true)
+        makeViewBlurExtendsAppBarLayout(abl_nav, cl_nav, window)
         tb_nav.setOnClickListener(object : DoubleClickListener() {
             override fun onDoubleClick(v: View) {
                 scrollRvToTop(this@NavActivity)

@@ -172,19 +172,21 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 v.fragment_nav_rv.adapter = gospelAdapter
             }
             VIEW_GOSPEL -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(left = 0, top = ChristianUtil.dpToPx(56), right = 0, bottom = 0))
+//                Gospel不在这里控制，在下面的id从4..69的地方控制
             }
             VIEW_DISCIPLE -> {
+//                Disciple不在这里控制，有自己的DiscipleFragment
             }
             VIEW_ME -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+//                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
 
                 meAdapter = firestoreRecyclerAdapter()
                 meAdapter.startListening()
                 v.fragment_nav_rv.adapter = meAdapter
             }
             in 4..69 -> { // Gospel Page's Fragment's navId
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(64)))
+
                 loadGospelsFromTabId(navId)
             }
         }
