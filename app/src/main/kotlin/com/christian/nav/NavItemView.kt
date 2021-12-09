@@ -131,7 +131,7 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
         tv_detail_nav_item.text = gospel.content
                 .replace(Regex("!\\[.+\\)"), "")
                 .replace(Regex("\\s+"), "")
-        textView.text = gospel.author + "·" + gospel.church + "·" + gospel.time
+        textView.text = gospel.author + "·" + gospel.time
 //        textView2.text = gospel.church
 //        textView3.text = gospel.time
         containerView.setOnClickListener {

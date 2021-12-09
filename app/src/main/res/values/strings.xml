@@ -251,7 +251,7 @@
     <string name="_Lam">Lamentations</string>
     <string name="_Eze">Ezekiel</string>
     <string name="_Dan">Daniel</string>
-    <string name="_Hos">\tHosea</string>
+    <string name="_Hos">Hosea</string>
     <string name="_Joe">Joel</string>
     <string name="_Amo">Amos</string>
     <string name="_Oba">Obadiah</string>
@@ -290,7 +290,7 @@
     <string name="_2Jn">2 John</string>
     <string name="_3Jn">3 John</string>
     <string name="_Jud">Jude</string>
-    <string name="_Rev">\tRevelation</string>
+    <string name="_Rev">Revelation</string>
 
     <!--tab layout gospel detail-->
     <string name="_Hot_Review">Hot Review</string>
@@ -378,4 +378,13 @@
     <string name="title_editor">Editor</string>
     <string name="action_undo">Undo</string>
     <string name="action_save">Save</string>
+    <string name="tab_recommendation">Recommendation</string>
+    <string name="tab_chat">Chat</string>
+    <string name="tab_my_reading">My Reading</string>
+    <string name="tab_my_communication">My Communication</string>
+    <string name="tab_sermon">Sermon</string>
+    <string name="tab_sentiment">Sentiment</string>
+    <string name="tab_technology">Technology</string>
+    <string name="tab_qa"><![CDATA[Q&A]]></string>
+    <string name="tab_marriage">Marriage</string>
 </resources>

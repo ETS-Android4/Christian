@@ -104,4 +104,13 @@
     <string name="title_book">主题</string>
     <string name="title_chat">门徒</string>
     <string name="title_me">我的</string>
+    <string name="tab_recommendation">推荐</string>
+    <string name="tab_chat">聊天</string>
+    <string name="tab_my_reading">我的阅读</string>
+    <string name="tab_my_communication">我的通讯</string>
+    <string name="tab_sermon">讲道</string>
+    <string name="tab_sentiment">感悟</string>
+    <string name="tab_technology">技术</string>
+    <string name="tab_qa">问答</string>
+    <string name="tab_marriage">婚姻</string>
 </resources>

@@ -25,6 +25,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.kotlinpermissions.KotlinPermissions
 import eightbitlab.com.blurview.makeViewBlurExtendsAppBarLayout
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
@@ -159,8 +160,115 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
             }*/
         }
     }
+    private fun initTl(position: Int) {
+        when (position) {
+            VIEW_HOME -> {
+                tabTitleList = arrayListOf(
+                    getString(R.string.tab_recommendation),
+                    getString(R.string.tab_sermon),
+                    getString(R.string.tab_sentiment),
+//                    getString(R.string.tab_technology),
+                )
+                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+            }
+            VIEW_GOSPEL -> {
+                tabTitleList = arrayListOf(
+                    getString(R.string._Gen),
+                    getString(R.string._Exo),
+                    getString(R.string._Lev),
+                    getString(R.string._Num),
+                    getString(R.string._Deu),
+                    getString(R.string._Jos),
+                    getString(R.string._Jug),
+                    getString(R.string._Rut),
+                    getString(R.string._1Sa),
+                    getString(R.string._2Sa),
+                    getString(R.string._1Ki),
+                    getString(R.string._2Ki),
+                    getString(R.string._1Ch),
+                    getString(R.string._2Ch),
+                    getString(R.string._Ezr),
+                    getString(R.string._Neh),
+                    getString(R.string._Est),
+                    getString(R.string._Job),
+                    getString(R.string._Psm),
+                    getString(R.string._Pro),
+                    getString(R.string._Ecc),
+                    getString(R.string._Son),
+                    getString(R.string._Isa),
+                    getString(R.string._Jer),
+                    getString(R.string._Lam),
+                    getString(R.string._Eze),
+                    getString(R.string._Dan),
+                    getString(R.string._Hos),
+                    getString(R.string._Joe),
+                    getString(R.string._Amo),
+                    getString(R.string._Oba),
+                    getString(R.string._Jon),
+                    getString(R.string._Mic),
+                    getString(R.string._Nah),
+                    getString(R.string._Hab),
+                    getString(R.string._Zep),
+                    getString(R.string._Hag),
+                    getString(R.string._Zec),
+                    getString(R.string._Mal),
 
+                    getString(R.string._Mat),
+                    getString(R.string._Mak),
+                    getString(R.string._Luk),
+                    getString(R.string._Jhn),
+                    getString(R.string._Act),
+                    getString(R.string._Rom),
+                    getString(R.string._1Co),
+                    getString(R.string._2Co),
+                    getString(R.string._Gal),
+                    getString(R.string._Eph),
+                    getString(R.string._Phl),
+                    getString(R.string._Col),
+                    getString(R.string._1Ts),
+                    getString(R.string._2Ts),
+                    getString(R.string._1Ti),
+                    getString(R.string._2Ti),
+                    getString(R.string._Tit),
+                    getString(R.string._Phm),
+                    getString(R.string._Heb),
+                    getString(R.string._Jas),
+                    getString(R.string._1Pe),
+                    getString(R.string._2Pe),
+                    getString(R.string._1Jn),
+                    getString(R.string._2Jn),
+                    getString(R.string._3Jn),
+                    getString(R.string._Jud),
+                    getString(R.string._Rev)
+                )
+                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+            }
+            VIEW_DISCIPLE -> {
+                tabTitleList = arrayListOf(
+                    getString(R.string.tab_chat),
+                    getString(R.string.tab_qa),
+                    getString(R.string.tab_marriage),
+                )
+                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+            }
+            VIEW_ME -> {
+                tabTitleList = arrayListOf(
+                    getString(R.string.tab_my_reading),
+                    getString(R.string.tab_my_communication),
+                )
+                tl_nav.tabMode = TabLayout.MODE_FIXED
+                initPortrait()
+            }
+
+        }
+        tl_nav.removeAllTabs()
+        for (tabTitle in tabTitleList) {
+            tl_nav.newTab().setText(tabTitle).let { tl_nav.addTab(it) }
+        }
+    }
     private fun pageSelected(position: Int) {
+//        pageSelected这是一个重要方法，initTl这里进行TabLayout的UI初始化工作
+        initTl(position)
 
         when (position) {
             0 -> {
@@ -309,78 +417,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         setSupportActionBar(tb_nav)
         sbl_nav.visibility = View.GONE
 
-        tabTitleList = arrayListOf(
-                getString(R.string._Gen),
-                getString(R.string._Exo),
-                getString(R.string._Lev),
-                getString(R.string._Num),
-                getString(R.string._Deu),
-                getString(R.string._Jos),
-                getString(R.string._Jug),
-                getString(R.string._Rut),
-                getString(R.string._1Sa),
-                getString(R.string._2Sa),
-                getString(R.string._1Ki),
-                getString(R.string._2Ki),
-                getString(R.string._1Ch),
-                getString(R.string._2Ch),
-                getString(R.string._Ezr),
-                getString(R.string._Neh),
-                getString(R.string._Est),
-                getString(R.string._Job),
-                getString(R.string._Psm),
-                getString(R.string._Pro),
-                getString(R.string._Ecc),
-                getString(R.string._Son),
-                getString(R.string._Isa),
-                getString(R.string._Jer),
-                getString(R.string._Lam),
-                getString(R.string._Eze),
-                getString(R.string._Dan),
-                getString(R.string._Hos),
-                getString(R.string._Joe),
-                getString(R.string._Amo),
-                getString(R.string._Oba),
-                getString(R.string._Jon),
-                getString(R.string._Mic),
-                getString(R.string._Nah),
-                getString(R.string._Hab),
-                getString(R.string._Zep),
-                getString(R.string._Hag),
-                getString(R.string._Zec),
-                getString(R.string._Mal),
 
-                getString(R.string._Mat),
-                getString(R.string._Mak),
-                getString(R.string._Luk),
-                getString(R.string._Jhn),
-                getString(R.string._Act),
-                getString(R.string._Rom),
-                getString(R.string._1Co),
-                getString(R.string._2Co),
-                getString(R.string._Gal),
-                getString(R.string._Eph),
-                getString(R.string._Phl),
-                getString(R.string._Col),
-                getString(R.string._1Ts),
-                getString(R.string._2Ts),
-                getString(R.string._1Ti),
-                getString(R.string._2Ti),
-                getString(R.string._Tit),
-                getString(R.string._Phm),
-                getString(R.string._Heb),
-                getString(R.string._Jas),
-                getString(R.string._1Pe),
-                getString(R.string._2Pe),
-                getString(R.string._1Jn),
-                getString(R.string._2Jn),
-                getString(R.string._3Jn),
-                getString(R.string._Jud),
-                getString(R.string._Rev)
-        )
-        for (tabTitle in tabTitleList) {
-            tl_nav.newTab().setText(tabTitle).let { tl_nav.addTab(it) }
-        }
+
 
 //        UITools.elasticPadding(tl_nav, 500);
 //        OverScrollDecoratorHelper.setUpStaticOverScroll(tl_nav, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)

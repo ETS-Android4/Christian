@@ -63,13 +63,12 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.christian.view.CustomTabLayout
+            android:background="@android:color/transparent"
             android:id="@+id/tl_nav"
-            android:visibility="gone"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             android:layout_width="match_parent"
             android:layout_height="@dimen/action_bar_height"
             app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@android:color/primary_text_light"
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabMode="scrollable" />
     </eightbitlab.com.blurview.BlurViewExtendsAppBarLayout>
