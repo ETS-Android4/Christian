@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static eightbitlab.com.blurview.BlockingBlurController.TRANSPARENT;
 
+import com.christian.R;
 /**
  * FrameLayout that blurs its underlying content.
  * Can have children and draw them over blurred background.

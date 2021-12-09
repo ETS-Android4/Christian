@@ -478,7 +478,11 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     /*open fun showFAB() {
         fab_nav.show()
     }*/
-
+/*解决暗黑模式重启无首页标题*/
+    override fun onResume() {
+        super.onResume()
+        tb_nav.title = getString(R.string.title_home)
+    }
     open fun initBnv() {
 //        disableShiftMode(bnv_nav)
         /** 切换夜间模式重启的时候，需要通过设置currentItem来设置标题等一系列参数（但是无效，只能采用下一行的方式） */

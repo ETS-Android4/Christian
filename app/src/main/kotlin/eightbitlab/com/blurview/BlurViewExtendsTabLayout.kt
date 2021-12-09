@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.ColorInt
 import com.christian.R
+import com.christian.view.CustomTabLayout
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
-import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import eightbitlab.com.blurview.BlurController
 import eightbitlab.com.blurview.NoOpController
 import eightbitlab.com.blurview.BlockingBlurController
-import eightbitlab.com.blurview.BlurViewExtendsAppBarLayout
+import eightbitlab.com.blurview.BlurViewExtendsTabLayout
 import eightbitlab.com.blurview.BlurViewFacade
 
 /**
  * FrameLayout that blurs its underlying content.
  * Can have children and draw them over blurred background.
  */
-class BlurViewExtendsAppBarLayout : AppBarLayout {
+class BlurViewExtendsTabLayout : CustomTabLayout {
     private var blurController: BlurController = NoOpController()
 
     @ColorInt
@@ -79,7 +80,7 @@ class BlurViewExtendsAppBarLayout : AppBarLayout {
      * @param rootView root to start blur from.
      * Can be Activity's root content layout (android.R.id.content)
      * or (preferably) some of your layouts. The lower amount of Views are in the root, the better for performance.
-     * @return [BlurViewExtendsAppBarLayout] to setup needed params.
+     * @return [BlurViewExtendsTabLayout] to setup needed params.
      */
     fun setupWith(rootView: ViewGroup): BlurViewFacade {
         val blurController: BlurController = BlockingBlurController(this, rootView, overlayColor)
@@ -118,14 +119,13 @@ class BlurViewExtendsAppBarLayout : AppBarLayout {
     }
 
     companion object {
-        private val TAG = BlurViewExtendsAppBarLayout::class.java.simpleName
+        private val TAG = BlurViewExtendsTabLayout::class.java.simpleName
     }
 }
-
-fun makeViewBlurExtendsAppBarLayout(blurViewExtendsAppBarLayout: BlurViewExtendsAppBarLayout, parent: ViewGroup, window: Window, boolean: Boolean = false) {
+fun makeViewBlurExtendsTabLayout(blurViewExtendsTabLayout: BlurViewExtendsTabLayout, parent: ViewGroup, window: Window, boolean: Boolean = false) {
     val windowBackground = window.decorView.background
     val radius = 25f
-    blurViewExtendsAppBarLayout.setupWith(parent)
+    blurViewExtendsTabLayout.setupWith(parent)
         .setFrameClearDrawable(windowBackground)
         .setBlurAlgorithm(SupportRenderScriptBlur(parent.context))
         .setBlurRadius(radius)
