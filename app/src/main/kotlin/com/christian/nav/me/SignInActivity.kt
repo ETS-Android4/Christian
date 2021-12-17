@@ -51,7 +51,7 @@ class SignInActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         if (authResult != null) {
             // Welcome the user
             val user = authResult.user
-            Toast.makeText(this, "Welcome " + user.email!!, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Welcome " + user?.email, Toast.LENGTH_SHORT).show()
 
             // Go back to the main activity
             startActivity(Intent(this, NavActivity::class.java))

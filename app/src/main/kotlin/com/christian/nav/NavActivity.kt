@@ -245,7 +245,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
             }
             VIEW_DISCIPLE -> {
                 tabTitleList = arrayListOf(
-                    getString(R.string.tab_chat),
+                    getString(R.string.tab_messages),
                     getString(R.string.tab_qa),
                     getString(R.string.tab_marriage),
                 )
@@ -344,9 +344,9 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = true
                 invalidateSignInUI()
 
-                showFab()
+                hideFab()
 
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_help_24, theme))
+//                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_help_24, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccentRed,theme))
                 TooltipCompat.setTooltipText(activity_nav_fab, getString(R.string.help))
                 activity_nav_fab.setOnClickListener {}
@@ -481,7 +481,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 /*解决暗黑模式重启无首页标题*/
     override fun onResume() {
         super.onResume()
-        tb_nav.title = getString(R.string.title_home)
+        if (pageSelectedPosition == 0) tb_nav.title = getString(R.string.title_home)
     }
     open fun initBnv() {
 //        disableShiftMode(bnv_nav)
