@@ -65,6 +65,7 @@
         <com.christian.view.CustomTabLayout
             android:background="@android:color/transparent"
             android:id="@+id/tl_nav"
+            android:visibility="gone"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             android:layout_width="match_parent"
             android:layout_height="@dimen/action_bar_height"

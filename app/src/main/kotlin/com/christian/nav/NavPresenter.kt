@@ -259,7 +259,7 @@ fun initAppBarLayout(context: Context, position: Int) {
         "setTabLayoutExpanded$position"
     }
     setToolbarVisibility(navActivity, true)
-    setTabLayoutVisibility(navActivity, true)
+//    setTabLayoutVisibility(navActivity, true)
     setPortraitLayoutVisibility(navActivity, false)
     when (position) {
 

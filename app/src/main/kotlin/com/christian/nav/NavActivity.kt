@@ -165,14 +165,14 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
             VIEW_HOME -> {
                 tabTitleList = arrayListOf(
                     getString(R.string.tab_recommendation),
-                    getString(R.string.tab_sermon),
-                    getString(R.string.tab_sentiment),
+//                    getString(R.string.tab_sermon),
+//                    getString(R.string.tab_sentiment),
 //                    getString(R.string.tab_technology),
                 )
-                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+//                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
             }
             VIEW_GOSPEL -> {
-                tabTitleList = arrayListOf(
+                /*tabTitleList = arrayListOf(
                     getString(R.string._Gen),
                     getString(R.string._Exo),
                     getString(R.string._Lev),
@@ -241,30 +241,30 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                     getString(R.string._Jud),
                     getString(R.string._Rev)
                 )
-                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE*/
             }
             VIEW_DISCIPLE -> {
-                tabTitleList = arrayListOf(
+                /*tabTitleList = arrayListOf(
                     getString(R.string.tab_messages),
                     getString(R.string.tab_qa),
                     getString(R.string.tab_marriage),
                 )
-                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE
+                tl_nav.tabMode = TabLayout.MODE_SCROLLABLE*/
             }
             VIEW_ME -> {
-                tabTitleList = arrayListOf(
+                /*tabTitleList = arrayListOf(
                     getString(R.string.tab_my_reading),
                     getString(R.string.tab_my_communication),
                 )
-                tl_nav.tabMode = TabLayout.MODE_FIXED
+                tl_nav.tabMode = TabLayout.MODE_FIXED*/
                 initPortrait()
             }
 
         }
-        tl_nav.removeAllTabs()
-        for (tabTitle in tabTitleList) {
-            tl_nav.newTab().setText(tabTitle).let { tl_nav.addTab(it) }
-        }
+//        tl_nav.removeAllTabs()
+//        for (tabTitle in tabTitleList) {
+//            tl_nav.newTab().setText(tabTitle).let { tl_nav.addTab(it) }
+//        }
     }
     private fun pageSelected(position: Int) {
 //        pageSelected这是一个重要方法，initTl这里进行TabLayout的UI初始化工作
@@ -300,8 +300,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
-                hideFab()
-//                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_filter_list_black_24dp, theme))
+                showFab()
+                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_wifi_protected_setup_24, theme))
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
                 /*if (verticalOffset > -tb_nav.height)
                     fab_nav.hide()*/
@@ -404,7 +404,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     private fun initAbl() {
-        makeViewBlurExtendsAppBarLayout(abl_nav, cl_nav, window)
+//        makeViewBlurExtendsAppBarLayout(abl_nav, cl_nav, window)
         tb_nav.setOnClickListener(object : DoubleClickListener() {
             override fun onDoubleClick(v: View) {
                 scrollRvToTop(this@NavActivity)
@@ -502,7 +502,25 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     override fun showFab() {
         beforeShowFab()
-        activity_nav_fab.show()
+        when (pageSelectedPosition) {
+            VIEW_HOME -> {
+                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn()) {
+                    val navFragment = navFragmentPagerAdapter.currentFragment as NavFragment
+                    if(navFragment.isPageTop) {
+                        activity_nav_fab.show()
+                    }
+                }
+            }
+            VIEW_GOSPEL -> {
+                activity_nav_fab.show()
+            }
+            VIEW_DISCIPLE -> {
+                activity_nav_fab.show()
+            }
+            VIEW_ME -> {
+                activity_nav_fab.show()
+            }
+        }
     }
 
     private fun beforeShowFab() {

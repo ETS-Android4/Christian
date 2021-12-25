@@ -20,7 +20,6 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.nav_activity.*
-import kotlinx.android.synthetic.main.nav_activity.view.*
 import kotlinx.android.synthetic.main.nav_fragment.*
 import kotlinx.android.synthetic.main.nav_fragment.view.*
 import org.jetbrains.anko.debug
@@ -192,7 +191,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
         }
 
         v.fragment_nav_rv.isVerticalScrollBarEnabled = false
-        v.fragment_nav_rv.addOnScrollListener(object : HidingScrollListener(v.fragment_nav_rv) {
+        val onScrollListener = object : HidingScrollListener(v.fragment_nav_rv) {
 
             override fun onHide() {
 //                hideFab()
@@ -204,6 +203,9 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                     0 -> {
                         navActivity.hideFab()
                     }
+                    1 -> {
+                        navActivity.hideFab()
+                    }
                 }
             }
 
@@ -213,6 +215,11 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 isPageBottom = false
                 controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = true
+                when (navActivity.vp_nav.currentItem) {
+                    1 -> {
+                        navActivity.showFab()
+                    }
+                }
             }
 
             override fun onTop() {
@@ -230,7 +237,9 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = false
             }
-        })
+        }
+        v.fragment_nav_rv.clearOnScrollListeners()
+        v.fragment_nav_rv.addOnScrollListener(onScrollListener)
 
         val controller =
                 AnimationUtils.loadLayoutAnimation(navActivity, R.anim.layout_animation_from_right)
