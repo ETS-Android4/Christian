@@ -165,7 +165,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     private fun initRv() {
         when (navId) {
             VIEW_HOME -> {
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(64)))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(8)))
                 loadGospelsFromTabId(navId)
                 gospelAdapter.startListening()
                 v.fragment_nav_rv.adapter = gospelAdapter
@@ -184,7 +184,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 v.fragment_nav_rv.adapter = meAdapter
             }
             in 4..69 -> { // Gospel Page's Fragment's navId
-                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(64)))
+                v.fragment_nav_rv.addItemDecoration(ItemDecoration(top = ChristianUtil.dpToPx(8)))
 
                 loadGospelsFromTabId(navId)
             }

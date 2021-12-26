@@ -7,10 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".nav.NavActivity">
 
-    <eightbitlab.com.blurview.BlurViewExtendsAppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abl_nav"
-        app:blurOverlayColor="@color/colorOverlay"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="4dp"
@@ -18,7 +16,6 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/ctl_nav"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -72,10 +69,9 @@
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabMode="scrollable" />
-    </eightbitlab.com.blurview.BlurViewExtendsAppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.christian.view.BounceBackViewPager
-        android:layout_marginTop="-56dp"
         android:id="@+id/vp_nav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

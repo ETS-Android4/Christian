@@ -329,7 +329,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                             navFragmentPagerAdapter.currentFragment as DiscipleFragment
                         if (discipleFragment.mMessageEditText.text.isEmpty()) {
                             abl_nav.setExpanded(false, true)
-                            snackbar(getString(R.string.content_empty)).show()
+//                            snackbar(getString(R.string.content_empty)).show()
                             discipleFragment.mMessageEditText.requestFocusWithKeyboard()
                         } else {
                             discipleFragment.sendMessage()

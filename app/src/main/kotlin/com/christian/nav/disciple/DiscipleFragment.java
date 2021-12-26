@@ -267,7 +267,6 @@ public class DiscipleFragment extends NavFragment implements
         });
 
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mMessageRecyclerView.addItemDecoration(new ItemDecoration(ChristianUtil.dpToPx(8), ChristianUtil.dpToPx(64), ChristianUtil.dpToPx(8), ChristianUtil.dpToPx(8)));
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
         mMessageRecyclerView.setWillNotDraw(false);
         mMessageRecyclerView.addOnScrollListener(new HidingScrollListener(mMessageRecyclerView) {
