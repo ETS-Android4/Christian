@@ -46,7 +46,7 @@ class NavContract {
      */
     interface IPresenter : BaseContract.IPresenter<INavActivity> {
 
-        fun init(whichActivity: Int?, navFragment: NavFragment? = null)
+        fun init(whichActivity: Int?, gospelFragment: GospelFragment? = null)
 
         /**
          * Summary of business logic is db's CRUD

@@ -1,6 +1,5 @@
 package com.christian.nav.gospel
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -210,11 +209,13 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         }
     }
 
-    class NavDetailFragmentPagerAdapter(fm: FragmentManager) : NavActivity.NavFragmentPagerAdapter(fm) {
+    class NavDetailFragmentPagerAdapter(fm: FragmentManager) : NavActivity.NavFragmentPagerAdapter(
+        fm,
+    ) {
         override fun getItem(position: Int): Fragment {
             when (position) {
                 0 -> {
-                    val gospelDetailFragment = NavDetailFragment()
+                    val gospelDetailFragment = GospelDetailFragment()
                     return gospelDetailFragment
                 }
 //                1 -> {
@@ -233,7 +234,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
             when (position) {
                 0 -> {
-                    currentFragment = `object` as NavDetailFragment
+                    currentFragment = `object` as GospelDetailFragment
                 }
 //                1 -> {
 //                    currentFragment = `object` as GospelReviewFragment

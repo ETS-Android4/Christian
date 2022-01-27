@@ -17,24 +17,16 @@ package com.christian.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
-import android.text.Html;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 
-import com.christian.R;
-import com.christian.nav.NavActivity;
 import com.vincent.blurdialog.BlurDialog;
-import com.vincent.blurdialog.listener.OnItemClick;
-import com.vincent.blurdialog.listener.OnNegativeClick;
-import com.vincent.blurdialog.listener.OnPositiveClick;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -42,12 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import ren.qinc.markdowneditors.base.BaseApplication;
+import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.view.EditorActivity;
-import ren.qinc.markdowneditors.view.MainActivity;
 
 import static com.vincent.blurdialog.BlurDialog.TYPE_SINGLE_SELECT;
 
@@ -66,7 +56,7 @@ public class ChristianUtil {
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            field.set(BaseApplication.context.getSystemService(Context.USER_SERVICE), newValue);
+            field.set(CommonApp.context.getSystemService(Context.USER_SERVICE), newValue);
         }
 //        field.set(null, newValue);
     }
@@ -103,15 +93,7 @@ public class ChristianUtil {
     }
 
 
-    public static String getDateAndCurrentTime() {
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-//You can change "yyyyMMdd_HHmmss as per your requirement
-
-        String currentDateAndTime = sdf.format(new Date());
-        return currentDateAndTime;
-    }
 
     public static BlurDialog showWaitingDialog(EditorActivity editorActivity) {
         BlurDialog dialog = new BlurDialog.Builder()
@@ -147,7 +129,5 @@ public class ChristianUtil {
         return dialog;
     }
 
-    public static boolean getNightModeSP(Context context) {
-        return context.getSharedPreferences("switchNightModeIsOn", Context.MODE_PRIVATE).getBoolean("isOn", false);
-    }
+
 }

@@ -47,6 +47,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.christian.R;
+import com.christian.common.CommonApp;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -180,7 +181,7 @@ public class BaseWebActivity extends BaseToolbarActivity {
         if (title != null) setTitle(title);
 
         if (mProgressBar != null)
-            mProgressBar.setReachedBarColor(BaseApplication.color(R.color.colorPrimary));
+            mProgressBar.setReachedBarColor(CommonApp.color(R.color.colorPrimary));
 
         //设置滑动监听
         mWebView.setOnScrollChangedCallback((dx, dy, x, y) -> {//滑动监听

@@ -45,11 +45,11 @@ import com.christian.view.CustomViewPager;
 import com.christian.view.ViewUtilKt;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.vincent.blurdialog.BlurDialog;
 
@@ -63,8 +63,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.AppContext;
-import ren.qinc.markdowneditors.base.BaseApplication;
+
+import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.base.BaseToolbarActivity;
 import ren.qinc.markdowneditors.event.RxEvent;
 import ren.qinc.markdowneditors.event.RxEventBus;
@@ -188,7 +188,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     public void onFailure(int errorCode, String message, int flag) {
         switch (flag) {
             default:
-                BaseApplication.showSnackbar(getWindow().getDecorView(), message);
+                Snackbar.make(getWindow().getDecorView(), message, Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -434,7 +434,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 // Handle unsuccessful uploads
 
                 startSignInActivity();
-                AppContext.showSnackbar(EditorActivity.this.mViewPager, getString(R.string.upload_error));
+                Snackbar.make(EditorActivity.this.mViewPager, getString(R.string.upload_error), Snackbar.LENGTH_SHORT).show();
             }).addOnSuccessListener(taskSnapshot -> {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...

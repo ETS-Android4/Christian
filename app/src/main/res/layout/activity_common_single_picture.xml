@@ -21,12 +21,12 @@
     style="@style/root"
     android:background="#000">
 
-    <ren.qinc.foundation.lib.touchImageView.TouchImageView
+    <!--<ren.qinc.foundation.lib.touchImageView.TouchImageView
         android:id="@+id/picture"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/description" />
-    <include layout="@layout/view_common_toolbar_with_title_view" />
+    <include layout="@layout/view_common_toolbar_with_title_view" />-->
 
 </RelativeLayout>

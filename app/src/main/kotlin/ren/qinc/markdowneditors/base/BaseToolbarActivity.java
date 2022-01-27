@@ -28,6 +28,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.christian.R;
+import com.christian.common.CommonApp;
 import com.christian.util.ChristianUtil;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -123,7 +124,7 @@ public abstract class BaseToolbarActivity extends BaseActivity {
      */
     @NonNull
     protected String getTitleString() {
-        return BaseApplication.string(R.string.app_name);
+        return CommonApp.string(R.string.app_name);
     }
 
     /**

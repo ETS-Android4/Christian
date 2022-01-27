@@ -25,12 +25,16 @@
         <!--ads:adUnitId="@string/banner_ad_unit_id">-->
         <!--</com.google.android.gms.ads.AdView>-->
 
-
-        <include
-            layout="@layout/fragment_nav_rv"
+        <com.christian.multitype.CustomRecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/linearLayout" />
+            android:layout_above="@+id/linearLayout"
+            android:id="@+id/messageRecyclerView"
+            android:layoutAnimation="@anim/layout_animation_from_right"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:showIn="@layout/fragment_gospel" />
 
         <LinearLayout
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -58,13 +62,13 @@
                 android:maxEms="10000"
                 android:singleLine="false" />
 
-            <Button
+            <ImageView
                 android:id="@+id/sendButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:enabled="false"
-                android:text="SEND"
+                app:srcCompat="@drawable/ic_baseline_send_24"
                 android:visibility="gone" />
 
         </LinearLayout>

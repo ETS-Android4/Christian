@@ -21,6 +21,7 @@ import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.christian.R;
+import com.christian.common.CommonApp;
 
 import butterknife.Bind;
 
@@ -53,7 +54,7 @@ public abstract class BaseRefreshFragment extends BaseFragment {
     }
 
     protected int[] getColors() {
-        int[] colors = {BaseApplication.color(R.color.colorPrimary)};
+        int[] colors = {CommonApp.color(R.color.colorPrimary)};
         return colors;
     }
 

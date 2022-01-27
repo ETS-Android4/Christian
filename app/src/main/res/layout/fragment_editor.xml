@@ -44,12 +44,11 @@
                 <EditText
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
-                    android:layout_weight="1"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:id="@+id/et_editor_topic"
                     android:hint="@string/topic"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:scrollHorizontally="false"
                     android:singleLine="true"
                     android:textColor="@android:color/secondary_text_dark"
@@ -59,12 +58,24 @@
                     android:layout_gravity="center"
                     android:id="@+id/ib_editor_item"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="?selectableItemBackgroundBorderless"
                     android:includeFontPadding="false"
                     android:padding="8dp"
                     android:tint="@android:color/secondary_text_dark"
                     app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"/>
+
+                <EditText
+                    android:inputType="textMultiLine"
+                    style="@android:style/TextAppearance.Large"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:id="@+id/title"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/title"
+                    android:textSize="22sp" />
             </LinearLayout>
 
             <!--            <View-->
@@ -72,22 +83,6 @@
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="0.3dp"-->
             <!--                android:background="@color/colorDivider" />-->
-
-            <EditText
-                style="@android:style/TextAppearance.Large"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/title"
-                android:imeActionId="@+id/login"
-                android:inputType="text"
-                android:scrollHorizontally="false"
-                android:singleLine="true"
-                android:textSize="22sp" />
 
             <!--            <View-->
             <!--                android:layout_width="match_parent"-->
@@ -99,6 +94,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:id="@+id/author"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Author"
@@ -144,6 +140,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:id="@+id/content"
+                android:lineSpacingExtra="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/content"

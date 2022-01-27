@@ -1,6 +1,5 @@
 package com.christian.nav.gospel
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,24 +7,24 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import com.christian.R
 import com.christian.nav.NavActivity
-import com.christian.nav.NavFragment
+import com.christian.nav.GospelFragment
 import com.christian.view.GospelDetailItemDecoration
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreException
+import kotlinx.android.synthetic.main.fragment_gospel.view.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.nav_activity.*
-import kotlinx.android.synthetic.main.nav_fragment.view.*
 
 /**
  * MVVM-databinding架构开发
  * 福音详情页
  */
-class NavDetailFragment : NavFragment() {
+class GospelDetailFragment : GospelFragment() {
 
     companion object {
-        fun newInstance() = NavDetailFragment()
+        fun newInstance() = GospelDetailFragment()
     }
 
     private lateinit var viewModel: GospelDetailViewModel
@@ -43,7 +42,7 @@ class NavDetailFragment : NavFragment() {
         // Firestore
         // Get ${LIMIT} gospels
         gospelRef = navActivity.firestore.collection("gospels").document("2019.3.15 10:31")
-        gospelDetailAdapter = object : GospelDetailAdapter(gospelRef, this@NavDetailFragment.activity as NavActivity) {
+        gospelDetailAdapter = object : GospelDetailAdapter(gospelRef, this@GospelDetailFragment.activity as NavActivity) {
             override fun onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (itemCount == 0) {
@@ -79,10 +78,5 @@ class NavDetailFragment : NavFragment() {
     override fun onStop() {
         super.onStop()
         gospelDetailAdapter.stopListening()
-    }
-
-    override fun top() {
-        super.top()
-//        hideFab()
     }
 }

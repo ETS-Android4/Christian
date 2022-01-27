@@ -38,7 +38,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import ren.qinc.markdowneditors.base.BaseApplication;
+import com.christian.common.CommonApp;
 
 /**
  * 系统相关工具集合
@@ -61,7 +61,7 @@ public class SystemUtils {
      * @param view
      */
     public static void showSoftKeyboard(View view) {
-        ((InputMethodManager) BaseApplication.context().getSystemService(Context.INPUT_METHOD_SERVICE))
+        ((InputMethodManager) CommonApp.context.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 
@@ -73,7 +73,7 @@ public class SystemUtils {
     public static void hideSoftKeyboard(View view) {
         if (view == null)
             return;
-        ((InputMethodManager) BaseApplication.context().getSystemService(Context.INPUT_METHOD_SERVICE))
+        ((InputMethodManager) CommonApp.context.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -271,7 +271,7 @@ public class SystemUtils {
         if (barHeight > 0) {
             return barHeight;
         }
-        if (BaseApplication.context() == null) {
+        if (CommonApp.context == null) {
             return 0;
         }
         Class<?> c;
@@ -283,7 +283,7 @@ public class SystemUtils {
             obj = c.newInstance();
             field = c.getField("status_bar_height");
             x = Integer.parseInt(field.get(obj).toString());
-            barHeight = BaseApplication.context().getResources().getDimensionPixelSize(x);
+            barHeight = CommonApp.context.getResources().getDimensionPixelSize(x);
         } catch (Exception e1) {
             Log.i("test", "状态栏高度获取失败了");
         }

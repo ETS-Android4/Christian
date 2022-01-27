@@ -1,4 +1,4 @@
-package com.christian.nav
+package com.christian.nav.home
 
 import android.content.Context
 import android.os.Bundle
@@ -8,23 +8,27 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.christian.R
 import com.christian.data.MeBean
 import com.christian.data.Setting
+import com.christian.databinding.NavItemGospelBinding
+import com.christian.nav.*
 import com.christian.util.ChristianUtil
 import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.nav_activity.*
-import kotlinx.android.synthetic.main.nav_fragment.*
-import kotlinx.android.synthetic.main.nav_fragment.view.*
 import org.jetbrains.anko.debug
 
-open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragment {
+open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragment {
 
     lateinit var navChildFragmentPagerAdapter: NavChildFragmentPagerAdapter
 
@@ -64,23 +68,22 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
     private var isVisibled = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        v = inflater.inflate(R.layout.nav_fragment, container, false)
+        v = inflater.inflate(R.layout.fragment_home, container, false)
         isInitView = true
         isCanLoadData()
 
         return v
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
+    override fun onResume() {
+        super.onResume()
+        isVisibled = true
+        isCanLoadData()
+    }
 
-        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见，获取该标志记录下来
-        if (isVisibleToUser) {
-            isVisibled = true
-            isCanLoadData()
-        } else {
-            isVisibled = false
-        }
+    override fun onPause() {
+        super.onPause()
+        isVisibled = false
     }
 
     private fun isCanLoadData() {
@@ -122,13 +125,15 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 //        Glide.with(navActivity).load(R.drawable.me).into(navActivity.iv_nav_item_small)
     }
 
-    private lateinit var navFragment: NavFragment
+    private lateinit var navFragment: HomeFragment
 
     private var pageSelectedPosition: Int = -1
 
     private fun initVp(tabTitleList: ArrayList<String>) {
         vp1_nav.viewPager = navActivity.vp_nav
-        navChildFragmentPagerAdapter = NavChildFragmentPagerAdapter(childFragmentManager, tabTitleList)
+        navChildFragmentPagerAdapter = NavChildFragmentPagerAdapter(childFragmentManager, tabTitleList,
+            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        )
         v.vp1_nav.adapter = navChildFragmentPagerAdapter
         navActivity.tl_nav.setupWithViewPager(v.vp1_nav)//将TabLayout和ViewPager关联起来
 
@@ -179,8 +184,8 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
             VIEW_ME -> {
 //                v.fragment_nav_rv.addItemDecoration(ItemDecoration(resources.getDimension(R.dimen.search_margin_horizontal).toInt()))
 
-                meAdapter = firestoreRecyclerAdapter()
-                meAdapter.startListening()
+//                meAdapter = firestoreRecyclerAdapter()
+//                meAdapter.startListening()
                 v.fragment_nav_rv.adapter = meAdapter
             }
             in 4..69 -> { // Gospel Page's Fragment's navId
@@ -204,7 +209,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                         navActivity.hideFab()
                     }
                     1 -> {
-                        navActivity.hideFab()
+//                        navActivity.hideFab()
                     }
                 }
             }
@@ -217,7 +222,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = true
                 when (navActivity.vp_nav.currentItem) {
                     1 -> {
-                        navActivity.showFab()
+//                        navActivity.showFab()
                     }
                 }
             }
@@ -340,7 +345,8 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                                             viewType: Int): NavItemView {
                 val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.nav_item_gospel, parent, false)
-                return NavItemView(view, navActivity)
+                val binding = NavItemGospelBinding.bind(view)
+                return NavItemView(binding, navActivity)
             }
 
             override fun onBindViewHolder(@NonNull holder: NavItemView,
@@ -364,7 +370,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
         v.fragment_nav_rv.adapter = gospelAdapter
     }
 
-    private fun firestoreRecyclerAdapter(): FirestoreRecyclerAdapter<Setting, NavItemView> {
+    /*private fun firestoreRecyclerAdapter(): FirestoreRecyclerAdapter<Setting, NavItemView> {
         val query = navActivity.firestore.collection("mes").orderBy("id", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Setting>()
                 .setQuery(query, Setting::class.java)
@@ -373,8 +379,10 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 
         return object : FirestoreRecyclerAdapter<Setting, NavItemView>(options) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NavItemView {
-                return NavItemView(LayoutInflater.from(parent.context)
-                        .inflate(R.layout.nav_item_me, parent, false), navActivity)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.nav_item_me, parent, false)
+                val binding = NavItemMeBinding.bind(view)
+                return NavItemView(binding, navActivity)
             }
 
             override fun onBindViewHolder(holder: NavItemView, position: Int, model: Setting) {
@@ -395,7 +403,7 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
                 }
             }
         }
-    }
+    }*/
 
     fun showToast(message: String) {
         Toast.makeText(navActivity, message, Toast.LENGTH_SHORT).show();
@@ -427,12 +435,16 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
 //        recyclerView.scheduleLayoutAnimation()
 //    }
 
-    class NavChildFragmentPagerAdapter(fm: androidx.fragment.app.FragmentManager, private val tabTitleList: ArrayList<String>) : androidx.fragment.app.FragmentStatePagerAdapter(fm) {
+    class NavChildFragmentPagerAdapter(
+        fm: FragmentManager,
+        private val tabTitleList: ArrayList<String>,
+        behaviorResumeOnlyCurrentFragment: Int
+    ) : androidx.fragment.app.FragmentStatePagerAdapter(fm, behaviorResumeOnlyCurrentFragment) {
 
-        lateinit var currentFragment: NavFragment
+        lateinit var currentFragment: HomeFragment
 
         override fun getItem(position: Int): androidx.fragment.app.Fragment {
-            val navFragment = NavFragment()
+            val navFragment = HomeFragment()
             navFragment.navId = position + 4
             return navFragment
         }
@@ -446,14 +458,14 @@ open class NavFragment : androidx.fragment.app.Fragment(), NavContract.INavFragm
         }
 
         override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
-            currentFragment = `object` as NavFragment
+            currentFragment = `object` as HomeFragment
             super.setPrimaryItem(container, position, `object`)
         }
     }
 
     fun scrollChildRVToTop() {
-        if ((navActivity.navFragmentPagerAdapter.currentFragment as NavFragment)::navChildFragmentPagerAdapter.isInitialized) {
-            (navActivity.navFragmentPagerAdapter.currentFragment as NavFragment).navChildFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+        if ((navActivity.navFragmentPagerAdapter.currentFragment as HomeFragment)::navChildFragmentPagerAdapter.isInitialized) {
+            (navActivity.navFragmentPagerAdapter.currentFragment as HomeFragment).navChildFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
         }
     }
 }

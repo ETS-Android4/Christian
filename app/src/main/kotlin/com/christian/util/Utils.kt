@@ -1,27 +1,22 @@
 package com.christian.util
 
 import android.Manifest
-import android.R.attr
 import android.app.Activity
 import android.content.Context
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.method.LinkMovementMethod
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.customview.widget.ViewDragHelper
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.request.target.Target
 import com.christian.R
+import com.christian.common.CommonApp
+import com.christian.common.ui.editor.EditorViewModel
 import com.christian.nav.NavActivity
 import com.christian.nav.nullString
 import com.christian.nav.toolbarTitle
@@ -37,12 +32,11 @@ import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.AsyncDrawable
 import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
-import io.noties.markwon.image.ImageSizeResolverDef
 import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
 import org.commonmark.node.Image
 import org.jetbrains.anko.dip
-import ren.qinc.markdowneditors.AppContext
+import com.google.android.material.snackbar.Snackbar
 import ren.qinc.markdowneditors.view.EditorActivity
 import java.util.regex.Pattern
 import io.noties.markwon.image.AsyncDrawableSpan
@@ -50,8 +44,6 @@ import io.noties.markwon.image.AsyncDrawableSpan
 import io.noties.markwon.MarkwonSpansFactory
 
 import io.noties.markwon.AbstractMarkwonPlugin
-
-import io.noties.markwon.image.ImagesPlugin
 
 import io.noties.markwon.Markwon
 import io.noties.markwon.RenderProps
@@ -85,12 +77,12 @@ fun requestStoragePermission(editorActivity: EditorActivity, path: String) {
             }
             .onDenied { permissions ->
                 //List of denied permissions
-                AppContext.showSnackbar(editorActivity.mViewPager, editorActivity.getString(R.string.no_acccess_to_read))
+                Snackbar.make(editorActivity.mViewPager, editorActivity.getString(R.string.no_acccess_to_read), Snackbar.LENGTH_SHORT).show()
                 requestStoragePermission(editorActivity, path)
             }
             .onForeverDenied { permissions ->
                 //List of forever denied permissions
-                AppContext.showSnackbar(editorActivity.mViewPager, R.string.no_acccess_to_read_image_to_display)
+                Snackbar.make(editorActivity.mViewPager, R.string.no_acccess_to_read_image_to_display, Snackbar.LENGTH_SHORT).show()
             }
             .ask()
 }
@@ -317,5 +309,3 @@ fun enableSwipeBack(position: Int, positionOffset: Float, vp_nav: CustomViewPage
         ParallaxHelper.getParallaxBackLayout(activity).setEnableGesture(false)
     }
 }
-
-

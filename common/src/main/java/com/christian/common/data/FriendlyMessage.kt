@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.christian.nav.disciple;
+package com.christian.common.data
 
-public class CodelabPreferences {
+class FriendlyMessage {
+    var text: String? = null
+    var name: String? = null
+    var photoUrl: String? = null
+    var imageUrl: String? = null
 
-    public static final String INSTANCE_ID_TOKEN_RETRIEVED = "iid_token_retrieved";
-    public static final String FRIENDLY_MSG_LENGTH = "friendly_msg_length";
+    // Empty constructor needed for Firestore serialization
+    constructor()
 
+    constructor(text: String?, name: String?, photoUrl: String?, imageUrl: String?) {
+        this.text = text
+        this.name = name
+        this.photoUrl = photoUrl
+        this.imageUrl = imageUrl
+    }
 }

@@ -96,7 +96,6 @@
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
-            android:theme="@style/AppTheme.AppBarOverlay"
             app:srcCompat="@drawable/ic_edit_black_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

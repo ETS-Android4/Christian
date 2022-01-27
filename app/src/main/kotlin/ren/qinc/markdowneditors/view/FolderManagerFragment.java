@@ -38,6 +38,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.christian.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -48,7 +49,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import ren.qinc.markdowneditors.adapter.FileListAdapter;
 import ren.qinc.markdowneditors.adapter.OnItemClickLitener;
-import ren.qinc.markdowneditors.base.BaseApplication;
+import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.base.BaseRefreshFragment;
 import ren.qinc.markdowneditors.engine.ActionModeCallback;
 import ren.qinc.markdowneditors.entity.FileBean;
@@ -145,7 +146,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             case CALL_GET_FILES://停止刷新，并提示失败原因
                 finishRefresh();
             default:
-                BaseApplication.showSnackbar(getSwipeRefreshLayout(), message);
+                Snackbar.make(getSwipeRefreshLayout(), message, Snackbar.LENGTH_SHORT).show();
                 break;
         }
 
@@ -351,7 +352,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                BaseApplication.showSnackbar(getSwipeRefreshLayout(), "" + s);
+                Snackbar.make(getSwipeRefreshLayout(), "" + s, Snackbar.LENGTH_SHORT).show();
                 if (!Check.isEmpty(s)) {
                     mPresenter.searchCurrentPath(s);
                 }
@@ -616,7 +617,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     private void deleteFiles() {
         int selectCount = mPresenter.getSelectCount();
         if (selectCount <= 0) {
-            BaseApplication.showSnackbar(getSwipeRefreshLayout(), "请选择文件");
+            Snackbar.make(getSwipeRefreshLayout(), "请选择文件", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -627,7 +628,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
                 })
                 .setPositiveButton("删除", (dialog1, which) -> {
                     if (mPresenter.delete()) {
-                        BaseApplication.showSnackbar(getSwipeRefreshLayout(), "已经删除");
+                        Snackbar.make(getSwipeRefreshLayout(), "已经删除", Snackbar.LENGTH_SHORT).show();
 //                mAdapter.removeData();
                         refresh();
                     }
@@ -647,7 +648,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     private void coptFiles() {
         int selectCount = mPresenter.getSelectCount();
         if (selectCount <= 0) {
-            BaseApplication.showSnackbar(getSwipeRefreshLayout(), "请选择文件");
+            Snackbar.make(getSwipeRefreshLayout(), "请选择文件", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -662,7 +663,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     private void cutFiles() {
         int selectCount = mPresenter.getSelectCount();
         if (selectCount <= 0) {
-            BaseApplication.showSnackbar(getSwipeRefreshLayout(), "请选择文件");
+            Snackbar.make(getSwipeRefreshLayout(), "请选择文件", Snackbar.LENGTH_SHORT).show();
             return;
         }
         mPresenter.cut();

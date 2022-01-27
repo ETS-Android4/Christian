@@ -17,6 +17,7 @@ import com.lxj.xpopup.interfaces.OnSelectListener
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.BlurViewExtendsConstraintLayout
 import eightbitlab.com.blurview.BlurViewExtendsNavigationView
+import eightbitlab.com.blurview.ViewUtilKt.makeViewBlur
 import org.jetbrains.anko.dip
 private var loadNextPage: Boolean = true
 var mPosition = 0
@@ -302,10 +303,11 @@ fun showPopupMenu(
         .asAttachList(array,
             intArrayOf(),
             onSelectListener)
-    eightbitlab.com.blurview.makeViewBlur(
+    eightbitlab.com.blurview.ViewUtilKt.makeViewBlur(
             asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),
 //            asAttachList.findViewById(com.lxj.xpopup.R.id.recyclerView),
-            activity.window.decorView as ViewGroup, activity.window
+            activity.window.decorView as ViewGroup, activity.window,
+        false
     )
 //                                .bindLayout(R.layout.my_custom_attach_popup)
     //                        .bindItemLayout(R.layout.my_custom_attach_popup)

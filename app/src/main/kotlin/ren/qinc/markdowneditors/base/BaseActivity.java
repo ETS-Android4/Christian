@@ -40,6 +40,7 @@ import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.core.view.ViewPropertyAnimatorListener;
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
 
+import com.christian.common.CommonApp;
 import com.christian.swipe.SwipeBackActivity;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
@@ -59,7 +60,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public abstract class BaseActivity extends SwipeBackActivity implements BaseViewInterface, WaitDialogInterface, EventInterface {
 
-    protected BaseApplication application;
+    protected CommonApp application;
     protected LayoutInflater inflater;
     protected Context mContext;
 
@@ -182,7 +183,7 @@ public abstract class BaseActivity extends SwipeBackActivity implements BaseView
     protected void init() {
         AppManager.getAppManager().addActivity(this);
         mContext = getApplicationContext();
-        application = (BaseApplication) getApplication();
+        application = (CommonApp) getApplication();
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 

@@ -24,10 +24,10 @@ import androidx.core.view.GravityCompat;
 
 import com.christian.R;
 
-import ren.qinc.markdowneditors.AppContext;
+import com.google.android.material.snackbar.Snackbar;
+
 import ren.qinc.markdowneditors.base.BaseDrawerLayoutActivity;
 import ren.qinc.markdowneditors.base.BaseFragment;
-import ren.qinc.markdowneditors.utils.Toast;
 
 /**
  * The type Main activity.
@@ -121,7 +121,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 //                initUpdate(true);
                 return true;
             case R.id.other:
-                AppContext.showSnackbar(getWindow().getDecorView(), "敬请期待");
+                Snackbar.make(getWindow().getDecorView(), "敬请期待", Snackbar.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);// || mCurrentFragment.onOptionsItemSelected(item);

@@ -30,7 +30,9 @@ import com.christian.R;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import ren.qinc.markdowneditors.AppContext;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import ren.qinc.markdowneditors.base.BaseToolbarActivity;
 import ren.qinc.markdowneditors.base.BaseWebActivity;
 import ren.qinc.markdowneditors.utils.SystemBarUtils;
@@ -105,7 +107,7 @@ public class AboutActivity extends BaseToolbarActivity {
         try {
             startActivity(intent);
         } catch (Exception e) {
-            AppContext.showSnackbar(getWindow().getDecorView(), "找不到邮箱应用!");
+            Snackbar.make(getWindow().getDecorView(), R.string.not_found_email, Snackbar.LENGTH_SHORT).show();
         }
     }
 

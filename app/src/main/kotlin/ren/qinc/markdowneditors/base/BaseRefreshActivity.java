@@ -20,6 +20,7 @@ package ren.qinc.markdowneditors.base;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.christian.R;
+import com.christian.common.CommonApp;
 
 import butterknife.Bind;
 
@@ -52,7 +53,7 @@ public abstract class BaseRefreshActivity extends BaseToolbarActivity {
     }
 
     protected int[] getColors() {
-        int[] colors = {BaseApplication.color(R.color.colorPrimary)};
+        int[] colors = {CommonApp.color(R.color.colorPrimary)};
         return colors;
     }
 

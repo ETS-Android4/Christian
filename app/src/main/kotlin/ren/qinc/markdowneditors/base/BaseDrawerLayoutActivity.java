@@ -25,6 +25,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.christian.R;
+import com.christian.common.CommonApp;
 import com.google.android.material.navigation.NavigationView;
 
 import butterknife.Bind;
@@ -77,7 +78,7 @@ public abstract class BaseDrawerLayoutActivity extends BaseToolbarActivity imple
                 new int[][]{{android.R.attr.state_checked, android.R.attr.state_enabled},
                         {android.R.attr.state_enabled},
                         {}},
-                new int[]{BaseApplication.color(R.color.colorPrimary), BaseApplication.color(R.color.colorSecondaryText), 0xffDCDDDD});
+                new int[]{CommonApp.color(R.color.colorPrimary), CommonApp.color(R.color.colorSecondaryText), 0xffDCDDDD});
         mNavigationView.setItemIconTintList(colorStateList);//设置图标的颜色变化
         mNavigationView.setItemTextColor(colorStateList);//设置item的颜色变化
         if (getDefaultMenuItemId() > 0)

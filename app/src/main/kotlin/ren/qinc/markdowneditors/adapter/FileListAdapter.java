@@ -33,7 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ren.qinc.markdowneditors.base.BaseApplication;
+import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.entity.FileBean;
 import ren.qinc.markdowneditors.utils.ColorUtils;
 import ren.qinc.markdowneditors.utils.UnitsUtils;
@@ -84,11 +84,11 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.FileVi
 
 
     private void initColor() {
-        this.colorPrimary = BaseApplication.color(R.color.colorPrimary);
+        this.colorPrimary = CommonApp.color(R.color.colorPrimary);
         this.alphaColorPrimary = ColorUtils.getAlphaColor(colorPrimary, 130);
-        this.colorPrimaryText = BaseApplication.color(R.color.colorPrimaryText);
-        this.colorSecondaryText = BaseApplication.color(R.color.colorSecondaryText);
-        this.colorDivider = BaseApplication.color(R.color.colorDivider);
+        this.colorPrimaryText = CommonApp.color(R.color.colorPrimaryText);
+        this.colorSecondaryText = CommonApp.color(R.color.colorSecondaryText);
+        this.colorDivider = CommonApp.color(R.color.colorDivider);
     }
 
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {

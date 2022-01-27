@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.christian.HistoryAndMyArticlesActivity
 import com.christian.R
+import com.christian.common.CommonApp
 import com.christian.common.getDisplayHeight
 import com.christian.common.getDisplayWidth
 import com.christian.data.Disciple
 import com.christian.data.MeBean
 import com.christian.data.Setting
+import com.christian.databinding.NavItemGospelBinding
 import com.christian.nav.gospel.NavDetailActivity
 import com.christian.nav.me.AboutActivity
 import com.christian.util.ChristianUtil
@@ -29,7 +31,7 @@ import org.jetbrains.anko.AnkoLogger
  * NavItemView/NavItemHolder is view logic of nav items.
  */
 
-open class NavItemView(final override val containerView: View, navActivity: NavActivity) : RecyclerView.ViewHolder(containerView), LayoutContainer, AnkoLogger {
+open class NavItemView(private val binding: NavItemGospelBinding, navActivity: NavActivity) : RecyclerView.ViewHolder(binding.root), AnkoLogger {
 
 
     init {
@@ -56,8 +58,8 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
 //                }
 //            }
 //        }
-        val displayWidth = getDisplayWidth(containerView.context)
-        val displayHeight = getDisplayHeight(containerView.context)
+        val displayWidth = getDisplayWidth(navActivity)
+        val displayHeight = getDisplayHeight(navActivity)
 
         if (itemView.findViewById<AppCompatImageButton>(R.id.ib_nav_item) != null) itemView.findViewById<AppCompatImageButton>(R.id.ib_nav_item).setOnClickListener { v: View ->
 //            val list: ArrayList<CharSequence> = ArrayList()
@@ -67,11 +69,11 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
 //            ChristianUtil.showListDialog(v.context as NavActivity, list)
 //            showPopupMenu(v)
             showPopupMenu(
-                    v, containerView.context as Activity, arrayOf(
-                    containerView.context.getString(R.string.share),
-                    containerView.context.getString(R.string.action_favorite),
-                    containerView.context.getString(R.string.translate),
-                    containerView.context.getString(R.string.read),
+                    v, navActivity, arrayOf(
+                    navActivity.getString(R.string.share),
+                    navActivity.getString(R.string.action_favorite),
+                    navActivity.getString(R.string.translate),
+                    navActivity.getString(R.string.read),
             ),
                 onSelectListener = object : OnSelectListener {
                     override fun onSelect(position: Int, text: String) {
@@ -120,44 +122,44 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
     fun bind(gospel: MeBean) {
         val gospelImg = filterImageUrlThroughDetailPageContent(gospel.content)
         if (gospelImg.isNotBlank()) {
-            iv_nav_item.visibility = View.VISIBLE
-            Glide.with(containerView.context).load(gospelImg).into(iv_nav_item)
+            binding.ivNavItem.visibility = View.VISIBLE
+            Glide.with(binding.root.context).load(gospelImg).into(binding.ivNavItem)
         } else {
-            iv_nav_item.visibility = View.GONE
+            binding.ivNavItem.visibility = View.GONE
         }
-        tv_title_nav_item.text = gospel.desc
-        tv_subtitle_nav_item.text = gospel.name
+        binding.tvTitleNavItem.text = gospel.desc
+        binding.tvSubtitleNavItem.text = gospel.name
 //        makeViewBlur(tv_title_nav_item, cl_nav_item, activity.window, true)
-        tv_detail_nav_item.text = gospel.content
+        binding.tvDetailNavItem.text = gospel.content
                 .replace(Regex("!\\[.+\\)"), "")
                 .replace(Regex("\\s+"), "")
-        textView.text = gospel.author + "·" + gospel.time
+        binding.textView.text = gospel.author + "·" + gospel.time
 //        textView2.text = gospel.church
 //        textView3.text = gospel.time
-        containerView.setOnClickListener {
+        binding.root.setOnClickListener {
             startGospelDetailActivity(gospel)
         }
-        tv_title_nav_item.setOnClickListener {
+        binding.tvTitleNavItem.setOnClickListener {
             //            gospelId = gospel.id
             startGospelDetailActivity(gospel)
         }
-        tv_subtitle_nav_item.setOnClickListener { startGospelDetailActivity(gospel) }
-        tv_detail_nav_item.setOnClickListener { startGospelDetailActivity(gospel) }
-        textView.setOnClickListener { startGospelDetailActivity(gospel) }
+        binding.tvSubtitleNavItem.setOnClickListener { startGospelDetailActivity(gospel) }
+        binding.tvDetailNavItem.setOnClickListener { startGospelDetailActivity(gospel) }
+        binding.textView.setOnClickListener { startGospelDetailActivity(gospel) }
     }
 
     private fun startGospelDetailActivity(gospel: MeBean) {
-        val intent = Intent(containerView.context, NavDetailActivity::class.java)
-        intent.putExtra(containerView.context.getString(R.string.category), gospel.desc)
-        intent.putExtra(containerView.context.getString(R.string.name), gospel.name)
-        intent.putExtra(containerView.context.getString(R.string.content_lower_case), gospel.content)
-        intent.putExtra(containerView.context.getString(R.string.author), gospel.author)
-        intent.putExtra(containerView.context.getString(R.string.church_lower_case), gospel.church)
-        intent.putExtra(containerView.context.getString(R.string.time), gospel.time)
-        intent.putExtra(containerView.context.getString(R.string.userId), gospel.userId)
+        val intent = Intent(binding.root.context, NavDetailActivity::class.java)
+        intent.putExtra(binding.root.context.getString(R.string.category), gospel.desc)
+        intent.putExtra(binding.root.context.getString(R.string.name), gospel.name)
+        intent.putExtra(binding.root.context.getString(R.string.content_lower_case), gospel.content)
+        intent.putExtra(binding.root.context.getString(R.string.author), gospel.author)
+        intent.putExtra(binding.root.context.getString(R.string.church_lower_case), gospel.church)
+        intent.putExtra(binding.root.context.getString(R.string.time), gospel.time)
+        intent.putExtra(binding.root.context.getString(R.string.userId), gospel.userId)
 
         intent.putExtra(toolbarTitle, gospel.name)
-        containerView.context.startActivity(intent)
+        binding.root.context.startActivity(intent)
     }
 
     private var isOn = false
@@ -193,25 +195,25 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
                       }
                   }*/
             4 -> {
-                containerView.setOnClickListener {
+                binding.root.setOnClickListener {
                     // 老的跳转设置移到了NavActivity页的options menu
 
-                    val i = Intent(containerView.context, AboutActivity::class.java)
+                    val i = Intent(binding.root.context, AboutActivity::class.java)
                     i.putExtra(toolbarTitle, getTitle(setting, adapterPosition))
-                    containerView.context.startActivity(i)
+                    binding.root.context.startActivity(i)
                 }
             }
             else -> {
-                containerView.setOnClickListener {
-                    val i = Intent(containerView.context, HistoryAndMyArticlesActivity::class.java)
+                binding.root.setOnClickListener {
+                    val i = Intent(binding.root.context, HistoryAndMyArticlesActivity::class.java)
                     i.putExtra(toolbarTitle, getTitle(setting, adapterPosition))
-                    containerView.context.startActivity(i)
+                    binding.root.context.startActivity(i)
                 }
             }
         }
 
         if (adapterPosition == 0) {
-            val sharedPreferences = containerView.context.getSharedPreferences("christian", Activity.MODE_PRIVATE)
+            val sharedPreferences = binding.root.context.getSharedPreferences("christian", Activity.MODE_PRIVATE)
             val string = sharedPreferences.getString("sunrise", "") ?: ""
             val string1 = sharedPreferences.getString("sunset", "") ?: ""
 //            switch_nav_item_small.visibility = View.VISIBLE
@@ -219,17 +221,17 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
             if (string.isNotEmpty() && string.isNotEmpty()) {
                 val sunriseString = string.substring(11, 19)
                 val sunsetString = string1.substring(11, 19)
-                switch_nav_item_small.text = String.format(containerView.context.getString(R.string.sunrise_sunset), sunriseString, sunsetString)
+//                switch_nav_item_small.text = String.format(binding.root.context.getString(R.string.sunrise_sunset), sunriseString, sunsetString)
 //                switch_nav_item_small.visibility = View.VISIBLE
             } else {
-                switch_nav_item_small.text = containerView.context.getString(R.string.no_location_service)
+//                switch_nav_item_small.text = binding.root.context.getString(R.string.no_location_service)
 //                switch_nav_item_small.visibility = View.GONE
             }
         }
-        tv_nav_item_small.text = setting.name
-        tv2_nav_item_small.text = setting.desc
+//        tv_nav_item_small.text = setting.name
+//        tv2_nav_item_small.text = setting.desc
         val url = setting.url
-        Glide.with(containerView.context).load(if (ChristianUtil.getNightModeSP(containerView.context)) generateUrlIdNightMode(url) else generateUrlId(url)).into(iv_nav_item_small)
+//        Glide.with(binding.root.context).load(if (CommonApp.getNightModeSP(binding.root.context)) generateUrlIdNightMode(url) else generateUrlId(url)).into(iv_nav_item_small)
     }
 
     private fun getTitle(setting: Setting, pos: Int): String {
@@ -255,8 +257,8 @@ open class NavItemView(final override val containerView: View, navActivity: NavA
     }
 
     fun bind(disciple: Disciple) {
-        tv_title_nav_item.text = disciple.id
-        tv_subtitle_nav_item.text = disciple.name
+        binding.tvTitleNavItem.text = disciple.id
+        binding.tvSubtitleNavItem.text = disciple.name
     }
 
 }

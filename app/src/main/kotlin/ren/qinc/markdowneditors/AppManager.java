@@ -21,8 +21,6 @@ import android.content.Context;
 
 import java.util.Stack;
 
-import ren.qinc.markdowneditors.base.BaseApplication;
-
 
 /**
  * activity堆栈式管理 用户管理所有activity

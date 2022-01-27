@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.nav_activity.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.info
 import org.jetbrains.anko.singleLine
-import ren.qinc.markdowneditors.base.BaseApplication
+import com.christian.common.CommonApp
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -55,8 +55,8 @@ class NavPresenter(private var navId: Int, override var view: NavContract.INavAc
         navActivity = view as NavActivity
     }
 
-    override fun init(whichActivity: Int?, navFragment: NavFragment?) {
-        when (navFragment == null && whichActivity != null) {
+    override fun init(whichActivity: Int?, gospelFragment: GospelFragment?) {
+        when (gospelFragment == null && whichActivity != null) {
             // called from a activity
             true -> {
 //                navFragmentList.clear()
@@ -554,7 +554,7 @@ private fun expandedAnimationToolbar(navActivity: NavActivity, expanded: Boolean
 @SuppressLint("SoonBlockedPrivateApi")
 @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 fun userManagerMemoryLeakFix(navActivity: NavActivity) {
-    val userManager = BaseApplication.context.getSystemService(Context.USER_SERVICE) as UserManager
+    val userManager = CommonApp.context.getSystemService(Context.USER_SERVICE) as UserManager
     val mContext = userManager.javaClass.getDeclaredField("mContext")
     mContext.isAccessible = true
 
@@ -571,7 +571,7 @@ fun userManagerMemoryLeakFix(navActivity: NavActivity) {
 
 @SuppressLint("SoonBlockedPrivateApi")
 fun inputMethodManagerMemoryLeakFix() {
-    val inputMethodManager = BaseApplication.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val inputMethodManager = CommonApp.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     val clazz = InputMethodManager::class.java
     val mNextServedView = clazz.getDeclaredField("mNextServedView")
     mNextServedView.isAccessible = true
@@ -580,7 +580,7 @@ fun inputMethodManagerMemoryLeakFix() {
 
 @SuppressLint("SoonBlockedPrivateApi")
 fun locationManagerMemoryLeakFix(navActivity: NavActivity) {
-    val locationManager = BaseApplication.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val locationManager = CommonApp.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val mContext = locationManager.javaClass.getDeclaredField("mContext")
     mContext.isAccessible = true
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.christian">
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -20,7 +21,7 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name="ren.qinc.markdowneditors.AppContext"
+        android:name=".common.CommonApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/my_backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -38,11 +39,10 @@
         <!-- activity -->
         <activity
             android:name=".nav.NavActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize
-            "
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan|stateHidden"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,20 +74,6 @@
                 android:value=".nav.NavActivity" />
         </activity>
         <activity
-            android:name=".nav.me.SignInActivity"
-            android:parentActivityName=".nav.NavActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.christian.nav.NavActivity" />
-        </activity>
-        <activity
-            android:name=".nav.disciple.SignInActivity"
-            android:parentActivityName=".nav.NavActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.christian.nav.NavActivity" />
-        </activity>
-        <activity
             android:name=".nav.me.AboutActivity"
             android:label="" >
             <meta-data
@@ -101,34 +87,30 @@
             android:name="ren.qinc.markdowneditors.view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.CustomCursor"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
             android:name="ren.qinc.markdowneditors.view.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name="ren.qinc.markdowneditors.view.CommonMarkdownActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
+       <!-- <activity
             android:name="ren.qinc.markdowneditors.view.CommonImageDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />-->
         <activity
             android:name="ren.qinc.markdowneditors.base.BaseWebActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name="ren.qinc.markdowneditors.view.EditorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -169,7 +151,7 @@
             android:value="None" /> <!-- 蒲公英 -->
         <meta-data
             android:name="PGYER_APPID"
-            android:value="703a9ae9ca0394dd8a2315134977c398"></meta-data>
+            android:value="703a9ae9ca0394dd8a2315134977c398"/>
     </application>
 
 </manifest>

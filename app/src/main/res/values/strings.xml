@@ -58,7 +58,7 @@
     <string name="app_name">Christian</string>
 
     <string name="title_home">Home</string>
-    <string name="title_book">Topic</string>
+    <string name="title_gospel">Gospel</string>
     <string name="title_chat">Disciple</string>
     <string name="title_me">Me</string>
 
@@ -388,4 +388,11 @@
     <string name="tab_qa"><![CDATA[Q&A]]></string>
     <string name="tab_marriage">Marriage</string>
     <string name="tab_messages">Messages</string>
+    <string name="not_found_email">\"找不到邮箱应用!\"</string>
+    <string name="empty_title">\"当前标题为空\"</string>
+    <string name="empty_content">\"当前内容为空\"</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="account_disabled">Account is disabled by the administrator</string>
+    <string name="unknown_error">An unknown error occurred</string>
 </resources>

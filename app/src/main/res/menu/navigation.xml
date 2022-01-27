@@ -10,13 +10,13 @@
 
     <item
         android:id="@+id/navigation_gospel"
-        android:icon="@drawable/ic_baseline_topic_24"
-        app:tooltipText="@string/title_book"
+        android:icon="@drawable/ic_baseline_article_24"
+        app:tooltipText="@string/title_gospel"
         android:title="" />
 
     <item
         android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_group_black_24dp"
+        android:icon="@drawable/ic_baseline_chat_24"
         app:tooltipText="@string/title_chat"
         android:title="" />
 

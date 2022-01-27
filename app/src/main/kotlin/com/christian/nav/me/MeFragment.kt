@@ -17,14 +17,14 @@ import com.christian.nav.*
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.fragment_me.*
+import kotlinx.android.synthetic.main.fragment_me.view.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.view.*
 import kotlinx.android.synthetic.main.item_nav_me_favorite.*
 import kotlinx.android.synthetic.main.item_nav_me_history.*
 import kotlinx.android.synthetic.main.item_nav_me_publishing.*
 import kotlinx.android.synthetic.main.nav_activity.*
-import kotlinx.android.synthetic.main.nav_fragment.*
-import kotlinx.android.synthetic.main.nav_fragment.view.*
 import org.jetbrains.anko.debug
 
 open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragment {
@@ -153,13 +153,13 @@ open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragme
 
     var isPageBottom: Boolean = false
 
-    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<MeBean, NavItemView>
+//    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<MeBean, NavItemView>
     private lateinit var meAdapter: FirestoreRecyclerAdapter<Setting, NavItemView>
 
     override fun onDestroyView() {
         super.onDestroyView()
         if (navId == VIEW_HOME)
-            gospelAdapter.stopListening()
+//            gospelAdapter.stopListening()
         if (navId == VIEW_ME && ::meAdapter.isInitialized)
             meAdapter.stopListening()
     }
@@ -270,7 +270,7 @@ open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragme
                 //                        .setLifecycleOwner(this@NavFragment)
                 .setQuery(query, MeBean::class.java)
                 .build()
-        gospelAdapter = object : FirestoreRecyclerAdapter<MeBean, NavItemView>(options) {
+        /*gospelAdapter = object : FirestoreRecyclerAdapter<MeBean, NavItemView>(options) {
             @NonNull
             override fun onCreateViewHolder(@NonNull parent: ViewGroup,
                                             viewType: Int): NavItemView {
@@ -297,10 +297,10 @@ open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragme
             }
         }
         gospelAdapter.startListening()
-        v.fragment_nav_rv.adapter = gospelAdapter
+        v.fragment_nav_rv.adapter = gospelAdapter*/
     }
 
-    private fun firestoreRecyclerAdapter(): FirestoreRecyclerAdapter<Setting, NavItemView> {
+   /* private fun firestoreRecyclerAdapter(): FirestoreRecyclerAdapter<Setting, NavItemView> {
         val query = navActivity.firestore.collection("mes").orderBy("id", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Setting>()
                 .setQuery(query, Setting::class.java)
@@ -331,7 +331,7 @@ open class MeFragment : androidx.fragment.app.Fragment(), NavContract.INavFragme
                 }
             }
         }
-    }
+    }*/
 
     fun showToast(message: String) {
         Toast.makeText(navActivity, message, Toast.LENGTH_SHORT).show();

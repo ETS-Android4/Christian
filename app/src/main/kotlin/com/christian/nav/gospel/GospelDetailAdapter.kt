@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.christian.R
+import com.christian.databinding.GospelDetailItemBinding
 import com.christian.nav.NavActivity
 import com.google.firebase.firestore.*
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.gospel_detail_item.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.debug
@@ -106,7 +106,10 @@ abstract class GospelDetailAdapter(private var gospelRef: DocumentReference, val
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.gospel_detail_item, parent, false))
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.gospel_detail_item, parent, false)
+        val binding = GospelDetailItemBinding.bind(view)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -121,25 +124,25 @@ abstract class GospelDetailAdapter(private var gospelRef: DocumentReference, val
         snapshot?.let { holder.bind(it) }
     }
 
-    class ViewHolder(override val containerView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class ViewHolder(private val binding: GospelDetailItemBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         fun bind(snapshot: DocumentSnapshot) {
 
             val subtitle = ((snapshot.data?.get("detail") as java.util.ArrayList<*>)[adapterPosition] as HashMap<*, *>)["subtitle"]
             if (subtitle != null) {
-                tv_gospel_detail_item.visibility = View.VISIBLE
-                tv_gospel_detail_item.text = subtitle.toString()
+                binding.tvGospelDetailItem.visibility = View.VISIBLE
+                binding.tvGospelDetailItem.text = subtitle.toString()
             } else {
-                tv_gospel_detail_item.visibility = View.GONE
+                binding.tvGospelDetailItem.visibility = View.GONE
             }
 
             val image = ((snapshot.data?.get("detail") as java.util.ArrayList<*>)[adapterPosition] as HashMap<*, *>)["image"]
             if (image != null) {
-                iv_gospel_detail_item.visibility = View.VISIBLE
-                Glide.with(containerView.context).load(image).into(iv_gospel_detail_item)
+                binding.ivGospelDetailItem.visibility = View.VISIBLE
+                Glide.with(binding.root.context).load(image).into(binding.ivGospelDetailItem)
             } else {
-                iv_gospel_detail_item.visibility = View.GONE
+                binding.ivGospelDetailItem.visibility = View.GONE
             }
-            tv2_detail_nav_item.text = ((snapshot.data?.get("detail") as java.util.ArrayList<*>)[adapterPosition] as HashMap<*, *>)["content"].toString()
+            binding.tv2DetailNavItem.text = ((snapshot.data?.get("detail") as java.util.ArrayList<*>)[adapterPosition] as HashMap<*, *>)["content"].toString()
 
 //            val gospelDetailBean = snapshot.toObject(GospelDetailBean::class.java)
 //            val resources = itemView.resources

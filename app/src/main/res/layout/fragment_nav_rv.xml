@@ -9,4 +9,4 @@
     android:overScrollMode="never"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:showIn="@layout/nav_fragment" />
+    tools:showIn="@layout/fragment_gospel" />

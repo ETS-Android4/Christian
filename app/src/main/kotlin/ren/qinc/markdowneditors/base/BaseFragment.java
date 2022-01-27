@@ -25,7 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.leakcanary.RefWatcher;
+import com.christian.common.CommonApp;
+//import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
 import ren.qinc.markdowneditors.event.RxEvent;
@@ -41,12 +42,12 @@ import rx.android.schedulers.AndroidSchedulers;
 public abstract class BaseFragment extends BaseStatedFragment implements BaseViewInterface, EventInterface {
     protected Context mContext;
     protected View rootView;
-    protected BaseApplication application;
+    protected CommonApp application;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
-        application = (BaseApplication) mContext.getApplicationContext();
+        application = (CommonApp) mContext.getApplicationContext();
         if (rootView == null) {
             rootView = View.inflate(getActivity(), getLayoutId(), null);
             if (rootView == null)
@@ -90,10 +91,10 @@ public abstract class BaseFragment extends BaseStatedFragment implements BaseVie
     public void onDestroy() {
         super.onDestroy();
         if (BuildConfig.DEBUG) {//Debug的时候检查内存泄露
-            RefWatcher refWatcher = BaseApplication.getRefWatcher(mContext);
-            if (refWatcher != null) {
-                refWatcher.watch(this);
-            }
+//            RefWatcher refWatcher = CommonApp.getRefWatcher(mContext);
+//            if (refWatcher != null) {
+//                refWatcher.watch(this);
+//            }
         }
     }
 

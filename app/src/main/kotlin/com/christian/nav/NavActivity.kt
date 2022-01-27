@@ -25,13 +25,10 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 import com.kotlinpermissions.KotlinPermissions
-import eightbitlab.com.blurview.makeViewBlurExtendsAppBarLayout
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
 import kotlinx.android.synthetic.main.nav_activity.*
 import kotlinx.android.synthetic.main.nav_activity.view.*
-import kotlinx.android.synthetic.main.nav_fragment.*
 import kotlinx.android.synthetic.main.nav_item_me_for_setting_static.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.*
 import kotlinx.android.synthetic.main.nav_item_me_portrait.iv_nav_item_small
@@ -44,6 +41,17 @@ import ren.qinc.markdowneditors.view.EditorActivity
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.math.abs
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+
+import android.content.Intent
+
+import androidx.annotation.Nullable
+import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+import com.christian.nav.home.HomeFragment
+import com.firebase.ui.auth.ErrorCodes
+
 
 /**
  * Home, Gospel, Communication, Me 4 TAB main entrance activity.
@@ -53,6 +61,50 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     private lateinit var sharedPreferences: SharedPreferences
     private var isOn = false
+
+    private val signInLauncher = registerForActivityResult(
+        FirebaseAuthUIActivityResultContract()
+    ) { result ->
+        // Successfully signed in
+        // Successfully signed in
+        val response = result.idpResponse
+        handleSignInResponse(result.resultCode, response)
+    }
+
+    private fun handleSignInResponse(resultCode: Int, @Nullable response: IdpResponse?) {
+        // Successfully signed in
+        if (resultCode == RESULT_OK) {
+            invalidateSignInUI()
+        } else {
+            // Sign in failed
+            if (response == null) {
+                // User pressed back button
+                showSnackbar(R.string.sign_in_cancelled)
+                return
+            }
+            if (response.error?.errorCode == ErrorCodes.NO_NETWORK) {
+                showSnackbar(R.string.no_internet_connection)
+                return
+            }
+            if (response.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
+//                val intent = Intent(
+//                    this,
+//                    AnonymousUpgradeActivity::class.java
+//                ).putExtra(ExtraConstants.IDP_RESPONSE, response)
+//                startActivity(intent)
+            }
+            if (response.error?.errorCode == ErrorCodes.ERROR_USER_DISABLED) {
+                showSnackbar(R.string.account_disabled)
+                return
+            }
+            showSnackbar(R.string.unknown_error)
+        }
+    }
+
+    private fun showSnackbar(@StringRes errorMessageRes: Int) {
+        Snackbar.make(cl_nav, errorMessageRes, Snackbar.LENGTH_LONG).show()
+//        Snackbar.make(mBinding.getRoot(), errorMessageRes, Snackbar.LENGTH_LONG).show()
+    }
 
 //    override fun onConfigurationChanged(newConfig: Configuration) {
 //        super.onConfigurationChanged(newConfig)
@@ -128,38 +180,44 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     var verticalOffset = -1
     lateinit var navFragmentPagerAdapter: NavFragmentPagerAdapter
 
-    open val viewPagerOnPageChangeListener = object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        }
+    open val viewPagerOnPageChangeListener =
+        object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
 
-        override fun onPageSelected(position: Int) {
-            bnv_nav.menu.getItem(position).isChecked = true
+            override fun onPageSelected(position: Int) {
+                bnv_nav.menu.getItem(position).isChecked = true
 
-            mStaticHandler.removeMessages(MESSAGE_SET_TOOLBAR_EXPANDED)
-            val msg = Message()
-            msg.what = MESSAGE_SET_TOOLBAR_EXPANDED
-            msg.arg1 = position
-            info { "setTabLayoutExpanded---$position" }
-            mStaticHandler.sendMessageDelayed(msg, 0)
+                mStaticHandler.removeMessages(MESSAGE_SET_TOOLBAR_EXPANDED)
+                val msg = Message()
+                msg.what = MESSAGE_SET_TOOLBAR_EXPANDED
+                msg.arg1 = position
+                info { "setTabLayoutExpanded---$position" }
+                mStaticHandler.sendMessageDelayed(msg, 0)
 //            setTabLayoutExpanded(this@NavActivity, position)
 
-            pageSelectedPosition = position
+                pageSelectedPosition = position
 
-            pageSelected(position)
+                pageSelected(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                info { "onPageScrollStateChanged: $state" }
+                /* if (state == 2) {
+     //                fab_nav.hide()
+                 } else if (state == 0) {
+     //                    fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
+     //                    if (showOrHideLogicExecute) {
+     //                        showFAB()
+     //                    }
+                 }*/
+            }
         }
 
-        override fun onPageScrollStateChanged(state: Int) {
-            info { "onPageScrollStateChanged: $state" }
-           /* if (state == 2) {
-//                fab_nav.hide()
-            } else if (state == 0) {
-//                    fab_nav.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
-//                    if (showOrHideLogicExecute) {
-//                        showFAB()
-//                    }
-            }*/
-        }
-    }
     private fun initTl(position: Int) {
         when (position) {
             VIEW_HOME -> {
@@ -266,6 +324,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 //            tl_nav.newTab().setText(tabTitle).let { tl_nav.addTab(it) }
 //        }
     }
+
     private fun pageSelected(position: Int) {
 //        pageSelected这是一个重要方法，initTl这里进行TabLayout的UI初始化工作
         initTl(position)
@@ -278,14 +337,20 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
                 //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
-                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn()) {
-                    val navFragment = navFragmentPagerAdapter.currentFragment as NavFragment
-                    when(navFragment.isPageTop) {
+                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn() && navFragmentPagerAdapter.currentFragment is HomeFragment) {
+                    val homeFragment = navFragmentPagerAdapter.currentFragment as HomeFragment
+                    when (homeFragment.isPageTop) {
                         false -> hideFab()
                         true -> showFab()
                     }
                 }
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black_24dp, theme))
+                activity_nav_fab.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_edit_black_24dp,
+                        theme
+                    )
+                )
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
 //                if (verticalOffset != -tb_nav.height && !fab_nav.isVisible)
 //                    fab_nav.show()
@@ -295,20 +360,32 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 }
             }
             1 -> {
-                tb_nav.title = getString(R.string.title_book)
+                tb_nav.title = getString(R.string.title_gospel)
 
                 if (::menuItemSearch.isInitialized) menuItemSearch.isVisible = true
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
-                showFab()
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_wifi_protected_setup_24, theme))
+                hideFab()
+//                activity_nav_fab.setImageDrawable(
+//                    ResourcesCompat.getDrawable(
+//                        resources,
+//                        R.drawable.ic_baseline_wifi_protected_setup_24,
+//                        theme
+//                    )
+//                null
+//                )
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
                 /*if (verticalOffset > -tb_nav.height)
                     fab_nav.hide()*/
                 TooltipCompat.setTooltipText(activity_nav_fab, "Filter")
 
                 activity_nav_fab.setOnClickListener {
-                    startActivity(Intent(this@NavActivity, ren.qinc.markdowneditors.view.MainActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@NavActivity,
+                            ren.qinc.markdowneditors.view.MainActivity::class.java
+                        )
+                    )
                 }
             }
             2 -> {
@@ -320,17 +397,23 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
                 showFab()
 
-                activity_nav_fab.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_send_24, theme))
+                activity_nav_fab.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_baseline_send_24,
+                        theme
+                    )
+                )
 //                fab_nav.backgroundTintList = ColorStateList.valueOf(ResourcesCompat.getColor(resources, R.color.colorAccent,theme))
                 TooltipCompat.setTooltipText(activity_nav_fab, getString(R.string.send))
                 activity_nav_fab.setOnClickListener {
                     if (::navFragmentPagerAdapter.isInitialized) {
                         val discipleFragment =
                             navFragmentPagerAdapter.currentFragment as DiscipleFragment
-                        if (discipleFragment.mMessageEditText.text.isEmpty()) {
+                        if (discipleFragment.binding.messageEditText.text.isEmpty()) {
                             abl_nav.setExpanded(false, true)
 //                            snackbar(getString(R.string.content_empty)).show()
-                            discipleFragment.mMessageEditText.requestFocusWithKeyboard()
+                            discipleFragment.binding.messageEditText.requestFocusWithKeyboard()
                         } else {
                             discipleFragment.sendMessage()
                         }
@@ -361,8 +444,9 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         setContentView(R.layout.nav_activity)
         NavPresenter(initFragmentIndex, this)
         presenter.init(whichActivity = NAV_ACTIVITY)
-        sharedPreferences = getSharedPreferences(switchNightModeIsOn
-                , Activity.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(
+            switchNightModeIsOn, Activity.MODE_PRIVATE
+        )
     }
 
     override fun initView() {
@@ -385,19 +469,19 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             KotlinPermissions.with(this) // where this is an FragmentActivity instance
-                    .permissions(INTERNET, ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION)
-                    .onAccepted { permissions ->
-                        //List of accepted permissions
-                        if (permissions.contains(ACCESS_FINE_LOCATION))
-                            bindNavService()
-                    }
-                    .onDenied { permissions ->
-                        //List of denied permissions
-                    }
-                    .onForeverDenied { permissions ->
-                        //List of forever denied permissions
-                    }
-                    .ask()
+                .permissions(INTERNET, ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION)
+                .onAccepted { permissions ->
+                    //List of accepted permissions
+                    if (permissions.contains(ACCESS_FINE_LOCATION))
+                        bindNavService()
+                }
+                .onDenied { permissions ->
+                    //List of denied permissions
+                }
+                .onForeverDenied { permissions ->
+                    //List of forever denied permissions
+                }
+                .ask()
         } else {
             bindNavService()
         }
@@ -416,8 +500,6 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     open fun initTb() {
         setSupportActionBar(tb_nav)
         sbl_nav.visibility = View.GONE
-
-
 
 
 //        UITools.elasticPadding(tl_nav, 500);
@@ -450,7 +532,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     open fun initVp() {
-        navFragmentPagerAdapter = NavFragmentPagerAdapter(supportFragmentManager)
+        navFragmentPagerAdapter = NavFragmentPagerAdapter(supportFragmentManager, )
         vp_nav.offscreenPageLimit = 3
         vp_nav.adapter = navFragmentPagerAdapter
         vp_nav.addOnPageChangeListener(viewPagerOnPageChangeListener)
@@ -483,6 +565,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         super.onResume()
         if (pageSelectedPosition == 0) tb_nav.title = getString(R.string.title_home)
     }
+
     open fun initBnv() {
 //        disableShiftMode(bnv_nav)
         /** 切换夜间模式重启的时候，需要通过设置currentItem来设置标题等一系列参数（但是无效，只能采用下一行的方式） */
@@ -505,8 +588,8 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         when (pageSelectedPosition) {
             VIEW_HOME -> {
                 if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn()) {
-                    val navFragment = navFragmentPagerAdapter.currentFragment as NavFragment
-                    if(navFragment.isPageTop) {
+                    val navFragment = navFragmentPagerAdapter.currentFragment as HomeFragment
+                    if (navFragment.isPageTop) {
                         activity_nav_fab.show()
                     }
                 }
@@ -552,18 +635,33 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     /**
      * Immersive reading, swipe hidden.
      */
-    class BottomNavigationViewBehavior(context: Context?, attrs: AttributeSet?) : androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior<View>(context, attrs) {
-        override fun onLayoutChild(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, layoutDirection: Int): Boolean {
-            (child.layoutParams as CoordinatorLayout.LayoutParams).topMargin = parent.measuredHeight.minus(child.measuredHeight)
+    class BottomNavigationViewBehavior(context: Context?, attrs: AttributeSet?) :
+        androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior<View>(context, attrs) {
+        override fun onLayoutChild(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            layoutDirection: Int
+        ): Boolean {
+            (child.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
+                parent.measuredHeight.minus(child.measuredHeight)
             return super.onLayoutChild(parent, child, layoutDirection)
         }
 
-        override fun layoutDependsOn(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, dependency: View): Boolean {
+        override fun layoutDependsOn(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
             return dependency is AppBarLayout
         }
 
-        override fun onDependentViewChanged(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, dependency: View): Boolean {
-            val top = ((dependency.layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior).topAndBottomOffset
+        override fun onDependentViewChanged(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
+            val top =
+                ((dependency.layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayout.Behavior).topAndBottomOffset
             Log.i("dd", top.toString())
             //因为BottomNavigation的滑动与ToolBar是反向的，所以取-top值
             child.translationY = (-top).toFloat()
@@ -574,17 +672,31 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     /**
      * Locate nav detail FAB
      */
-    class BottomNavigationViewBehaviorDetail(context: Context?, attrs: AttributeSet?) : androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior<View>(context, attrs) {
-        override fun onLayoutChild(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, layoutDirection: Int): Boolean {
-            (child.layoutParams as CoordinatorLayout.LayoutParams).topMargin = parent.measuredHeight.minus(child.measuredHeight)
+    class BottomNavigationViewBehaviorDetail(context: Context?, attrs: AttributeSet?) :
+        androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior<View>(context, attrs) {
+        override fun onLayoutChild(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            layoutDirection: Int
+        ): Boolean {
+            (child.layoutParams as CoordinatorLayout.LayoutParams).topMargin =
+                parent.measuredHeight.minus(child.measuredHeight)
             return super.onLayoutChild(parent, child, layoutDirection)
         }
 
-        override fun layoutDependsOn(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, dependency: View): Boolean {
+        override fun layoutDependsOn(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
             return dependency is AppBarLayout
         }
 
-        override fun onDependentViewChanged(parent: androidx.coordinatorlayout.widget.CoordinatorLayout, child: View, dependency: View): Boolean {
+        override fun onDependentViewChanged(
+            parent: androidx.coordinatorlayout.widget.CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
             child.translationY = 2000f
             return false
         }
@@ -647,13 +759,26 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         // ...
     }
 
-    open class NavFragmentPagerAdapter(fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
+    open class NavFragmentPagerAdapter(
+        fm: FragmentManager,
+    ) :
+        androidx.fragment.app.FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         lateinit var currentFragment: Fragment
         fun isCurrentFragmentIn() = ::currentFragment.isInitialized
 
-        override fun getItem(position: Int): androidx.fragment.app.Fragment {
+        override fun getItem(position: Int): Fragment {
             when (position) {
+                0 -> {
+                    val homeFragment = HomeFragment()
+                    homeFragment.navId = position
+                    return homeFragment
+                }
+                1 -> {
+                    val gospelFragment = GospelFragment()
+                    gospelFragment.navId = position
+                    return gospelFragment
+                }
                 2 -> {
                     return DiscipleFragment()
                 }
@@ -661,7 +786,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                     return MeFragment()
                 }
             }
-            val navFragment = NavFragment()
+            val navFragment = GospelFragment()
             navFragment.navId = position
             return navFragment
         }
@@ -672,8 +797,14 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
         override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
             when (position) {
-                0, 1, 2 -> {
-                    currentFragment = `object` as NavFragment
+                0 -> {
+                    currentFragment = `object` as HomeFragment
+                }
+                1 -> {
+                    currentFragment = `object` as GospelFragment
+                }
+                2 -> {
+                    currentFragment = `object` as DiscipleFragment
                 }
                 3 -> {
                     currentFragment = `object` as MeFragment
@@ -683,31 +814,23 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         }
     }
 
-    val appBarLayoutOnOffsetChangedListener = AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-        appBarLayoutOnOffsetChangedListener(this@NavActivity, appBarLayout, verticalOffset)
-        this@NavActivity.verticalOffset = verticalOffset
-    }
+    val appBarLayoutOnOffsetChangedListener =
+        AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            appBarLayoutOnOffsetChangedListener(this@NavActivity, appBarLayout, verticalOffset)
+            this@NavActivity.verticalOffset = verticalOffset
+        }
 
-    /**
-     * Me Page登录方法，会在onActivityResult返回结果
-     */
     private fun signIn() {
-        // Choose authentication providers
         val providers = arrayListOf(
-                AuthUI.IdpConfig.EmailBuilder().build(),
-//                AuthUI.IdpConfig.PhoneBuilder().build(),
-                AuthUI.IdpConfig.GoogleBuilder().build()
-//                AuthUI.IdpConfig.FacebookBuilder().build(),
-//                AuthUI.IdpConfig.TwitterBuilder().build()
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
         )
-
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN)
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setTheme(R.style.AppTheme)
+            .setAvailableProviders(providers)
+            .build()
+        signInLauncher.launch(signInIntent)
     }
 
     fun snackbar(s: String): Snackbar {
@@ -729,19 +852,23 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     open fun scrollRvToTop(navActivity: NavActivity) {
         try {
             if (::navFragmentPagerAdapter.isInitialized)
-            when (vp_nav.currentItem) {
-                0, 1, 2 -> {
-                    navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+                when (vp_nav.currentItem) {
+                    0, 1, 2 -> {
+                        navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(
+                            0
+                        ) // 为了滚到顶
 
-                    (navActivity.navFragmentPagerAdapter.currentFragment as NavFragment).scrollChildRVToTop()
-                }
-                3 -> {
-                    navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(0) // 为了滚到顶
+                        (navActivity.navFragmentPagerAdapter.currentFragment as GospelFragment).scrollChildRVToTop()
+                    }
+                    3 -> {
+                        navActivity.navFragmentPagerAdapter.currentFragment.fragment_nav_rv.smoothScrollToPosition(
+                            0
+                        ) // 为了滚到顶
 
-                    (navActivity.navFragmentPagerAdapter.currentFragment as MeFragment).scrollChildRVToTop()
+                        (navActivity.navFragmentPagerAdapter.currentFragment as MeFragment).scrollChildRVToTop()
+                    }
                 }
-            }
-             {
+            {
 
             }
             navActivity.abl_nav.setExpanded(true, true)

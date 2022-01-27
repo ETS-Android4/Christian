@@ -34,13 +34,14 @@ import androidx.fragment.app.FragmentActivity;
 import com.christian.R;
 import com.christian.util.ChristianUtil;
 import com.christian.view.ViewUtilKt;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
 import ren.qinc.edit.PerformEdit;
-import ren.qinc.markdowneditors.AppContext;
-import ren.qinc.markdowneditors.base.BaseApplication;
+
+import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.base.BaseFragment;
 import ren.qinc.markdowneditors.base.mvp.IMvpView;
 import ren.qinc.markdowneditors.engine.PerformEditable;
@@ -263,12 +264,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     @Override
     public void onFailure(int errorCode, String message, int flag) {
         switch (flag) {
-            case CALL_SAVE:
-            case CALL_LOAOD_FILE:
-                BaseApplication.showSnackbar(mContent, message);
-                break;
             default:
-                BaseApplication.showSnackbar(mContent, message);
+                Snackbar.make(mContent, message, Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -345,11 +342,11 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     private void shareMenu() {
         SystemUtils.hideSoftKeyboard(mContent);
         if (mName.getText().toString().isEmpty()) {
-            AppContext.showSnackbar(mContent, "当前标题为空");
+            Snackbar.make(mName, R.string.empty_title, Snackbar.LENGTH_SHORT).show();
             return;
         }
         if (mContent.getText().toString().isEmpty()) {
-            AppContext.showSnackbar(mContent, "当前内容为空");
+            Snackbar.make(mContent, R.string.empty_content, Snackbar.LENGTH_SHORT).show();
             return;
         }
 

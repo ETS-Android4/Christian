@@ -23,7 +23,7 @@ import android.util.Log;
 
 import java.lang.reflect.Method;
 
-import ren.qinc.markdowneditors.base.BaseApplication;
+import com.christian.common.CommonApp;
 
 
 /**
@@ -344,7 +344,7 @@ public class Network {
         private static final Network network = new Network();
 
         public static Network getNetwork() {
-            network.initContext(BaseApplication.context());
+            network.initContext(CommonApp.context);
             return network;
         }
     }

@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.christian.R
-import com.christian.nav.NavFragment
+import com.christian.nav.GospelFragment
 
-class GospelReviewFragment : NavFragment() {
+class GospelReviewFragment : GospelFragment() {
 
     companion object {
         fun newInstance() = GospelReviewFragment()
