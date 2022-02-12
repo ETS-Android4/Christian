@@ -412,9 +412,10 @@ public class BounceBackViewPager extends CustomViewPager
         }
         final int position = child.getLeft() / child.getWidth();
         final boolean isFirstOrLast = position == 0 || (position == getAdapter().getCount() - 1);
-        if (mOverscrollEffect.isOverscrolling() && isFirstOrLast)
+        if (isFirstOrLast)
+//        if (mOverscrollEffect.isOverscrolling() && isFirstOrLast)
         {
-            final float dx = getWidth() / 2;
+            final int dx = getWidth() / 2;
             final int dy = getHeight() / 2;
             t.getMatrix().reset();
             final float translateX = (float) mOverscrollTranslation

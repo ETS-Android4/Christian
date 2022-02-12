@@ -79,11 +79,18 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
         super.onResume()
         isVisibled = true
         isCanLoadData()
+
+        when(isPageTop) {
+            true -> navActivity.showFab()
+            else -> navActivity.hideFab()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         isVisibled = false
+
+        navActivity.hideFab()
     }
 
     private fun isCanLoadData() {
@@ -202,7 +209,8 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
 //                hideFab()
                 isPageTop = false
                 isPageBottom = false
-                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
+                navActivity.hideFab()
+//                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = true
                 when (navActivity.vp_nav.currentItem) {
                     0 -> {
@@ -218,7 +226,8 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
 //                navActivity.showFab(pageSelectedPosition)
                 isPageTop = false
                 isPageBottom = false
-                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
+                navActivity.hideFab()
+//                controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = true
                 when (navActivity.vp_nav.currentItem) {
                     1 -> {
@@ -228,13 +237,9 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
             }
 
             override fun onTop() {
-                top()
+                isPageTop = true
+                navActivity.showFab()
                 v.fragment_nav_rv.isVerticalScrollBarEnabled = false
-                when (navActivity.vp_nav.currentItem) {
-                    0 -> {
-                        navActivity.showFab()
-                    }
-                }
             }
 
             override fun onBottom() {
@@ -249,11 +254,6 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
         val controller =
                 AnimationUtils.loadLayoutAnimation(navActivity, R.anim.layout_animation_from_right)
         v.fragment_nav_rv.layoutAnimation = controller
-    }
-
-    open fun top() {
-        isPageTop = true
-        controlOverScroll(navActivity, navActivity.abl_nav, navActivity.verticalOffset)
     }
 
     /**

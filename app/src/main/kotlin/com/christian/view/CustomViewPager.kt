@@ -18,10 +18,8 @@ open class CustomViewPager(context: Context, attrs: AttributeSet?) : androidx.vi
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         return if (mDisallowIntercept) {
-            debug { "false" }
             false
         } else {
-            debug { "true" }
             super.onInterceptTouchEvent(ev)
         }
     }

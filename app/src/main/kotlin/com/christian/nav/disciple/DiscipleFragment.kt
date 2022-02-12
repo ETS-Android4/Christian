@@ -27,6 +27,7 @@ import com.christian.BuildConfig
 import com.christian.R
 import com.christian.common.data.FriendlyMessage
 import com.christian.databinding.FragmentDiscipleBinding
+import com.christian.nav.NavActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -39,6 +40,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.android.synthetic.main.nav_activity.*
 
 
 class DiscipleFragment : Fragment() {
@@ -122,13 +124,15 @@ class DiscipleFragment : Fragment() {
     }
 
     override fun onPause() {
-        adapter.stopListening()
         super.onPause()
+        adapter.stopListening()
+        (requireActivity() as NavActivity).hideFab()
     }
 
     override fun onResume() {
         super.onResume()
         adapter.startListening()
+        (requireActivity() as NavActivity).showFab()
     }
 
     private fun onImageSelected(uri: Uri) {

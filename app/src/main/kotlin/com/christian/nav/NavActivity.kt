@@ -337,13 +337,13 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
                 //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
-                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn() && navFragmentPagerAdapter.currentFragment is HomeFragment) {
+                /*if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn() && navFragmentPagerAdapter.currentFragment is HomeFragment) {
                     val homeFragment = navFragmentPagerAdapter.currentFragment as HomeFragment
                     when (homeFragment.isPageTop) {
                         false -> hideFab()
                         true -> showFab()
                     }
-                }
+                }*/
                 activity_nav_fab.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
@@ -395,7 +395,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
                 if (::menuItemSetting.isInitialized) menuItemSetting.isVisible = false
 
                 //        为了在Home到Disciple的时候FAB有一个显示到消失再到显示的过程
-                showFab()
+                /*showFab()*/
 
                 activity_nav_fab.setImageDrawable(
                     ResourcesCompat.getDrawable(
@@ -584,37 +584,12 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     override fun showFab() {
-        beforeShowFab()
-        when (pageSelectedPosition) {
-            VIEW_HOME -> {
-                if (::navFragmentPagerAdapter.isInitialized && navFragmentPagerAdapter.isCurrentFragmentIn()) {
-                    val navFragment = navFragmentPagerAdapter.currentFragment as HomeFragment
-                    if (navFragment.isPageTop) {
-                        activity_nav_fab.show()
-                    }
-                }
-            }
-            VIEW_GOSPEL -> {
-                activity_nav_fab.show()
-            }
-            VIEW_DISCIPLE -> {
-                activity_nav_fab.show()
-            }
-            VIEW_ME -> {
-                activity_nav_fab.show()
-            }
-        }
-    }
-
-    private fun beforeShowFab() {
-        if (!activity_nav_fab.isGone) {
-            Log.i("fab", "hide")
-            activity_nav_fab.visibility = View.GONE
-        }
+        activity_nav_fab.show()
     }
 
     override fun hideFab() {
         activity_nav_fab.hide()
+        activity_nav_fab.visibility = View.GONE
     }
 
     private fun slExpand() {
