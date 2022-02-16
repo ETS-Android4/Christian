@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.christian.HistoryAndMyArticlesActivity
 import com.christian.R
 import com.christian.common.CommonApp
+import com.christian.common.data.Gospel
 import com.christian.common.getDisplayHeight
 import com.christian.common.getDisplayWidth
 import com.christian.data.Disciple
@@ -119,7 +120,7 @@ open class NavItemView(private val binding: NavItemGospelBinding, navActivity: N
         itemView.clearAnimation()
     }
 
-    fun bind(gospel: MeBean) {
+    fun bind(gospel: Gospel) {
         val gospelImg = filterImageUrlThroughDetailPageContent(gospel.content)
         if (gospelImg.isNotBlank()) {
             binding.ivNavItem.visibility = View.VISIBLE
@@ -127,13 +128,13 @@ open class NavItemView(private val binding: NavItemGospelBinding, navActivity: N
         } else {
             binding.ivNavItem.visibility = View.GONE
         }
-        binding.tvTitleNavItem.text = gospel.desc
-        binding.tvSubtitleNavItem.text = gospel.name
+        binding.tvTitleNavItem.text = gospel.classify
+        binding.tvSubtitleNavItem.text = gospel.title
 //        makeViewBlur(tv_title_nav_item, cl_nav_item, activity.window, true)
         binding.tvDetailNavItem.text = gospel.content
                 .replace(Regex("!\\[.+\\)"), "")
                 .replace(Regex("\\s+"), "")
-        binding.textView.text = gospel.author + "·" + gospel.time
+        binding.textView.text = gospel.author + "·" + gospel.createTime
 //        textView2.text = gospel.church
 //        textView3.text = gospel.time
         binding.root.setOnClickListener {
@@ -148,17 +149,18 @@ open class NavItemView(private val binding: NavItemGospelBinding, navActivity: N
         binding.textView.setOnClickListener { startGospelDetailActivity(gospel) }
     }
 
-    private fun startGospelDetailActivity(gospel: MeBean) {
+    private fun startGospelDetailActivity(gospel: Gospel) {
         val intent = Intent(binding.root.context, NavDetailActivity::class.java)
-        intent.putExtra(binding.root.context.getString(R.string.category), gospel.desc)
-        intent.putExtra(binding.root.context.getString(R.string.name), gospel.name)
+        intent.putExtra(binding.root.context.getString(R.string.category), gospel.classify)
+        intent.putExtra(binding.root.context.getString(R.string.name), gospel.title)
         intent.putExtra(binding.root.context.getString(R.string.content_lower_case), gospel.content)
         intent.putExtra(binding.root.context.getString(R.string.author), gospel.author)
-        intent.putExtra(binding.root.context.getString(R.string.church_lower_case), gospel.church)
-        intent.putExtra(binding.root.context.getString(R.string.time), gospel.time)
+//        intent.putExtra(binding.root.context.getString(R.string.church_lower_case), gospel.church)
+        intent.putExtra(binding.root.context.getString(R.string.time), gospel.createTime)
+        intent.putExtra("gospelId", gospel.gospelId)
         intent.putExtra(binding.root.context.getString(R.string.userId), gospel.userId)
 
-        intent.putExtra(toolbarTitle, gospel.name)
+        intent.putExtra(toolbarTitle, gospel.title)
         binding.root.context.startActivity(intent)
     }
 

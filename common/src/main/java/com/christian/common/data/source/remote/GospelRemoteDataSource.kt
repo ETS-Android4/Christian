@@ -47,7 +47,7 @@ class GospelRemoteDataSource : GospelDataSource {
 
     //    Update
 //    Query
-    override suspend fun getWriting(writingId: String): Result<Gospel> {
+    override suspend fun getGospel(writingId: String): Result<Gospel> {
         // Simulate network by delaying the execution.
         return suspendCoroutine { continuation ->
             firebaseFirestore.collection(GOSPELS).document(writingId).get().addOnSuccessListener {
@@ -60,8 +60,15 @@ class GospelRemoteDataSource : GospelDataSource {
 //        WRITINGS_CACHE_DATA.clear()
     }
 
-    override suspend fun deleteWriting(writingId: String) {
-//        WRITINGS_CACHE_DATA.remove(writingId)
+    override suspend fun deleteWriting(writingId: String): Result<Void>? {
+        return suspendCoroutine { continuation ->
+            firebaseFirestore.collection(GOSPELS).document(writingId)
+                .delete().addOnSuccessListener {
+                    continuation.resume(Result.Success(it))
+                }.addOnFailureListener {
+                    continuation.resume(Result.Error(it))
+                }
+        }
     }
 
     //    Update
@@ -100,6 +107,10 @@ class GospelRemoteDataSource : GospelDataSource {
                 }
             }
         }
+    }
+
+    override suspend fun getGospels(): Result<List<Gospel>> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun refreshWritings() {

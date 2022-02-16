@@ -10,8 +10,9 @@ import java.util.*
 // Published text entity class, for editor activity
 @Entity(tableName = "gospels")
 data class Gospel @JvmOverloads constructor(
-    @PrimaryKey @ColumnInfo(name = "gospelId") val gospelId: String = FieldValue.serverTimestamp().toString(),
+    @PrimaryKey @ColumnInfo(name = "gospelId") val gospelId: String = "",
     @ColumnInfo(name = "author") val author: String = "",
+    @ColumnInfo(name = "userId") val userId: String = "",
     @ColumnInfo(name = "classify") val classify: String = "",
     @ColumnInfo(name = "content") val content: String = "",
     @ColumnInfo(name = "contentType") val contentType: String = "",

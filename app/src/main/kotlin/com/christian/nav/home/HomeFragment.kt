@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.christian.R
-import com.christian.data.MeBean
+import com.christian.common.data.Gospel
 import com.christian.data.Setting
 import com.christian.databinding.NavItemGospelBinding
 import com.christian.nav.*
@@ -21,6 +21,7 @@ import com.christian.view.ItemDecoration
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import com.lxj.xpopup.util.KeyboardUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_nav_rv.*
@@ -84,6 +85,7 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
             true -> navActivity.showFab()
             else -> navActivity.hideFab()
         }
+//        From Editor Activity to Home Fragment hide keyboard
     }
 
     override fun onPause() {
@@ -163,7 +165,7 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
 
     var isPageBottom: Boolean = false
 
-    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<MeBean, NavItemView>
+    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<Gospel, NavItemView>
     private lateinit var meAdapter: FirestoreRecyclerAdapter<Setting, NavItemView>
 
     override fun onDestroyView() {
@@ -262,7 +264,7 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
     private fun loadGospelsFromTabId(navId: Int) {
 
         var query = navActivity.firestore.collection("gospels")
-                .orderBy("time", Query.Direction.DESCENDING)
+                .orderBy("createTime", Query.Direction.DESCENDING)
 
         when (navId) {
             4 -> query = navActivity.firestore.collection("gospels").orderBy("time", Query.Direction.DESCENDING).whereEqualTo(getString(R.string.desc), "Gen")
@@ -335,11 +337,11 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
 
         }
 
-        val options = FirestoreRecyclerOptions.Builder<MeBean>()
+        val options = FirestoreRecyclerOptions.Builder<Gospel>()
                 //                        .setLifecycleOwner(this@NavFragment)
-                .setQuery(query, MeBean::class.java)
+                .setQuery(query, Gospel::class.java)
                 .build()
-        gospelAdapter = object : FirestoreRecyclerAdapter<MeBean, NavItemView>(options) {
+        gospelAdapter = object : FirestoreRecyclerAdapter<Gospel, NavItemView>(options) {
             @NonNull
             override fun onCreateViewHolder(@NonNull parent: ViewGroup,
                                             viewType: Int): NavItemView {
@@ -351,7 +353,7 @@ open class HomeFragment : androidx.fragment.app.Fragment(), NavContract.INavFrag
 
             override fun onBindViewHolder(@NonNull holder: NavItemView,
                                           position: Int,
-                                          @NonNull model: MeBean) {
+                                          @NonNull model: Gospel) {
                 applyViewHolderAnimation(holder)
                 holder.bind(model)
             }

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.viewpager.widget.ViewPager
 import com.christian.R
+import com.christian.common.data.Gospel
 import com.christian.data.MeBean
 import com.christian.data.Setting
 import com.christian.databinding.NavItemGospelBinding
@@ -161,7 +162,7 @@ open class GospelFragment : androidx.fragment.app.Fragment(), NavContract.INavFr
 
     var isPageBottom: Boolean = false
 
-    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<MeBean, NavItemView>
+    private lateinit var gospelAdapter: FirestoreRecyclerAdapter<Gospel, NavItemView>
     private lateinit var meAdapter: FirestoreRecyclerAdapter<Setting, NavItemView>
 
     override fun onDestroyView() {
@@ -468,11 +469,11 @@ open class GospelFragment : androidx.fragment.app.Fragment(), NavContract.INavFr
 
         }
 
-        val options = FirestoreRecyclerOptions.Builder<MeBean>()
+        val options = FirestoreRecyclerOptions.Builder<Gospel>()
             //                        .setLifecycleOwner(this@NavFragment)
-            .setQuery(query, MeBean::class.java)
+            .setQuery(query, Gospel::class.java)
             .build()
-        gospelAdapter = object : FirestoreRecyclerAdapter<MeBean, NavItemView>(options) {
+        gospelAdapter = object : FirestoreRecyclerAdapter<Gospel, NavItemView>(options) {
             @NonNull
             override fun onCreateViewHolder(
                 @NonNull parent: ViewGroup,
@@ -487,7 +488,7 @@ open class GospelFragment : androidx.fragment.app.Fragment(), NavContract.INavFr
             override fun onBindViewHolder(
                 @NonNull holder: NavItemView,
                 position: Int,
-                @NonNull model: MeBean
+                @NonNull model: Gospel
             ) {
                 applyViewHolderAnimation(holder)
                 holder.bind(model)

@@ -51,6 +51,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 import com.christian.nav.home.HomeFragment
 import com.firebase.ui.auth.ErrorCodes
+import com.github.anzewei.parallaxbacklayout.ParallaxHelper
 
 
 /**
@@ -459,6 +460,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
         initBnv()
         // 自动夜间模式
 //        sunriseSunset()
+        ParallaxHelper.disableParallaxBack(this)
     }
 
     private fun sunriseSunset() {
@@ -532,7 +534,7 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
     }
 
     open fun initVp() {
-        navFragmentPagerAdapter = NavFragmentPagerAdapter(supportFragmentManager, )
+        navFragmentPagerAdapter = NavFragmentPagerAdapter(supportFragmentManager)
         vp_nav.offscreenPageLimit = 3
         vp_nav.adapter = navFragmentPagerAdapter
         vp_nav.addOnPageChangeListener(viewPagerOnPageChangeListener)
@@ -589,7 +591,6 @@ open class NavActivity : SwipeBackActivity(), NavContract.INavActivity {
 
     override fun hideFab() {
         activity_nav_fab.hide()
-        activity_nav_fab.visibility = View.GONE
     }
 
     private fun slExpand() {

@@ -26,18 +26,21 @@ import com.christian.common.getDateAndCurrentTime
 import com.christian.common.ui.editor.EditorViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.launch
 import ren.qinc.markdowneditors.base.mvp.BasePresenter
 import ren.qinc.markdowneditors.view.EditorActivity
 import ren.qinc.markdowneditors.view.EditorFragment
 import java.io.File
-import java.util.*
 
 /**
  * 编辑界面Presenter
  * Created by 沈钦赐 on 16/1/18.
  */
 class EditorFragmentPresenter : BasePresenter<IEditorFragmentView?>() {
+
+    private lateinit var gospelId: String
+
     //当前文件路径
     private val filePath: String? = null
 
@@ -78,10 +81,26 @@ class EditorFragmentPresenter : BasePresenter<IEditorFragmentView?>() {
         )
     }
 
-    fun textChange() {
+    fun textChange(content: String) {
         textChanged = true
         if (mvpView != null) {
             mvpView!!.otherSuccess(IEditorFragmentView.CALL_NO_SAVE)
+            val editorFragment = mvpView as EditorFragment
+            val editorViewModel = ViewModelProvider(editorFragment)[EditorViewModel::class.java]
+            if (::gospelId.isInitialized)
+                editorViewModel.viewModelScope.launch {
+                    val gospel = Gospel(
+                        title = editorFragment.mName.text.toString().trim { it <= ' ' },
+                        classify = editorFragment.et_editor_topic?.text.toString()
+                            .trim { it <= ' ' },
+                        content = content.trim { it <= ' ' },
+                        createTime = getDateAndCurrentTime(),
+                        author = FirebaseAuth.getInstance().currentUser?.displayName ?: FirebaseAuth.getInstance().currentUser?.uid.toString(),
+                        gospelId = gospelId,
+                        userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                    )
+                    editorViewModel.saveGospel(gospel)
+                }
         }
     }
 
@@ -137,14 +156,17 @@ class EditorFragmentPresenter : BasePresenter<IEditorFragmentView?>() {
             classify = editorFragment.et_editor_topic?.text.toString().trim { it <= ' ' },
             content = editorFragment.mContent?.text.toString().trim { it <= ' ' },
             createTime = getDateAndCurrentTime(),
-            author = FirebaseAuth.getInstance().currentUser?.email ?: FirebaseAuth.getInstance().currentUser?.uid.toString(),
+            author = FirebaseAuth.getInstance().currentUser?.displayName ?: FirebaseAuth.getInstance().currentUser?.uid.toString(),
+            gospelId = gospelId,
+            userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         )
         val editorViewModel = ViewModelProvider(editorFragment)[EditorViewModel::class.java]
         if (editorFragment.mName.text.toString().trim { it <= ' ' }.isNotEmpty()) {
             if (editorFragment.mContent.text.toString().trim { it <= ' ' }.isNotEmpty()) {
                 editorViewModel.viewModelScope.launch {
-                    when (editorViewModel.saveGospel(gospel)) {
+                    when (editorViewModel.saveGospel(gospel, false)) {
                         is Result.Success -> {
+                            editorViewModel.deleteGospel(gospelId)
                             isCreateFile = false
                             textChanged = false
                             if (!rename(name)) {
@@ -206,33 +228,49 @@ class EditorFragmentPresenter : BasePresenter<IEditorFragmentView?>() {
 //        });
     }
 
-    fun getDocument(editorFragment: EditorFragment) {
-        val editorViewModel = ViewModelProvider(editorFragment)[EditorViewModel::class.java]
-        editorViewModel.viewModelScope.launch {
-//            editorViewModel.getWriting()
-        }
-        val documentReference = editorFragment.firebaseFirestore.collection(
-            editorFragment.getString(
-                R.string.gospels
-            )
-        ).document(editorFragment.documentGospelPath)
-        documentReference.get().addOnCompleteListener(editorFragment.requireActivity()) { task ->
-            if (task.isSuccessful) {
-                val document = task.result
-                if (document != null) {
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                        editorFragment.et_editor_topic.setText(document[editorFragment.getString(R.string.desc)] as CharSequence?)
-                        editorFragment.mName.setText(document[editorFragment.getString(R.string.name)] as CharSequence?)
-                        editorFragment.mAuthor.setText(document[editorFragment.getString(R.string.author)] as CharSequence?)
-                        //                            editorFragment.mChurch.setText((CharSequence) document.get(editorFragment.getString(R.string.church_lower_case)));
-                        editorFragment.mContent.setText(document[editorFragment.getString(R.string.content_lower_case)] as CharSequence?)
-                    } else {
-                        Log.d(TAG, "No such document")
+    fun getDocument(
+        editorFragment: EditorFragment,
+        documentGospelPath: String?
+    ) {
+        if (documentGospelPath != null) {
+            val documentReference = editorFragment.firebaseFirestore.collection(
+                editorFragment.getString(
+                    R.string.gospels
+                )
+            ).document(editorFragment.documentGospelPath)
+            documentReference.get().addOnCompleteListener(editorFragment.requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null) {
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                            editorFragment.et_editor_topic.setText(document["classify"] as CharSequence?)
+                            editorFragment.mName.setText(document["title"] as CharSequence?)
+                            editorFragment.mAuthor.setText(document[editorFragment.getString(R.string.author)] as CharSequence?)
+                            //                            editorFragment.mChurch.setText((CharSequence) document.get(editorFragment.getString(R.string.church_lower_case)));
+                            editorFragment.mContent.setText(document[editorFragment.getString(R.string.content_lower_case)] as CharSequence?)
+                            gospelId = (document["gospelId"] as CharSequence).toString()
+                        } else {
+                            Log.d(TAG, "No such document")
+                        }
                     }
+                } else {
+                    Log.d(TAG, "get failed with ", task.exception)
                 }
-            } else {
-                Log.d(TAG, "get failed with ", task.exception)
+            }
+        } else {
+            val editorViewModel = ViewModelProvider(editorFragment)[EditorViewModel::class.java]
+            editorViewModel.viewModelScope.launch {
+                val gospels = editorViewModel.getGospels()
+                if (gospels is Result.Success && gospels.data.isNotEmpty()) {
+                    editorFragment.et_editor_topic.setText(gospels.data[gospels.data.size - 1].classify)
+                    editorFragment.mName.setText(gospels.data[gospels.data.size - 1].title)
+                    editorFragment.mAuthor.setText(gospels.data[gospels.data.size - 1].author)
+                    editorFragment.mContent.setText(gospels.data[gospels.data.size - 1].content)
+                    gospelId = gospels.data[gospels.data.size - 1].gospelId
+                } else {
+                    gospelId = FieldValue.serverTimestamp().toString()
+                }
             }
         }
     }

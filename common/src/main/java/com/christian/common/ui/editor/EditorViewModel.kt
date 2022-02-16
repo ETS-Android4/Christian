@@ -15,15 +15,26 @@ class EditorViewModel : ViewModel() {
         GospelServiceLocator.provideGospelsRepository(CommonApp.context)
 
     //    Insert
-    suspend fun saveGospel(gospel: Gospel): Result<Void>? = withContext(Dispatchers.IO) {
-        gospelRepository.saveGospel(gospel)
+    suspend fun saveGospel(gospel: Gospel, local: Boolean = true): Result<Void>? = withContext(Dispatchers.IO) {
+        gospelRepository.saveGospel(gospel, local)
     }
 
     //    Delete
+    suspend fun deleteGospels() = withContext(Dispatchers.IO) {
+        gospelRepository.deleteAllTasks()
+    }
+
+    suspend fun deleteGospel(gospelId: String, local: Boolean = true) = withContext(Dispatchers.IO) {
+        gospelRepository.deleteTask(gospelId, local)
+    }
     //    Update
     //    Query
-    suspend fun getWriting(writingId: String): Result<Gospel> = withContext(Dispatchers.IO) {
-        gospelRepository.getGospel(writingId)
+    suspend fun getGospels(): Result<List<Gospel>> = withContext(Dispatchers.IO) {
+        gospelRepository.getGospels()
+    }
+
+    suspend fun getGospel(writingId: String, local: Boolean = true): Result<Gospel> = withContext(Dispatchers.IO) {
+        gospelRepository.getGospel(writingId, local)
     }
 
 }

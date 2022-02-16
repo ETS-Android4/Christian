@@ -28,8 +28,9 @@ class GospelLocalDataSource internal constructor(
         gospelDao.deleteWritings()
     }
 
-    override suspend fun deleteWriting(writingId: String) = withContext<Unit>(ioDispatcher) {
-        gospelDao.deleteWritingById(writingId)
+    override suspend fun deleteWriting(writingId: String): Result<Void>? = withContext(ioDispatcher) {
+        Result.Success(gospelDao.deleteWritingById(writingId))
+        return@withContext null
     }
 
     //    Update
@@ -62,15 +63,15 @@ class GospelLocalDataSource internal constructor(
         }
     }
 
-    /*override suspend fun getWritings(): Result<List<Writing>> = withContext(ioDispatcher) {
+    override suspend fun getGospels(): Result<List<Gospel>> = withContext(ioDispatcher) {
         return@withContext try {
-            Result.Success(writingDao.getWritings())
+            Result.Success(gospelDao.getWritings())
         } catch (e: Exception) {
             Result.Error(e)
         }
-    }*/
+    }
 
-    override suspend fun getWriting(writingId: String): Result<Gospel> =
+    override suspend fun getGospel(writingId: String): Result<Gospel> =
         withContext(ioDispatcher) {
             try {
                 val writing = gospelDao.getWritingById(writingId)

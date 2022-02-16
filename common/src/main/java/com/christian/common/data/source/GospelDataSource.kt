@@ -13,7 +13,7 @@ interface GospelDataSource {
 
     suspend fun deleteAllWritings()
 
-    suspend fun deleteWriting(writingId: String)
+    suspend fun deleteWriting(writingId: String): Result<Void>?
 
     //    Update
     suspend fun completeWriting(gospel: Gospel)
@@ -29,9 +29,9 @@ interface GospelDataSource {
 
     fun observeWriting(writingId: String): LiveData<Result<Gospel>>
 
-//    suspend fun getWritings(): Result<List<Writing>>
+    suspend fun getGospels(): Result<List<Gospel>>
 
-    suspend fun getWriting(writingId: String): Result<Gospel>
+    suspend fun getGospel(writingId: String): Result<Gospel>
 
     suspend fun refreshWritings()
 

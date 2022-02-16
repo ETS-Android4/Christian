@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.christian.R
-import com.christian.data.MeBean
+import com.christian.common.data.Gospel
 import com.christian.multitype.Card
 import com.christian.nav.NavActivity
 import com.christian.nav.me.AbsAboutActivity
@@ -55,6 +55,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 
     private lateinit var dialog: BlurDialog
     private lateinit var userId: String
+    private lateinit var gospelId: String
     private lateinit var gospelCategory: String
     private lateinit var gospelTime: String
     private lateinit var gospelTitle: String
@@ -62,7 +63,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
     private lateinit var gospelAuthor: String
     private lateinit var gospelChurch: String
 
-    private lateinit var meBean: MeBean
+    private lateinit var gospel: Gospel
     private var registration: ListenerRegistration? = null
     private val snapshots = ArrayList<DocumentSnapshot>()
     private var snapshot: DocumentSnapshot? = null
@@ -79,7 +80,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        meRef = firestore.collection(getString(R.string.gospels)).document(gospelTitle)
+        meRef = firestore.collection(getString(R.string.gospels)).document(gospelId)
         startListening()
 
         /*fab12.setOnClickListener {
@@ -131,7 +132,7 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 
     private fun toEditorActivity() {
         val intent = Intent(this@NavDetailActivity, EditorActivity::class.java)
-        intent.putExtra(ChristianUtil.DOCUMENT_GOSPEL_PATH, gospelTitle)
+        intent.putExtra(ChristianUtil.DOCUMENT_GOSPEL_PATH, gospelId)
         startActivity(intent)
     }
 
@@ -255,20 +256,20 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
         }
 
         snapshot = documentSnapshots
-        meBean = snapshot?.toObject(MeBean::class.java) ?: MeBean()
+        gospel = snapshot?.toObject(Gospel::class.java) ?: Gospel()
 
         if (items.isNotEmpty())
             items.clear()
-        gospelCategory = meBean.desc
-        gospelTitle = meBean.name
-        gospelContent = meBean.content
+        gospelCategory = gospel.classify
+        gospelTitle = gospel.title
+        gospelContent = gospel.content
 //        items.add(Category(gospelTitle))
         items.add(Card(gospelContent))
 
-        gospelAuthor = meBean.author
-        gospelChurch = meBean.church
-        gospelTime = meBean.time
-        userId = meBean.userId
+        gospelAuthor = gospel.author
+//        gospelChurch = gospel.church
+        gospelTime = gospel.createTime
+        userId = gospel.userId
 
         Glide.with(this)
                 .load(filterImageUrlThroughDetailPageContent(gospelContent))
@@ -283,6 +284,8 @@ class NavDetailActivity : AbsAboutActivity(), AnkoLogger {
 
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
 
+        gospelId = intent.getStringExtra("gospelId")
+            ?: ""
         gospelCategory = intent.getStringExtra(getString(R.string.category))
                 ?: getString(R.string.uncategorized)
         gospelTitle = intent.getStringExtra(getString(R.string.name))

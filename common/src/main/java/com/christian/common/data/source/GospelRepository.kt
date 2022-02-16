@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.christian.common.data.Result
 import com.christian.common.data.Gospel
+import com.christian.common.data.Result
 import com.christian.common.data.source.local.GospelDatabase
 import com.christian.common.data.source.local.GospelLocalDataSource
 import com.christian.common.data.source.remote.GospelRemoteDataSource
@@ -29,7 +29,8 @@ object GospelServiceLocator {
     }
 
     private fun createGospelRepository(context: Context): GospelRepository {
-        val newRepo = GospelRepository(GospelRemoteDataSource(), createGospelLocalDataSource(context))
+        val newRepo =
+            GospelRepository(GospelRemoteDataSource(), createGospelLocalDataSource(context))
         gospelRepository = newRepo
         return newRepo
     }
@@ -71,9 +72,11 @@ class GospelRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     //    Insert
-    suspend fun saveGospel(gospel: Gospel): Result<Void>? {
-        gospelLocalDataSource.saveGospel(gospel)
-        return gospelRemoteDataSource.saveGospel(gospel)
+    suspend fun saveGospel(gospel: Gospel, local: Boolean): Result<Void>? {
+        return when (local) {
+            true -> gospelLocalDataSource.saveGospel(gospel)
+            else -> gospelRemoteDataSource.saveGospel(gospel)
+        }
     }
 
     //    Delete
@@ -86,8 +89,15 @@ class GospelRepository(
         return gospelLocalDataSource.observeWriting(writingId)
     }
 
-    suspend fun getGospel(gospelId: String): Result<Gospel> {
-        return gospelRemoteDataSource.getWriting(gospelId)
+    suspend fun getGospels(): Result<List<Gospel>> {
+        return gospelLocalDataSource.getGospels()
+    }
+
+    suspend fun getGospel(gospelId: String, local: Boolean): Result<Gospel> {
+        return when (local) {
+            true -> gospelLocalDataSource.getGospel(gospelId)
+            else -> gospelRemoteDataSource.getGospel(gospelId)
+        }
     }
 
     suspend fun completeTask(task: Gospel) {
@@ -136,14 +146,14 @@ class GospelRepository(
         }
     }
 
-    suspend fun deleteTask(writingId: String) {
-        coroutineScope {
-            launch { gospelRemoteDataSource.deleteWriting(writingId) }
-            launch { gospelLocalDataSource.deleteWriting(writingId) }
+    suspend fun deleteTask(writingId: String, local: Boolean) {
+        when (local) {
+            true -> gospelLocalDataSource.deleteWriting(writingId)
+            else -> gospelRemoteDataSource.deleteWriting(writingId)
         }
     }
 
     private suspend fun getTaskWithId(id: String): Result<Gospel> {
-        return gospelLocalDataSource.getWriting(id)
+        return gospelLocalDataSource.getGospel(id)
     }
 }

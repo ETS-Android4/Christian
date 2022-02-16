@@ -1,18 +1,5 @@
 package com.christian.data
 
-data class Gospel(
-        var title: String = "",
-        var subtitle: String = "",
-        var detail: List<GospelDetails> = arrayListOf(),
-        var date: String = "",
-        var author: String = ""
-)
-
-data class GospelDetails(
-        val content: String = "",
-        val image: String = ""
-)
-
 data class Disciple(
         val id: String = "",
         val name: String = ""

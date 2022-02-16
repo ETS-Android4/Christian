@@ -41,7 +41,6 @@ import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
 import ren.qinc.edit.PerformEdit;
 
-import com.christian.common.CommonApp;
 import ren.qinc.markdowneditors.base.BaseFragment;
 import ren.qinc.markdowneditors.base.mvp.IMvpView;
 import ren.qinc.markdowneditors.engine.PerformEditable;
@@ -133,17 +132,17 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             @Override
             protected void onTextChanged(Editable s) {
                 //文本改变
-                mPresenter.textChange();
+                mPresenter.textChange(s.toString());
             }
         };
 
-        mPerformNameEdit = new PerformEdit(mName) {
+        /*mPerformNameEdit = new PerformEdit(mName) {
             @Override
             protected void onTextChanged(Editable s) {
                 //文本改变
-                mPresenter.textChange();
+                mPresenter.textChange(s.toString());
             }
-        };
+        };*/
 
         //文本输入监听(用于自动输入)
         PerformInputAfter.start(mContent);
@@ -228,9 +227,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         });
 //        mSpinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) -> Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show());
 
-        if (documentGospelPath != null) { // Edit exist documents
-            mPresenter.getDocument(this);
-        }
+        mPresenter.getDocument(this, documentGospelPath);
     }
 
 
@@ -418,12 +415,13 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
     public void noSave() {
         if (mActionSave == null) return;
-        mActionSave.setIcon(R.drawable.ic_action_unsave);
+//        mActionSave.setIcon(R.drawable.ic_action_unsave);
     }
 
     public void saved() {
         if (mActionSave == null) return;
-        mActionSave.setIcon(R.drawable.ic_action_save);
+        requireActivity().finish();
+//        mActionSave.setIcon(R.drawable.ic_action_save);
     }
 
 
@@ -452,7 +450,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
 
     private void onNoSave() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme);
         builder.setMessage("当前文件未保存，是否退出?");
         builder.setNegativeButton("不保存", (dialog, which) -> {
             getActivity().finish();
@@ -463,7 +461,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         }).setPositiveButton("保存", (dialog, which) -> {
             mPresenter.saveForExit(mName.getText().toString().trim(), mContent.getText().toString().trim(), true);
 
-        }).show();
+        }).show();*/
+        requireActivity().finish();
     }
 
     @Override
